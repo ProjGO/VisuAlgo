@@ -1,6 +1,7 @@
 package BasicAnimation;
 
 import cn.edu.bit.cs.VisuAlgo.VisualElements.BasicNodeByGroup;
+import cn.edu.bit.cs.VisuAlgo.VisualElements.BasicNodeByStackPane;
 import javafx.animation.FadeTransition;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
@@ -8,6 +9,8 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.Node;
 import javafx.util.Duration;
+
+import javax.swing.plaf.basic.BasicGraphicsUtils;
 
 public class AnimationGenerator {
 
@@ -49,6 +52,15 @@ public class AnimationGenerator {
             translateTransition.setToY(toY);
         }
         translateTransition.rateProperty().bind(rate);
+        translateTransition.setOnFinished(e->{
+            if(node instanceof BasicNodeByStackPane)
+                ((BasicNodeByGroup) node).setPosition(toX,toY);
+            else if(node instanceof BasicNodeByGroup) {
+                ((BasicNodeByGroup) node).setPosition(toX, toY);
+                System.out.println(node.getLayoutX());
+                System.out.println(node.getLayoutY());
+            }
+        });
         return translateTransition;
     }
 

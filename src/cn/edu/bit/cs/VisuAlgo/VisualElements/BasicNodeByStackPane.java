@@ -7,34 +7,29 @@ import javafx.beans.property.ReadOnlyDoubleWrapper;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-public class BasicNodeByGroup extends Group {
+public class BasicNodeByStackPane extends StackPane {
     private Circle circle,outline;
     private Text text;
     private DoubleProperty centerX,centerY;
 
-    public BasicNodeByGroup(double x, double y, double radius, String data){
+    public BasicNodeByStackPane(double x, double y, double radius, String data){
 
         circle=new Circle(radius);
         circle.setFill(Color.AQUAMARINE);
-        circle.setLayoutX(0);
-        circle.setLayoutY(0);
 
         outline=new Circle(1.1*radius);
         outline.setFill(Color.RED);
-        outline.setLayoutX(0);
-        outline.setLayoutY(0);
         outline.setOpacity(0.0f);
 
         text=new Text(data);
         text.setFont(new Font(20));
         text.setFill(Color.WHITE);
-        text.setLayoutX(-0.5*text.getBoundsInLocal().getWidth());
-        text.setLayoutY(0.3*text.getBoundsInLocal().getHeight());
 
         this.setLayoutX(x);
         this.setLayoutY(y);
@@ -44,6 +39,7 @@ public class BasicNodeByGroup extends Group {
         centerX.bind(this.layoutXProperty());
         centerY.bind(this.layoutYProperty());
 
+        this.setOpacity(0.5f);
         this.getChildren().addAll(outline,circle,text);
     }
 
@@ -69,11 +65,11 @@ public class BasicNodeByGroup extends Group {
     }
 
     public DoubleProperty getCenterX(){
-        return layoutXProperty();
+        return centerX;
     }
 
     public DoubleProperty getCenterY(){
-        return layoutYProperty();
+        return centerY;
     }
 
     public void setPosition(double x,double y){
