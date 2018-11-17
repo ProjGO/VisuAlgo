@@ -1,6 +1,6 @@
 package BasicAnimation;
 
-import cn.edu.bit.cs.VisuAlgo.VisualElements.BasicNode;
+import cn.edu.bit.cs.VisuAlgo.VisualElements.BasicNodeByGroup;
 import javafx.animation.FadeTransition;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
@@ -37,17 +37,17 @@ public class AnimationGenerator {
 
     public static TranslateTransition getMoveAnimation(Node node,double time,double toX,double toY){
         TranslateTransition translateTransition=new TranslateTransition(Duration.millis(time));
-        translateTransition.setFromX(node.getLayoutX());
-        translateTransition.setFromY(node.getLayoutY());
-        if(node instanceof BasicNode) {
-            translateTransition.setToX(toX-((BasicNode) node).getRadius());
-            translateTransition.setToY(toY-((BasicNode) node).getRadius());
+        translateTransition.setNode(node);
+        translateTransition.setFromX(0);
+        translateTransition.setFromY(0);
+        if(node instanceof BasicNodeByGroup) {
+            translateTransition.setToX(toX-((BasicNodeByGroup) node).getRadius()-node.getLayoutX());
+            translateTransition.setToY(toY-((BasicNodeByGroup) node).getRadius()-node.getLayoutY());
         }
         else {
             translateTransition.setToX(toX);
             translateTransition.setToY(toY);
         }
-        translateTransition.setNode(node);
         translateTransition.rateProperty().bind(rate);
         return translateTransition;
     }

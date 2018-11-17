@@ -2,6 +2,9 @@ package cn.edu.bit.cs.VisuAlgo.VisualElements;
 
 import BasicAnimation.AnimationGenerator;
 import javafx.animation.SequentialTransition;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ReadOnlyDoubleWrapper;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
@@ -9,11 +12,12 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-public class BasicNode extends Group {
+public class BasicNodeByGroup extends Group {
     private Circle circle,outline;
     private Text text;
+    private DoubleProperty centerX,centerY;
 
-    public BasicNode(double x,double y,double radius,String data){
+    public BasicNodeByGroup(double x, double y, double radius, String data){
 
         circle=new Circle(radius);
         circle.setFill(Color.AQUAMARINE);
@@ -34,6 +38,12 @@ public class BasicNode extends Group {
 
         this.setLayoutX(x-radius);
         this.setLayoutY(y-radius);
+
+        centerX=new SimpleDoubleProperty();
+        centerY=new SimpleDoubleProperty();
+        centerX.bind(this.layoutXProperty().add(radius));
+        centerY.bind(this.layoutYProperty().add(radius));
+
         this.getChildren().addAll(outline,circle,text);
     }
 
@@ -56,5 +66,13 @@ public class BasicNode extends Group {
             emphasizeAnimation.getChildren().add(AnimationGenerator.getDisappearAnimation(outline,0.5*time));
         }
         return emphasizeAnimation;
+    }
+
+    public DoubleProperty getCenterX(){
+        return centerX;
+    }
+
+    public DoubleProperty getCenterY(){
+        return centerY;
     }
 }

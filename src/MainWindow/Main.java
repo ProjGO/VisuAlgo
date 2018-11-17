@@ -1,24 +1,16 @@
 package MainWindow;
 
 import BasicAnimation.AnimationGenerator;
-import BasicAnimation.AnimationPlayerController;
-import cn.edu.bit.cs.VisuAlgo.VisualElements.BasicNode;
-import cn.edu.bit.cs.VisuAlgo.VisualElements.UndirectedEdge;
-import javafx.animation.Animation;
+import cn.edu.bit.cs.VisuAlgo.VisualElements.BasicNodeByGroup;
+import cn.edu.bit.cs.VisuAlgo.VisualElements.UndirectedEdgeWithDataBinding;
 import javafx.animation.FadeTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-
-import javax.sound.midi.SoundbankResource;
-import java.util.ArrayList;
 
 public class Main extends Application {
 
@@ -26,26 +18,31 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         AnchorPane root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("VisuAlgo");
-        primaryStage.setScene(new Scene(root, 400, 400));
+        primaryStage.setScene(new Scene(root, 1280, 720));
 
-        BasicNode bNode=new BasicNode(20,20,20,"123");
-        root.getChildren().add(bNode);
+        BasicNodeByGroup bNode1=new BasicNodeByGroup(150,200,20,"1");
+        BasicNodeByGroup bNode2=new BasicNodeByGroup(1000,500,20,"2");
 
-        BasicNode bNode1=new BasicNode(100,100,10,"12");
-        BasicNode bNode2=new BasicNode(50,60,10,"13");
-        root.getChildren().addAll(new UndirectedEdge(bNode,bNode2,5),bNode1,bNode2);
+        //root.getChildren().addAll(/*new UndirectedEdge(bNode1,bNode2,5),*/bNode1,bNode2);
+        root.getChildren().addAll(new UndirectedEdgeWithDataBinding(bNode1,bNode2,3),bNode1,bNode2);
 
-        TranslateTransition move= AnimationGenerator.getMoveAnimation(bNode,2000,100,100);
+        TranslateTransition move1= AnimationGenerator.getMoveAnimation(bNode1,2000,500,300);
+        TranslateTransition move2=AnimationGenerator.getMoveAnimation(bNode1,2000,300,300);
+        System.out.println(move1.getFromX());
+        System.out.println(move1.getFromY());
 
-        SequentialTransition emp=bNode.getEmphasizeAnimation(1000,3);
+        SequentialTransition emp=bNode1.getEmphasizeAnimation(1000,3);
 
-        FadeTransition disa=AnimationGenerator.getDisappearAnimation(bNode,2000);
+        FadeTransition disa=AnimationGenerator.getDisappearAnimation(bNode1,2000);
 
-        SequentialTransition seq=new SequentialTransition(emp,move,disa);
+        SequentialTransition seq=new SequentialTransition(emp,move1,move2);
+        System.out.println(bNode1.getCenterX());
+        System.out.println(bNode1.getCenterY());
         seq.play();
+        System.out.println(bNode1.getCenterX());
+        System.out.println(bNode1.getCenterY());
 
-        System.out.println(emp.getCuePoints());
-        System.out.println(move.getCuePoints());
+        //System.out.println(bnode);
 
         primaryStage.show();
     }

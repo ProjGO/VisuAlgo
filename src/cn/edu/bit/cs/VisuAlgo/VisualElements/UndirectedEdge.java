@@ -11,7 +11,9 @@ public class UndirectedEdge extends Path {
     private double startX1,startY1,startX2,startY2,endX1,endY1,endX2,endY2;
     private double angle;
 
-    public UndirectedEdge(BasicNode from,BasicNode to,double _width){
+
+    public UndirectedEdge(BasicNodeByGroup from, BasicNodeByGroup to, double _width){
+
         width=_width;
         Point2D fromCenterCoordinate=from.getCenterCoordinate();
         Point2D toCenterCoordinate=to.getCenterCoordinate();
