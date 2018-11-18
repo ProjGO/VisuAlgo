@@ -1,16 +1,14 @@
 package BasicAnimation;
 
 import cn.edu.bit.cs.VisuAlgo.VisualElements.BasicNodeByGroup;
-import cn.edu.bit.cs.VisuAlgo.VisualElements.BasicNodeByStackPane;
 import javafx.animation.FadeTransition;
 import javafx.animation.RotateTransition;
+import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.Node;
 import javafx.util.Duration;
-
-import javax.swing.plaf.basic.BasicGraphicsUtils;
 
 public class AnimationGenerator {
 
@@ -38,14 +36,14 @@ public class AnimationGenerator {
         return disappearAnimation;
     }
 
-    public static TranslateTransition getMoveAnimation(Node node,double time,double toX,double toY){
+    private static TranslateTransition _getMoveAnimation(Node node,double time,double toX,double toY){
         TranslateTransition translateTransition=new TranslateTransition(Duration.millis(time));
         translateTransition.setNode(node);
         translateTransition.setFromX(0);
         translateTransition.setFromY(0);
         if(node instanceof BasicNodeByGroup) {
-            translateTransition.setToX(toX-((BasicNodeByGroup) node).getRadius()-node.getLayoutX());
-            translateTransition.setToY(toY-((BasicNodeByGroup) node).getRadius()-node.getLayoutY());
+            translateTransition.setToX(toX-node.getLayoutX());
+            translateTransition.setToY(toY-node.getLayoutY());
         }
         else {
             translateTransition.setToX(toX);
@@ -53,15 +51,29 @@ public class AnimationGenerator {
         }
         translateTransition.rateProperty().bind(rate);
         translateTransition.setOnFinished(e->{
-            if(node instanceof BasicNodeByStackPane)
+            if(node instanceof BasicNodeByGroup) {
                 ((BasicNodeByGroup) node).setPosition(toX,toY);
-            else if(node instanceof BasicNodeByGroup) {
-                ((BasicNodeByGroup) node).setPosition(toX, toY);
                 System.out.println(node.getLayoutX());
                 System.out.println(node.getLayoutY());
+                System.out.println(((BasicNodeByGroup) node).circle.getLayoutX());
+                System.out.println(((BasicNodeByGroup) node).circle.getLayoutY());
+                System.out.println("\n");
             }
         });
         return translateTransition;
+    }
+
+    public static SequentialTransition getMoveAnimation(Node node, double time, double toX, double toY){
+        SequentialTransition sequentialTransition=new SequentialTransition();
+        TranslateTransition moveAnimation=_getMoveAnimation(node,time,toX,toY);
+        TranslateTransition reset=new TranslateTransition();
+        reset.setNode(node);
+        reset.setFromX(0);
+        reset.setFromY(0);
+        reset.setToX(0);
+        reset.setToY(0);
+        sequentialTransition.getChildren().addAll(moveAnimation,reset);
+        return sequentialTransition;
     }
 
     public static RotateTransition getRotateAnimation(Node node,double time){

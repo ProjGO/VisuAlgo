@@ -9,15 +9,25 @@ import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class BasicNodeByGroup extends Group {
-    private Circle circle,outline;
+    public Circle circle,outline;
     private Text text;
     private DoubleProperty centerX,centerY;
+    private Line XAxis,YAxis;
 
     public BasicNodeByGroup(double x, double y, double radius, String data){
+
+        XAxis=new Line();
+        YAxis=new Line();
+        XAxis.setStartX(0); XAxis.setStartY(0);
+        XAxis.setEndX(50);  XAxis.setEndY(0);
+        YAxis.setStartX(0); YAxis.setStartY(0);
+        YAxis.setEndX(0);  YAxis.setEndY(50);
+        getChildren().addAll(XAxis,YAxis);
 
         circle=new Circle(radius);
         circle.setFill(Color.AQUAMARINE);
