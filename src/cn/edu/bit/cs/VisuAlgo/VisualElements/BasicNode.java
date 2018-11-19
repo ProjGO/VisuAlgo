@@ -4,6 +4,7 @@ import BasicAnimation.AnimationGenerator;
 import javafx.animation.SequentialTransition;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
@@ -15,14 +16,15 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-public class BasicNodeByGroup extends Group {
+public class BasicNode extends Group {
     private Circle circle,outline;
     private Text text;
     private DoubleProperty centerX,centerY;
     private Line XAxis,YAxis;
     private Color circleColor=Color.AQUAMARINE;
+    private SimpleIntegerProperty data;
 
-    public BasicNodeByGroup(double x, double y, double radius, String data){
+    public BasicNode(double x, double y, double radius, String data){
 
         XAxis=new Line();
         YAxis=new Line();
@@ -123,8 +125,11 @@ class DragEventHandler implements  EventHandler<MouseEvent>{
             oldSceneY =e.getSceneY();
             oldLayoutX=_node.getLayoutX();
             oldLayoutY= _node.getLayoutY();
-        } else if(e.getEventType()==MouseEvent.MOUSE_DRAGGED)
-        _node.setLayoutX(e.getSceneX()- oldSceneX + oldLayoutX);
-        _node.setLayoutY(e.getSceneY()- oldSceneY + oldLayoutY);
+        } else if(e.getEventType()==MouseEvent.MOUSE_DRAGGED) {
+            double newLayoutX=e.getSceneX() - oldSceneX + oldLayoutX;
+            double newLayoutY=e.getSceneY() - oldSceneY + oldLayoutY;
+            _node.setLayoutX(newLayoutX);
+            _node.setLayoutY(newLayoutY);
+        }
     }
 }
