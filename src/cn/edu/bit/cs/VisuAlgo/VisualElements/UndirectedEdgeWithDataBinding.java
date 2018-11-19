@@ -38,24 +38,6 @@ public class UndirectedEdgeWithDataBinding extends Path {
             }
         };
 
-        /*startX1.bind(from.layoutXProperty().add(XOffset));
-        startY1.bind(from.layoutYProperty().subtract(YOffset));
-        startX2.bind(from.layoutXProperty().subtract(XOffset));
-        startY2.bind(from.layoutYProperty().add(YOffset));
-        endX1.bind(to.layoutXProperty().add(XOffset));
-        endY1.bind(to.layoutYProperty().subtract(YOffset));
-        endX2.bind(to.layoutXProperty().subtract(XOffset));
-        endY2.bind(to.layoutYProperty().add(YOffset));*/
-
-        /*startX1=fromCenterCoordinate.getX()+XOffset;
-        startY1=fromCenterCoordinate.getY()-YOffset;
-        startX2=fromCenterCoordinate.getX()-XOffset;
-        startY2=fromCenterCoordinate.getY()+YOffset;
-        endX1=toCenterCoordinate.getX()+XOffset;
-        endY1=toCenterCoordinate.getY()-YOffset;
-        endX2=toCenterCoordinate.getX()-XOffset;
-        endY2=toCenterCoordinate.getY()+YOffset;*/
-
         MoveTo MoveToStartPoint1=new MoveTo();
         LineTo endPoint1=new LineTo(),endPoint2=new LineTo(),startPoint2=new LineTo(),startPoint1=new LineTo();
         MoveToStartPoint1.xProperty().bind(from.getCenterX().add(XOffset));
