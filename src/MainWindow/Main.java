@@ -26,6 +26,7 @@ public class Main extends Application {
         bNode3.setDragable();
 
         //root.getChildren().addAll(new UndirectedEdge(bNode1.layoutXProperty(),bNode1.layoutYProperty(),bNode2.layoutXProperty(),bNode2.layoutYProperty(),3),bNode1,bNode2,bNode3);
+        root.getChildren().add(UnweightedDirectedEdge.newUnweightedDirectedEdge(bNode1,bNode3));
         root.getChildren().addAll(new WeightedUndirectedEdge(bNode1,bNode2,3,5),new WeightedUndirectedEdge(bNode2,bNode3,3,10),bNode1,bNode2,bNode3);
 
         Timeline move1=AnimationGenerator.getMoveAnimation(bNode1,2000,100,300);
