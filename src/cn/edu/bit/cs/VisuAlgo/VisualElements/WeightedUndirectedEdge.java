@@ -1,22 +1,18 @@
 package cn.edu.bit.cs.VisuAlgo.VisualElements;
 
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.Group;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-
-import javax.swing.event.ChangeListener;
 
 public class WeightedUndirectedEdge extends Group {
 
     private SimpleDoubleProperty toXProperty,toYProperty;
     private SimpleDoubleProperty midXProperty,midYProperty;
     private SimpleIntegerProperty weight;
-    private UndirectedEdge undirectedEdge;
+    private UnweightedUndirectedEdge unweightedUndirectedEdge;
     private Text text;
 
     public WeightedUndirectedEdge(BasicNode from,BasicNode to,double width,int _weight){
@@ -33,7 +29,7 @@ public class WeightedUndirectedEdge extends Group {
         toXProperty.bind(to.layoutXProperty().subtract(from.layoutXProperty()));
         toYProperty.bind(to.layoutYProperty().subtract(from.layoutYProperty()));
 
-        undirectedEdge=new UndirectedEdge(zero,zero,toXProperty,toYProperty,width);
+        unweightedUndirectedEdge =new UnweightedUndirectedEdge(zero,zero,toXProperty,toYProperty,width);
 
         midXProperty=new SimpleDoubleProperty();
         midYProperty=new SimpleDoubleProperty();
@@ -44,13 +40,13 @@ public class WeightedUndirectedEdge extends Group {
         text.setFont(new Font(15));
         text.layoutXProperty().bind(midXProperty.subtract(text.getBoundsInLocal().getWidth()/2).add(3));
         text.layoutYProperty().bind(midYProperty.subtract(3));
-        text.rotateProperty().bind(undirectedEdge.getAngleProperty());
+        text.rotateProperty().bind(unweightedUndirectedEdge.getAngleProperty());
 
         /*final ChangeListener changeListener=(ObservableValue observableValue,Object oldValue,Object newValue)->{
             text.setText(newValue.toString());
         };*/
 
-        this.getChildren().addAll(undirectedEdge,text);
+        this.getChildren().addAll(unweightedUndirectedEdge,text);
 
     }
 

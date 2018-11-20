@@ -19,7 +19,6 @@ import javafx.scene.text.Text;
 public class BasicNode extends Group {
     private Circle circle,outline;
     private Text text;
-    private DoubleProperty centerX,centerY;
     private Line XAxis,YAxis;
     private Color circleColor=Color.AQUAMARINE;
     private SimpleIntegerProperty data;
@@ -53,11 +52,6 @@ public class BasicNode extends Group {
 
         this.setLayoutX(x);
         this.setLayoutY(y);
-
-        centerX=new SimpleDoubleProperty();
-        centerY=new SimpleDoubleProperty();
-        centerX.bind(this.layoutXProperty());
-        centerY.bind(this.layoutYProperty());
 
         this.getChildren().addAll(outline,circle,text);
     }
