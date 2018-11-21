@@ -2,35 +2,39 @@ package cn.edu.bit.cs.VisuAlgo.VisualElements;
 
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
 
-public class UnweightedDirectedEdge extends Path {
+public class UnweightedDirectedEdge extends Edge {
 
     private static double width=ElementParameters.edgeWidth,arrowWidth=ElementParameters.arrowWidth,arrowLength=ElementParameters.arrowLength,nodeRadius=ElementParameters.nodeRadius;
     private static Color fillColor=ElementParameters.edgeColor;
-    private SimpleDoubleProperty fromXProperty=new SimpleDoubleProperty(),
-                                 fromYProperty=new SimpleDoubleProperty(),
-                                 toXProperty=new SimpleDoubleProperty(),
-                                 toYProperty=new SimpleDoubleProperty();
+
     private DoubleBinding angle,sinAngle,cosAngle;
     private DoubleBinding XOffset,YOffset,arrowXOffset,arrowYOffset;
     private MoveTo start=new MoveTo();
     private LineTo arrowLeft1=new LineTo(),arrowLeft2=new LineTo(),arrowTop=new LineTo(),arrowRight2=new LineTo(),arrowRight1=new LineTo(),from1=new LineTo(),from2=new LineTo();
 
-    public static void setNodeRadius(double radius){
-        nodeRadius=radius;
+    public UnweightedDirectedEdge(DoubleProperty fromXProperty,DoubleProperty fromYProperty,DoubleProperty toXProperty,DoubleProperty toYProperty){
+        setFromXProperty(fromXProperty);
+        setFromYProperty(fromYProperty);
+        setToXProperty(toXProperty);
+        setToYProperty(toYProperty);
+
+        initialize();
     }
-    public UnweightedDirectedEdge(DoubleProperty _fromXProperty,DoubleProperty _fromYProperty,DoubleProperty _toXProperty,DoubleProperty _toYProperty){
 
-        fromXProperty.bind(_fromXProperty);
-        fromYProperty.bind(_fromYProperty);
-        toXProperty.bind(_toXProperty);
-        toYProperty.bind(_toYProperty);
+    public UnweightedDirectedEdge(BasicNode from,BasicNode to){
+        setFromXProperty(from.layoutXProperty());
+        setFromYProperty(from.layoutYProperty());
+        setToXProperty(to.layoutXProperty());
+        setToYProperty(to.layoutYProperty());
 
+        initialize();
+    }
+
+    private void initialize(){
         angle=new DoubleBinding() {
             @Override
             protected double computeValue() {
@@ -110,9 +114,5 @@ public class UnweightedDirectedEdge extends Path {
 
         this.getElements().addAll(start,arrowLeft1,arrowLeft2,arrowTop,arrowRight2,arrowRight1,from2,from1);
         this.setFill(fillColor);
-    }
-
-    public static UnweightedDirectedEdge newUnweightedDirectedEdge(BasicNode from,BasicNode to){
-        return new UnweightedDirectedEdge(from.layoutXProperty(),from.layoutYProperty(),to.layoutXProperty(),to.layoutYProperty());
     }
 }
