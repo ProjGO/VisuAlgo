@@ -8,10 +8,10 @@ import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 
-public class UnweightedUndirectedEdge extends Edge {
+public class UnwUndirEdge extends Edge {
     private DoubleBinding angle;
 
-    public UnweightedUndirectedEdge(BasicNode from,BasicNode to) {
+    public UnwUndirEdge(BasicNode from, BasicNode to) {
         setFromXProperty(from.layoutXProperty());
         setFromYProperty(from.layoutYProperty());
         setToXProperty(to.layoutXProperty());
@@ -20,7 +20,7 @@ public class UnweightedUndirectedEdge extends Edge {
         initialize();
     }
 
-    public UnweightedUndirectedEdge(DoubleProperty fromXProperty,DoubleProperty fromYProperty,DoubleProperty toXProperty,DoubleProperty toYProperty){
+    public UnwUndirEdge(DoubleProperty fromXProperty, DoubleProperty fromYProperty, DoubleProperty toXProperty, DoubleProperty toYProperty){
         setFromXProperty(fromXProperty);
         setFromYProperty(fromYProperty);
         setToXProperty(toXProperty);

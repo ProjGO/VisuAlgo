@@ -7,6 +7,8 @@ import javafx.scene.Group;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+import java.awt.*;
+
 public class WeightedEdge extends Group {
 
     protected SimpleDoubleProperty toXProperty,toYProperty;
@@ -38,7 +40,7 @@ public class WeightedEdge extends Group {
         midYProperty.bind(toYProperty.divide(2));
 
         text=new Text(weight.getValue().toString());
-        text.setFont(new Font(15));
+        text.setFont(new Font(20));
         text.layoutXProperty().bind(midXProperty.subtract(text.getBoundsInLocal().getWidth()/2).add(3));
         text.layoutYProperty().bind(midYProperty.subtract(3));
 
