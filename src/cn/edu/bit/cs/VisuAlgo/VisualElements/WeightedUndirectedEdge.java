@@ -15,7 +15,7 @@ public class WeightedUndirectedEdge extends Group {
     private UnweightedUndirectedEdge unweightedUndirectedEdge;
     private Text text;
 
-    public WeightedUndirectedEdge(BasicNode from,BasicNode to,double width,int _weight){
+    public WeightedUndirectedEdge(BasicNode from,BasicNode to,int _weight){
 
         weight=new SimpleIntegerProperty(_weight);
 
@@ -29,7 +29,7 @@ public class WeightedUndirectedEdge extends Group {
         toXProperty.bind(to.layoutXProperty().subtract(from.layoutXProperty()));
         toYProperty.bind(to.layoutYProperty().subtract(from.layoutYProperty()));
 
-        unweightedUndirectedEdge =new UnweightedUndirectedEdge(zero,zero,toXProperty,toYProperty,width);
+        unweightedUndirectedEdge =new UnweightedUndirectedEdge(zero,zero,toXProperty,toYProperty);
 
         midXProperty=new SimpleDoubleProperty();
         midYProperty=new SimpleDoubleProperty();

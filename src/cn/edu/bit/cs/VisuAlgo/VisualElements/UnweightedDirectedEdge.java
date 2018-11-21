@@ -10,8 +10,8 @@ import javafx.scene.shape.Path;
 
 public class UnweightedDirectedEdge extends Path {
 
-    private static double width=4,arrowWidth=8,arrowLength=10,nodeRadius=20;
-    private static Color fillColor=Color.GRAY;
+    private static double width=ElementParameters.edgeWidth,arrowWidth=ElementParameters.arrowWidth,arrowLength=ElementParameters.arrowLength,nodeRadius=ElementParameters.nodeRadius;
+    private static Color fillColor=ElementParameters.edgeColor;
     private SimpleDoubleProperty fromXProperty=new SimpleDoubleProperty(),
                                  fromYProperty=new SimpleDoubleProperty(),
                                  toXProperty=new SimpleDoubleProperty(),
@@ -44,14 +44,20 @@ public class UnweightedDirectedEdge extends Path {
             protected double computeValue() {
 
                 bind(angle);
-                return Math.sin(angle.get());
+                if(toXProperty.get()<fromXProperty.get())
+                    return -Math.sin(angle.get());
+                else
+                    return Math.sin(angle.get());
             }
         };
         cosAngle=new DoubleBinding() {
             @Override
             protected double computeValue() {
                 bind(angle);
-                return Math.cos(angle.get());
+                if(toXProperty.get()<fromXProperty.get())
+                    return -Math.cos(angle.get());
+                else
+                    return Math.cos(angle.get());
             }
         };
 

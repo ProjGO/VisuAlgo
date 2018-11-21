@@ -17,17 +17,18 @@ public class Main extends Application {
         primaryStage.setTitle("VisuAlgo");
         primaryStage.setScene(new Scene(root, 1280, 720));
 
-        BasicNode bNode1=new BasicNode(0,0,20,"1");
-        BasicNode bNode2=new BasicNode(200,300,20,"2");
+        BasicNode bNode1=new BasicNode(0,0,"1");
+        BasicNode bNode2=new BasicNode(200,300,"2");
         bNode2.setDragable();
         bNode1.setDragable();
 
-        BasicNode bNode3=new BasicNode(500,500,20,"3");
+        BasicNode bNode3=new BasicNode(500,500,"3");
         bNode3.setDragable();
 
         //root.getChildren().addAll(new UndirectedEdge(bNode1.layoutXProperty(),bNode1.layoutYProperty(),bNode2.layoutXProperty(),bNode2.layoutYProperty(),3),bNode1,bNode2,bNode3);
         root.getChildren().add(UnweightedDirectedEdge.newUnweightedDirectedEdge(bNode1,bNode3));
-        root.getChildren().addAll(new WeightedUndirectedEdge(bNode1,bNode2,3,5),new WeightedUndirectedEdge(bNode2,bNode3,3,10),bNode1,bNode2,bNode3);
+        root.getChildren().add(UnweightedDirectedEdge.newUnweightedDirectedEdge(bNode3,bNode1));
+        root.getChildren().addAll(new WeightedUndirectedEdge(bNode1,bNode2,5),UnweightedUndirectedEdge.newUnweightedUndirectedEdge(bNode2,bNode3),bNode1,bNode2,bNode3);
 
         Timeline move1=AnimationGenerator.getMoveAnimation(bNode1,2000,100,300);
         Timeline move2=AnimationGenerator.getMoveAnimation(bNode2,2000,300,300);

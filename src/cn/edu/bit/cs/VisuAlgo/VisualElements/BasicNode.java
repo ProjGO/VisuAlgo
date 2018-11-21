@@ -17,21 +17,23 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class BasicNode extends Group {
+    private static Color circleColor=ElementParameters.nodeColor;
+    private static double radius=ElementParameters.nodeRadius;
+
     private Circle circle,outline;
     private Text text;
     private Line XAxis,YAxis;
-    private Color circleColor=Color.AQUAMARINE;
     private SimpleIntegerProperty data;
 
-    public BasicNode(double x, double y, double radius, String data){
+    public BasicNode(double x, double y,  String data){
 
-        XAxis=new Line();
+        /*XAxis=new Line();
         YAxis=new Line();
         XAxis.setStartX(0); XAxis.setStartY(0);
         XAxis.setEndX(50);  XAxis.setEndY(0);
         YAxis.setStartX(0); YAxis.setStartY(0);
         YAxis.setEndX(0);  YAxis.setEndY(50);
-        getChildren().addAll(XAxis,YAxis);
+        getChildren().addAll(XAxis,YAxis);*/
 
         circle=new Circle(radius);
         circle.setFill(circleColor);
