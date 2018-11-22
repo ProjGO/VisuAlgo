@@ -15,62 +15,67 @@ public class BasicUnwUndirEdge extends BasicEdge {
 
     public BasicUnwUndirEdge(){}
 
-    /*public BasicUnwUndirEdge(BasicNode from, BasicNode to) {
-        setFromXProperty(from.layoutXProperty());
-        setFromYProperty(from.layoutYProperty());
-        setToXProperty(to.layoutXProperty());
-        setToYProperty(to.layoutYProperty());
-
-        initialize();
-    }
-
-    public BasicUnwUndirEdge(DoubleProperty fromXProperty, DoubleProperty fromYProperty, DoubleProperty toXProperty, DoubleProperty toYProperty){
-        setFromXProperty(fromXProperty);
-        setFromYProperty(fromYProperty);
-        setToXProperty(toXProperty);
-        setToYProperty(toYProperty);
-
-        initialize();
-    }*/
-
     void initialize(){
-            angle=new DoubleBinding() {
-                @Override
-                protected double computeValue() {
-                    bind(fromXProperty,fromYProperty,toXProperty,toYProperty);
-                    double angle=Math.atan((toYProperty.get()-fromYProperty.get())/(toXProperty.get()-fromXProperty.get()));
-                    return angle;
-                }
-            };
+        super.initialize();
 
             final DoubleBinding XOffset=new DoubleBinding() {
                 @Override
                 protected double computeValue() {
-                    bind(angle);
-                    double sinAngle=Math.sin(angle.get());
-                    return width*sinAngle*0.5;
+                    bind(sinAngle);
+                    return width*sinAngle.get()*0.5;
                 }
             };
 
             final DoubleBinding YOffset=new DoubleBinding() {
                 @Override
                 protected double computeValue() {
-                    bind(angle);
-                    double cosAngle=Math.cos(angle.get());
-                    return width*cosAngle*0.5;
+                    bind(cosAngle);
+                    return width*cosAngle.get()*0.5;
                 }
             };
 
-            MoveToStartPoint1.xProperty().bind(fromXProperty.add(XOffset));
-            MoveToStartPoint1.yProperty().bind(fromYProperty.subtract(YOffset));
-            endPoint1.xProperty().bind(toXProperty.add(XOffset));
-            endPoint1.yProperty().bind(toYProperty.subtract(YOffset));
-            endPoint2.xProperty().bind(toXProperty.subtract(XOffset));
-            endPoint2.yProperty().bind(toYProperty.add(YOffset));
-            startPoint2.xProperty().bind(fromXProperty.subtract(XOffset));
-            startPoint2.yProperty().bind(fromYProperty.add(YOffset));
-            startPoint1.xProperty().bind(fromXProperty.add(XOffset));
-            startPoint1.yProperty().bind(fromYProperty.subtract(YOffset));
+            final DoubleBinding fromX=new DoubleBinding() {
+                @Override
+                protected double computeValue() {
+                    bind(fromXProperty,sinAngle);
+                    return fromXProperty.get()+cosAngle.get()*nodeRadius*0.99;
+                }
+            };
+
+            final DoubleBinding fromY=new DoubleBinding() {
+                @Override
+                protected double computeValue() {
+                    bind(fromYProperty,cosAngle);
+                    return fromYProperty.get()+sinAngle.get()*nodeRadius*0.99;
+                }
+            };
+
+            final DoubleBinding toX=new DoubleBinding() {
+                @Override
+                protected double computeValue() {
+                    bind(toXProperty,cosAngle);
+                    return toXProperty.get()-cosAngle.get()*nodeRadius*0.99;
+                }
+            };
+
+            final DoubleBinding toY=new DoubleBinding() {
+                @Override
+                protected double computeValue() {
+                    bind(toYProperty,sinAngle);
+                    return toYProperty.get()-sinAngle.get()*nodeRadius*0.99;
+                }
+            };
+
+            MoveToStartPoint1.xProperty().bind(fromX.add(XOffset));
+            MoveToStartPoint1.yProperty().bind(fromY.subtract(YOffset));
+            endPoint1.xProperty().bind(toX.add(XOffset));
+            endPoint1.yProperty().bind(toY.subtract(YOffset));
+            endPoint2.xProperty().bind(toX.subtract(XOffset));
+            endPoint2.yProperty().bind(toY.add(YOffset));
+            startPoint2.xProperty().bind(fromX.subtract(XOffset));
+            startPoint2.yProperty().bind(fromY.add(YOffset));
+            startPoint1.xProperty().bind(fromX.add(XOffset));
+            startPoint1.yProperty().bind(fromY.subtract(YOffset));
 
             this.getElements().addAll(MoveToStartPoint1,endPoint1,endPoint2,startPoint2,startPoint1);
             this.setFill(Color.GRAY);

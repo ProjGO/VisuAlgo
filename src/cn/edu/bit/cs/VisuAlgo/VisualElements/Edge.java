@@ -10,34 +10,30 @@ import javafx.scene.shape.Shape;
 
 public class Edge extends Group {
 
-    protected SimpleDoubleProperty toXProperty=new SimpleDoubleProperty(),toYProperty=new SimpleDoubleProperty();
-    protected Circle fromPoint,toPoint;
+    protected SimpleDoubleProperty toXProperty = new SimpleDoubleProperty(), toYProperty = new SimpleDoubleProperty();
+    private BasicEdge basicEdge;
 
-    private SimpleDoubleProperty zero=new SimpleDoubleProperty(0);
+    private SimpleDoubleProperty zero = new SimpleDoubleProperty(0);
 
-    protected void initialize(BasicNode from,BasicNode to,BasicEdge basicEdge){
-        fromPoint=new Circle(0);
-        toPoint=new Circle(0);
-        bindCoordinate(fromPoint,from);
-        bindCoordinate(toPoint,to);
-        bindCoordinate(this,fromPoint);
-        this.getChildren().addAll(fromPoint,toPoint);
-        basicEdge.setFromXProperty(zero);
-        basicEdge.setFromYProperty(zero);
-        toXProperty.bind(to.layoutXProperty().subtract(from.layoutXProperty()));
-        toYProperty.bind(to.layoutYProperty().subtract(from.layoutYProperty()));
+    protected void initialize(BasicNode from, BasicNode to, BasicEdge _basicEdge) {
+        basicEdge=_basicEdge;
+        bindLayoutProperty(from.layoutXProperty(),from.layoutYProperty(),to.layoutXProperty(),to.layoutYProperty());
         basicEdge.setToXProperty(toXProperty);
         basicEdge.setToYProperty(toYProperty);
         basicEdge.initialize();
         this.getChildren().add(basicEdge);
     }
 
-    private void bindCoordinate(Shape dest,Group src){
-        dest.layoutXProperty().bind(src.layoutXProperty());
-        dest.layoutYProperty().bind(src.layoutYProperty());
+    public void bindLayoutProperty(DoubleProperty fromX,DoubleProperty fromY,DoubleProperty toX,DoubleProperty toY){
+        layoutXProperty().bindBidirectional(fromX);
+        layoutYProperty().bindBidirectional(fromY);
+        basicEdge.setFromXProperty(zero);
+        basicEdge.setFromYProperty(zero);
+        toXProperty.bind(toX.subtract(fromX));
+        toYProperty.bind(toY.subtract(fromY));
     }
-    private void bindCoordinate(Group dest,Shape src){
-        dest.layoutXProperty().bindBidirectional(src.layoutXProperty());
-        dest.layoutYProperty().bindBidirectional(src.layoutYProperty());
+
+    public void unbindFromProperty(){
+        layoutXProperty().unbindBidirectional(layoutXProperty().);
     }
 }

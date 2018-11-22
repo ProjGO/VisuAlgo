@@ -1,7 +1,6 @@
 package cn.edu.bit.cs.VisuAlgo.VisualElements;
 
 import javafx.beans.binding.DoubleBinding;
-import javafx.beans.property.DoubleProperty;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 
@@ -15,66 +14,8 @@ public class BasicUnwDirEdge extends BasicEdge {
 
     public BasicUnwDirEdge(){};
 
-    /*public BasicUnwDirEdge(DoubleProperty fromXProperty, DoubleProperty fromYProperty, DoubleProperty toXProperty, DoubleProperty toYProperty){
-
-        setFromXProperty(fromXProperty);
-        setFromYProperty(fromYProperty);
-        setToXProperty(toXProperty);
-        setToYProperty(toYProperty);
-
-        initialize();
-
-    }
-
-    public BasicUnwDirEdge(BasicNode from, BasicNode to){
-        setFromXProperty(from.layoutXProperty());
-        setFromYProperty(from.layoutYProperty());
-        setToXProperty(to.layoutXProperty());
-        setToYProperty(to.layoutYProperty());
-
-        initialize();
-    }*/
-
     void initialize(){
-        angle=new DoubleBinding() {
-
-            @Override
-
-            protected double computeValue() {
-                bind(fromXProperty,fromYProperty,toXProperty,toYProperty);
-                double angle=Math.atan((toYProperty.get()-fromYProperty.get())/(toXProperty.get()-fromXProperty.get()));
-                return angle;
-            }
-
-        };
-
-        sinAngle=new DoubleBinding() {
-
-            @Override
-
-            protected double computeValue() {
-                bind(angle);
-                if(toXProperty.get()<fromXProperty.get())
-                    return -Math.sin(angle.get());
-                else
-                    return Math.sin(angle.get());
-            }
-
-        };
-
-        cosAngle=new DoubleBinding() {
-
-            @Override
-
-            protected double computeValue() {
-                bind(angle);
-                if(toXProperty.get()<fromXProperty.get())
-                    return -Math.cos(angle.get());
-                else
-                    return Math.cos(angle.get());
-            }
-
-        };
+        super.initialize();
 
         XOffset=new DoubleBinding() {
 
@@ -120,6 +61,21 @@ public class BasicUnwDirEdge extends BasicEdge {
 
         };
 
+        final DoubleBinding fromX=new DoubleBinding() {
+            @Override
+            protected double computeValue() {
+                bind(fromXProperty,sinAngle);
+                return fromXProperty.get()+cosAngle.get()*nodeRadius*0.99;
+            }
+        };
+
+        final DoubleBinding fromY=new DoubleBinding() {
+            @Override
+            protected double computeValue() {
+                bind(fromYProperty,cosAngle);
+                return fromYProperty.get()+sinAngle.get()*nodeRadius*0.99;
+            }
+        };
 
         arrowTop.xProperty().bind(toXProperty.subtract(cosAngle.multiply(nodeRadius)));
         arrowTop.yProperty().bind(toYProperty.subtract(sinAngle.multiply(nodeRadius)));
@@ -131,10 +87,10 @@ public class BasicUnwDirEdge extends BasicEdge {
         arrowRight1.yProperty().bind(toYProperty.subtract(sinAngle.multiply(nodeRadius+arrowLength)).add(YOffset));
         arrowRight2.xProperty().bind(toXProperty.subtract(cosAngle.multiply(nodeRadius+arrowLength)).subtract(arrowXOffset));
         arrowRight2.yProperty().bind(toYProperty.subtract(sinAngle.multiply(nodeRadius+arrowLength)).add(arrowYOffset));
-        from1.xProperty().bind(fromXProperty.add(XOffset));
-        from1.yProperty().bind(fromYProperty.subtract(YOffset));
-        from2.xProperty().bind(fromXProperty.subtract(XOffset));
-        from2.yProperty().bind(fromYProperty.add(YOffset));
+        from1.xProperty().bind(fromX.add(XOffset));
+        from1.yProperty().bind(fromY.subtract(YOffset));
+        from2.xProperty().bind(fromX.subtract(XOffset));
+        from2.yProperty().bind(fromY.add(YOffset));
         start.xProperty().bind(from1.xProperty());
         start.yProperty().bind(from1.yProperty());
 

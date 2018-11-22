@@ -27,14 +27,6 @@ public class BasicNode extends Group {
 
     public BasicNode(double x, double y,  String data){
 
-        /*XAxis=new Line();
-        YAxis=new Line();
-        XAxis.setStartX(0); XAxis.setStartY(0);
-        XAxis.setEndX(50);  XAxis.setEndY(0);
-        YAxis.setStartX(0); YAxis.setStartY(0);
-        YAxis.setEndX(0);  YAxis.setEndY(50);
-        getChildren().addAll(XAxis,YAxis);*/
-
         circle=new Circle(radius);
         circle.setFill(circleColor);
         circle.setLayoutX(0);
@@ -54,20 +46,9 @@ public class BasicNode extends Group {
 
         this.setLayoutX(x);
         this.setLayoutY(y);
+        this.setOpacity(0.5);
 
         this.getChildren().addAll(outline,circle,text);
-    }
-
-    public Point2D getCenterCoordinate() {
-        return new Point2D(getLayoutX(), getLayoutY());
-    }
-
-    public double getRadius(){
-        return circle.getRadius();
-    }
-
-    public void setText(String targetText){
-        text.setText(targetText);
     }
 
     public SequentialTransition getEmphasizeAnimation(int time,double times){
@@ -77,19 +58,6 @@ public class BasicNode extends Group {
             emphasizeAnimation.getChildren().add(AnimationGenerator.getDisappearAnimation(outline,0.5*time));
         }
         return emphasizeAnimation;
-    }
-
-    public DoubleProperty getCenterX(){
-        return layoutXProperty();
-    }
-
-    public DoubleProperty getCenterY(){
-        return layoutYProperty();
-    }
-
-    public void setPosition(double x,double y){
-        this.setLayoutX(x);
-        this.setLayoutY(y);
     }
 
     public void setDragable(){

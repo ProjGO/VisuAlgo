@@ -42,9 +42,5 @@ public class AnimationGenerator {
         return timeline;
     }
 
-    public static RotateTransition getRotateAnimation(Node node,double time){
-        RotateTransition rotateTransition=new RotateTransition(Duration.millis(time));
-        //rotateTransition.setAxis();
-        return null;
-    }
+    public static Timeline changeEdgeNode()
 }

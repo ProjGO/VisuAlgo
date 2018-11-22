@@ -25,5 +25,45 @@ public abstract class BasicEdge extends Path {
         toYProperty.bind(_toYProperty);
     }
 
-    abstract void initialize();
+    void initialize(){
+        angle=new DoubleBinding() {
+
+            @Override
+
+            protected double computeValue() {
+                bind(fromXProperty,fromYProperty,toXProperty,toYProperty);
+                double angle=Math.atan((toYProperty.get()-fromYProperty.get())/(toXProperty.get()-fromXProperty.get()));
+                return angle;
+            }
+
+        };
+
+        sinAngle=new DoubleBinding() {
+
+            @Override
+
+            protected double computeValue() {
+                bind(angle);
+                if(toXProperty.get()<fromXProperty.get())
+                    return -Math.sin(angle.get());
+                else
+                    return Math.sin(angle.get());
+            }
+
+        };
+
+        cosAngle=new DoubleBinding() {
+
+            @Override
+
+            protected double computeValue() {
+                bind(angle);
+                if(toXProperty.get()<fromXProperty.get())
+                    return -Math.cos(angle.get());
+                else
+                    return Math.cos(angle.get());
+            }
+
+        };
+    }
 }
