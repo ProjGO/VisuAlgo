@@ -17,7 +17,7 @@ public class Main extends Application {
         primaryStage.setTitle("VisuAlgo");
         primaryStage.setScene(new Scene(root, 1280, 720));
 
-        BasicNode bNode1=new BasicNode(0,0,"1");
+        BasicNode bNode1=new BasicNode(100,0,"1");
         BasicNode bNode2=new BasicNode(200,300,"2");
         bNode2.setDragable();
         bNode1.setDragable();
@@ -26,8 +26,9 @@ public class Main extends Application {
         bNode3.setDragable();
 
         //root.getChildren().addAll(new UndirectedEdge(bNode1.layoutXProperty(),bNode1.layoutYProperty(),bNode2.layoutXProperty(),bNode2.layoutYProperty(),3),bNode1,bNode2,bNode3);
-        root.getChildren().add(new UnwDirEdge(bNode1,bNode3));
-        root.getChildren().addAll(new UnwUndirEdge(bNode1,bNode2),new WDirEdge(bNode2,bNode3,13),bNode1,bNode2,bNode3);
+        UnwDirEdge e13=new UnwDirEdge(bNode1,bNode3);
+        root.getChildren().add(e13);
+        root.getChildren().addAll(new WDirEdge(bNode2,bNode3,13),bNode1,bNode2,bNode3);
 
         Timeline move1=AnimationGenerator.getMoveAnimation(bNode1,2000,100,300);
         Timeline move2=AnimationGenerator.getMoveAnimation(bNode2,2000,300,300);
@@ -35,12 +36,12 @@ public class Main extends Application {
 
         SequentialTransition emp=bNode1.getEmphasizeAnimation(1000,3);
 
-        FadeTransition disa=AnimationGenerator.getDisappearAnimation(bNode1,2000);
+        //changeToNode.play();
 
-        ParallelTransition para=new ParallelTransition(move1,move2);
-        SequentialTransition seq=new SequentialTransition(emp,para);
+        Timeline changeToNode=AnimationGenerator.changeEdgeFromNode(root,e13,300,300,bNode2,2000);
+        SequentialTransition seq=new SequentialTransition(emp,move2,changeToNode);
 
-        AnimationGenerator.setRate(1.0);
+        AnimationGenerator.setRate(3.0);
 
         seq.play();
 

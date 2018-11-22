@@ -1,10 +1,17 @@
 package BasicAnimation;
 
+import cn.edu.bit.cs.VisuAlgo.VisualElements.BasicNode;
+import cn.edu.bit.cs.VisuAlgo.VisualElements.Edge;
 import javafx.animation.*;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Circle;
 import javafx.util.Duration;
+
+import javax.naming.TimeLimitExceededException;
 
 public class AnimationGenerator {
 
@@ -39,8 +46,47 @@ public class AnimationGenerator {
         KeyFrame kf=new KeyFrame(Duration.millis(time),kvX,kvY);
         timeline.getKeyFrames().add(kf);
         timeline.rateProperty().bind(rate);
+        timeline.setOnFinished(e->{
+            System.out.println(node.getLayoutX());
+            System.out.println(node.getLayoutY());
+        });
         return timeline;
     }
 
-    public static Timeline changeEdgeNode()
+    public static Timeline changeEdgeToNode(AnchorPane pane, Edge edge, double newToNodeX,double newToNodeY,BasicNode newToNode,double time){
+        Timeline timeline=new Timeline();
+        Circle toPoint=new Circle(0);
+        toPoint.setLayoutX(edge.getToX());
+        toPoint.setLayoutY(edge.getToY());
+        pane.getChildren().add(toPoint);
+        edge.bindToLayoutProperty(toPoint.layoutXProperty(),toPoint.layoutYProperty());
+        KeyValue kvX=new KeyValue(toPoint.layoutXProperty(),newToNodeX);
+        KeyValue kvY=new KeyValue(toPoint.layoutYProperty(),newToNodeY);
+        KeyFrame kf=new KeyFrame(Duration.millis(time),kvX,kvY);
+        timeline.getKeyFrames().add(kf);
+        timeline.rateProperty().bind(rate);
+        timeline.setOnFinished(e->{
+            edge.bindToLayoutProperty(newToNode.layoutXProperty(),newToNode.layoutYProperty());
+        });
+        return timeline;
+    }
+
+    public static Timeline changeEdgeFromNode(AnchorPane pane, Edge edge, double newFromNodeX,double newFromNodeY,BasicNode newFromNode,double time){
+        Timeline timeline=new Timeline();
+        Circle fromPoint=new Circle(0);
+        edge.unbindFromLayoutProperty();
+        fromPoint.setLayoutX(edge.getFromX());
+        fromPoint.setLayoutY(edge.getFromY());
+        pane.getChildren().add(fromPoint);
+        edge.bindFromLayoutProperty(fromPoint.layoutXProperty(),fromPoint.layoutYProperty());
+        KeyValue kvX=new KeyValue(fromPoint.layoutXProperty(),newFromNodeX);
+        KeyValue kvY=new KeyValue(fromPoint.layoutYProperty(),newFromNodeY);
+        KeyFrame kf=new KeyFrame(Duration.millis(time),kvX,kvY);
+        timeline.getKeyFrames().add(kf);
+        timeline.rateProperty().bind(rate);
+        timeline.setOnFinished(e->{
+            edge.bindFromLayoutProperty(newFromNode.layoutXProperty(),newFromNode.layoutYProperty());
+        });
+        return timeline;
+    }
 }
