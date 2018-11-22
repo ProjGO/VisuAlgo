@@ -9,30 +9,16 @@ import javafx.scene.text.Text;
 
 import java.awt.*;
 
-public class WeightedEdge extends Group {
+public class WeightedEdge extends Edge {
 
-    protected SimpleDoubleProperty toXProperty,toYProperty;
     protected SimpleDoubleProperty midXProperty,midYProperty;
     protected SimpleIntegerProperty weight;
     protected Text text;
 
-    protected void initialize(BasicNode from,BasicNode to,Edge edge,Integer _weight){
+    protected void initialize(BasicNode from,BasicNode to,BasicEdge basicEdge,Integer _weight){
+        super.initialize(from,to,basicEdge);
+
         weight=new SimpleIntegerProperty(_weight);
-
-        DoubleProperty zero=new SimpleDoubleProperty(0);
-
-        layoutXProperty().bindBidirectional(from.layoutXProperty());
-        layoutYProperty().bindBidirectional(from.layoutYProperty());
-
-        toXProperty=new SimpleDoubleProperty();
-        toYProperty=new SimpleDoubleProperty();
-        toXProperty.bind(to.layoutXProperty().subtract(from.layoutXProperty()));
-        toYProperty.bind(to.layoutYProperty().subtract(from.layoutYProperty()));
-
-        edge.setFromXProperty(zero);
-        edge.setFromYProperty(zero);
-        edge.setToXProperty(toXProperty);
-        edge.setToYProperty(toYProperty);
 
         midXProperty=new SimpleDoubleProperty();
         midYProperty=new SimpleDoubleProperty();
@@ -44,6 +30,6 @@ public class WeightedEdge extends Group {
         text.layoutXProperty().bind(midXProperty.subtract(text.getBoundsInLocal().getWidth()/2).add(3));
         text.layoutYProperty().bind(midYProperty.subtract(3));
 
-        this.getChildren().addAll(edge,text);
+        this.getChildren().add(text);
     }
 }
