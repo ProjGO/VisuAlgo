@@ -1,4 +1,4 @@
-package MainWindow;
+package UI;
 
 public class MainController {
 

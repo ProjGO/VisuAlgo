@@ -1,12 +1,9 @@
-package cn.edu.bit.cs.VisuAlgo.VisualElements;
+package VisualElements.Edge;
 
 import javafx.beans.binding.DoubleBinding;
-import javafx.beans.property.DoubleProperty;
-import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
 
 public class BasicUnwUndirEdge extends BasicEdge {
 

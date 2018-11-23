@@ -1,4 +1,4 @@
-package cn.edu.bit.cs.VisuAlgo.VisualElements;
+package VisualElements;
 
 import javafx.scene.paint.Color;
 
@@ -11,4 +11,5 @@ public class ElementParameters {
     static public double arrowLength=20;
     static public Color edgeColor=Color.GRAY;
 
+    static public double rectArcRadius=20;
 }

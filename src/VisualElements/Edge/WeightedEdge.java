@@ -1,13 +1,10 @@
-package cn.edu.bit.cs.VisuAlgo.VisualElements;
+package VisualElements.Edge;
 
-import javafx.beans.property.DoubleProperty;
+import VisualElements.Node.BasicNode;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.scene.Group;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-
-import java.awt.*;
 
 public class WeightedEdge extends Edge {
 
@@ -15,7 +12,7 @@ public class WeightedEdge extends Edge {
     protected SimpleIntegerProperty weight;
     protected Text text;
 
-    protected void initialize(BasicNode from,BasicNode to,BasicEdge basicEdge,Integer _weight){
+    protected void initialize(BasicNode from, BasicNode to, BasicEdge basicEdge, Integer _weight){
         super.initialize(from,to,basicEdge);
 
         weight=new SimpleIntegerProperty(_weight);

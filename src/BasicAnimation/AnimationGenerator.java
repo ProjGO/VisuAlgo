@@ -1,17 +1,14 @@
 package BasicAnimation;
 
-import cn.edu.bit.cs.VisuAlgo.VisualElements.BasicNode;
-import cn.edu.bit.cs.VisuAlgo.VisualElements.Edge;
+import VisualElements.Node.BasicNode;
+import VisualElements.Edge.Edge;
 import javafx.animation.*;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
-
-import javax.naming.TimeLimitExceededException;
 
 public class AnimationGenerator {
 
@@ -67,6 +64,7 @@ public class AnimationGenerator {
         timeline.rateProperty().bind(rate);
         timeline.setOnFinished(e->{
             edge.bindToLayoutProperty(newToNode.layoutXProperty(),newToNode.layoutYProperty());
+            pane.getChildren().remove(toPoint);
         });
         return timeline;
     }
@@ -86,6 +84,7 @@ public class AnimationGenerator {
         timeline.rateProperty().bind(rate);
         timeline.setOnFinished(e->{
             edge.bindFromLayoutProperty(newFromNode.layoutXProperty(),newFromNode.layoutYProperty());
+            pane.getChildren().remove(fromPoint);
         });
         return timeline;
     }

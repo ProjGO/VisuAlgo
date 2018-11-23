@@ -1,4 +1,6 @@
-package cn.edu.bit.cs.VisuAlgo.VisualElements;
+package VisualElements.Edge;
+
+import VisualElements.Node.BasicNode;
 
 public class WUndirEdge extends WeightedEdge {
 
