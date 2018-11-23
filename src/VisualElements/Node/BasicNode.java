@@ -1,14 +1,12 @@
-package cn.edu.bit.cs.VisuAlgo.VisualElements;
+package VisualElements.Node;
 
 import BasicAnimation.AnimationGenerator;
+import VisualElements.ElementParameters;
 import javafx.animation.SequentialTransition;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
@@ -23,7 +21,7 @@ import javax.swing.event.ChangeListener;
 import java.beans.PropertyChangeListener;
 
 public class BasicNode extends Group {
-    private static Color circleColor=ElementParameters.nodeColor;
+    private static Color circleColor= ElementParameters.nodeColor;
     private static double radius=ElementParameters.nodeRadius;
 
     private Circle circle,outline;

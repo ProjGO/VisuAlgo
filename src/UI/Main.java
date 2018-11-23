@@ -1,12 +1,16 @@
-package MainWindow;
+package UI;
 
 import BasicAnimation.AnimationGenerator;
-import cn.edu.bit.cs.VisuAlgo.VisualElements.*;
+import VisualElements.Node.BasicNode;
+import VisualElements.Column.Column;
+import VisualElements.Edge.UnwDirEdge;
+import VisualElements.Edge.WDirEdge;
 import javafx.animation.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -29,6 +33,9 @@ public class Main extends Application {
         UnwDirEdge e13=new UnwDirEdge(bNode1,bNode3);
         root.getChildren().add(e13);
         root.getChildren().addAll(new WDirEdge(bNode2,bNode3,13),bNode1,bNode2,bNode3);
+
+        Column column=new Column(500,500,50, Color.BEIGE);
+        root.getChildren().add(column);
 
         Timeline move1=AnimationGenerator.getMoveAnimation(bNode1,2000,100,300);
         Timeline move2=AnimationGenerator.getMoveAnimation(bNode2,2000,300,300);

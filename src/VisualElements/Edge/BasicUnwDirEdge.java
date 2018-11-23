@@ -1,4 +1,4 @@
-package cn.edu.bit.cs.VisuAlgo.VisualElements;
+package VisualElements.Edge;
 
 import javafx.beans.binding.DoubleBinding;
 import javafx.scene.shape.LineTo;

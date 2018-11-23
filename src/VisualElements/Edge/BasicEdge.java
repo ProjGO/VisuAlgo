@@ -1,5 +1,6 @@
-package cn.edu.bit.cs.VisuAlgo.VisualElements;
+package VisualElements.Edge;
 
+import VisualElements.ElementParameters;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.binding.DoubleBinding;
@@ -7,7 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Path;
 
 public abstract class BasicEdge extends Path {
-    protected static double width=ElementParameters.edgeWidth,arrowWidth=ElementParameters.arrowWidth,arrowLength=ElementParameters.arrowLength,nodeRadius=ElementParameters.nodeRadius;
+    protected static double width= ElementParameters.edgeWidth,arrowWidth=ElementParameters.arrowWidth,arrowLength=ElementParameters.arrowLength,nodeRadius=ElementParameters.nodeRadius;
     protected static Color fillColor=ElementParameters.edgeColor;
 
     protected SimpleDoubleProperty fromXProperty=new SimpleDoubleProperty(),fromYProperty=new SimpleDoubleProperty(),
