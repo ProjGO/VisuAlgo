@@ -5,6 +5,8 @@ import javafx.animation.SequentialTransition;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
@@ -16,16 +18,19 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.beans.PropertyChangeListener;
+
 public class BasicNode extends Group {
     private static Color circleColor=ElementParameters.nodeColor;
     private static double radius=ElementParameters.nodeRadius;
 
     private Circle circle,outline;
     private Text text;
-    private Line XAxis,YAxis;
     private SimpleIntegerProperty data;
 
-    public BasicNode(double x, double y,  String data){
+    public BasicNode(double x, double y, Integer _data){
 
         circle=new Circle(radius);
         circle.setFill(circleColor);
@@ -38,15 +43,24 @@ public class BasicNode extends Group {
         outline.setLayoutY(0);
         outline.setOpacity(0.0f);
 
-        text=new Text(data);
+        text=new Text(_data.toString());
         text.setFont(new Font(20));
         text.setFill(Color.WHITE);
         text.setLayoutX(-0.5*text.getBoundsInLocal().getWidth());
         text.setLayoutY(0.3*text.getBoundsInLocal().getHeight());
 
+        data=new SimpleIntegerProperty(_data);
+        final ChangeListener changeListener=new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                text.setText(e.getSource().toString());
+                System.out.println();
+            }
+        };
+        data.addListener(changeListener);
+
         this.setLayoutX(x);
         this.setLayoutY(y);
-        this.setOpacity(0.5);
 
         this.getChildren().addAll(outline,circle,text);
     }

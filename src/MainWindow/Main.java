@@ -18,7 +18,7 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root, 1280, 720));
 
         BasicNode bNode1=new BasicNode(100,0,"1");
-        BasicNode bNode2=new BasicNode(200,300,"2");
+        BasicNode bNode2=new BasicNode(00,300,"2");
         bNode2.setDragable();
         bNode1.setDragable();
 
