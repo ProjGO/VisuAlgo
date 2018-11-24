@@ -4,7 +4,8 @@ import javafx.scene.paint.Color;
 
 public class ElementParameters {
     static public double nodeRadius=20;
-    static public Color nodeColor=Color.AQUAMARINE;
+    static public Color nodeColor=Color.WHITE;
+    static public Color nodeTextColor=Color.BLACK;
 
     static public double edgeWidth=5;
     static public double arrowWidth=10;
