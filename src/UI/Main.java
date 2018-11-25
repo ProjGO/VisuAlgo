@@ -23,7 +23,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         AnchorPane root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("VisuAlgo");
-        primaryStage.setScene(new Scene(root, 1000, 700));
+        primaryStage.setScene(new Scene(root, 1280, 720));
 
         root.setOnMouseClicked(new ClickHandler(root));
 
