@@ -1,14 +1,16 @@
 package VisualElements.Edge;
 
+import javafx.animation.ParallelTransition;
 import javafx.beans.binding.DoubleBinding;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 
 public class BasicUnwUndirEdge extends BasicEdge {
 
     private MoveTo MoveToStartPoint1=new MoveTo();
-    private LineTo endPoint1=new LineTo(),endPoint2=new LineTo(),startPoint2=new LineTo(),startPoint1=new LineTo();
+    private LineTo endRightPoint =new LineTo(), endLeftPoint =new LineTo(), startLeftPoint =new LineTo(), startRightPoint =new LineTo();
 
     public BasicUnwUndirEdge(){}
 
@@ -35,7 +37,7 @@ public class BasicUnwUndirEdge extends BasicEdge {
                 @Override
                 protected double computeValue() {
                     bind(fromXProperty,sinAngle);
-                    return fromXProperty.get()+cosAngle.get()*nodeRadius*0.99;
+                    return fromXProperty.get()+cosAngle.get()*nodeRadius;
                 }
             };
 
@@ -43,7 +45,7 @@ public class BasicUnwUndirEdge extends BasicEdge {
                 @Override
                 protected double computeValue() {
                     bind(fromYProperty,cosAngle);
-                    return fromYProperty.get()+sinAngle.get()*nodeRadius*0.99;
+                    return fromYProperty.get()+sinAngle.get()*nodeRadius;
                 }
             };
 
@@ -51,7 +53,7 @@ public class BasicUnwUndirEdge extends BasicEdge {
                 @Override
                 protected double computeValue() {
                     bind(toXProperty,cosAngle);
-                    return toXProperty.get()-cosAngle.get()*nodeRadius*0.99;
+                    return toXProperty.get()-cosAngle.get()*nodeRadius;
                 }
             };
 
@@ -59,22 +61,23 @@ public class BasicUnwUndirEdge extends BasicEdge {
                 @Override
                 protected double computeValue() {
                     bind(toYProperty,sinAngle);
-                    return toYProperty.get()-sinAngle.get()*nodeRadius*0.99;
+                    return toYProperty.get()-sinAngle.get()*nodeRadius;
                 }
             };
 
             MoveToStartPoint1.xProperty().bind(fromX.add(XOffset));
             MoveToStartPoint1.yProperty().bind(fromY.subtract(YOffset));
-            endPoint1.xProperty().bind(toX.add(XOffset));
-            endPoint1.yProperty().bind(toY.subtract(YOffset));
-            endPoint2.xProperty().bind(toX.subtract(XOffset));
-            endPoint2.yProperty().bind(toY.add(YOffset));
-            startPoint2.xProperty().bind(fromX.subtract(XOffset));
-            startPoint2.yProperty().bind(fromY.add(YOffset));
-            startPoint1.xProperty().bind(fromX.add(XOffset));
-            startPoint1.yProperty().bind(fromY.subtract(YOffset));
+            endRightPoint.xProperty().bind(toX.add(XOffset));
+            endRightPoint.yProperty().bind(toY.subtract(YOffset));
+            endLeftPoint.xProperty().bind(toX.subtract(XOffset));
+            endLeftPoint.yProperty().bind(toY.add(YOffset));
+            startLeftPoint.xProperty().bind(fromX.subtract(XOffset));
+            startLeftPoint.yProperty().bind(fromY.add(YOffset));
+            startRightPoint.xProperty().bind(fromX.add(XOffset));
+            startRightPoint.yProperty().bind(fromY.subtract(YOffset));
 
-            this.getElements().addAll(MoveToStartPoint1,endPoint1,endPoint2,startPoint2,startPoint1);
+            this.getElements().addAll(MoveToStartPoint1, endRightPoint, endLeftPoint, startLeftPoint, startRightPoint);
             this.setFill(Color.GRAY);
     }
+
 }

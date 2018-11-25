@@ -1,10 +1,12 @@
 package BasicAnimation;
 
+import Parameters.Parameters;
 import VisualElements.Node.BasicNode;
 import VisualElements.Edge.Edge;
 import javafx.animation.*;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
@@ -18,8 +20,8 @@ public class AnimationGenerator {
         rate.setValue(targetRate);
     }
 
-    public static FadeTransition getAppearAnimation(Node node,double time){
-        FadeTransition appearAnimation=new FadeTransition(Duration.millis(time));
+    public static FadeTransition getAppearAnimation(Node node){
+        FadeTransition appearAnimation=new FadeTransition(Duration.millis(Parameters.appearAnimaDuration));
         appearAnimation.setFromValue(0.0f);
         appearAnimation.setToValue(1.0f);
         appearAnimation.setNode(node);
@@ -27,8 +29,17 @@ public class AnimationGenerator {
         return appearAnimation;
     }
 
-    public static FadeTransition getDisappearAnimation(Node node,double time){
-        FadeTransition disappearAnimation=new FadeTransition(Duration.millis(time));
+    public static FadeTransition getAppearAnimation(Group group){
+        FadeTransition appearAnimation=new FadeTransition(Duration.millis(Parameters.disappearAnimaDuration));
+        appearAnimation.setFromValue(0.0f);
+        appearAnimation.setToValue(1.0f);
+        appearAnimation.setNode(group);
+        appearAnimation.rateProperty().bind(rate);
+        return appearAnimation;
+    }
+
+    public static FadeTransition getDisappearAnimation(Node node){
+        FadeTransition disappearAnimation=new FadeTransition(Duration.millis(Parameters.disappearAnimaDuration));
         disappearAnimation.setFromValue(1.0f);
         disappearAnimation.setToValue(0.0f);
         disappearAnimation.setNode(node);
@@ -36,11 +47,11 @@ public class AnimationGenerator {
         return disappearAnimation;
     }
 
-    public static Timeline getMoveAnimation(Node node,double time,double toX,double toY){
+    public static Timeline getMoveAnimation(Node node,double toX,double toY){
         Timeline timeline=new Timeline();
         KeyValue kvX=new KeyValue(node.layoutXProperty(),toX);
         KeyValue kvY=new KeyValue(node.layoutYProperty(),toY);
-        KeyFrame kf=new KeyFrame(Duration.millis(time),kvX,kvY);
+        KeyFrame kf=new KeyFrame(Duration.millis(Parameters.moveAnimaDuration),kvX,kvY);
         timeline.getKeyFrames().add(kf);
         timeline.rateProperty().bind(rate);
         timeline.setOnFinished(e->{
@@ -50,7 +61,11 @@ public class AnimationGenerator {
         return timeline;
     }
 
-    public static Timeline changeEdgeToNode(AnchorPane pane, Edge edge, double newToNodeX,double newToNodeY,BasicNode newToNode,double time){
+    public static SequentialTransition getNodeEmphAnimation(BasicNode basicNode){
+        return basicNode.getEmphasizeAnimation(3);
+    }
+
+    public static Timeline changeEdgeToNode(AnchorPane pane, Edge edge, double newToNodeX,double newToNodeY,BasicNode newToNode){
         Timeline timeline=new Timeline();
         Circle toPoint=new Circle(0);
         toPoint.setLayoutX(edge.getToX());
@@ -59,7 +74,7 @@ public class AnimationGenerator {
         edge.bindToLayoutProperty(toPoint.layoutXProperty(),toPoint.layoutYProperty());
         KeyValue kvX=new KeyValue(toPoint.layoutXProperty(),newToNodeX);
         KeyValue kvY=new KeyValue(toPoint.layoutYProperty(),newToNodeY);
-        KeyFrame kf=new KeyFrame(Duration.millis(time),kvX,kvY);
+        KeyFrame kf=new KeyFrame(Duration.millis(Parameters.moveAnimaDuration),kvX,kvY);
         timeline.getKeyFrames().add(kf);
         timeline.rateProperty().bind(rate);
         timeline.setOnFinished(e->{
@@ -69,7 +84,7 @@ public class AnimationGenerator {
         return timeline;
     }
 
-    public static Timeline changeEdgeFromNode(AnchorPane pane, Edge edge, double newFromNodeX,double newFromNodeY,BasicNode newFromNode,double time){
+    public static Timeline changeEdgeFromNode(AnchorPane pane, Edge edge, double newFromNodeX,double newFromNodeY,BasicNode newFromNode){
         Timeline timeline=new Timeline();
         Circle fromPoint=new Circle(0);
         edge.unbindFromLayoutProperty();
@@ -79,7 +94,7 @@ public class AnimationGenerator {
         edge.bindFromLayoutProperty(fromPoint.layoutXProperty(),fromPoint.layoutYProperty());
         KeyValue kvX=new KeyValue(fromPoint.layoutXProperty(),newFromNodeX);
         KeyValue kvY=new KeyValue(fromPoint.layoutYProperty(),newFromNodeY);
-        KeyFrame kf=new KeyFrame(Duration.millis(time),kvX,kvY);
+        KeyFrame kf=new KeyFrame(Duration.millis(Parameters.moveAnimaDuration),kvX,kvY);
         timeline.getKeyFrames().add(kf);
         timeline.rateProperty().bind(rate);
         timeline.setOnFinished(e->{

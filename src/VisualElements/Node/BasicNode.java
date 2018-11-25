@@ -1,7 +1,7 @@
 package VisualElements.Node;
 
 import BasicAnimation.AnimationGenerator;
-import VisualElements.ElementParameters;
+import Parameters.Parameters;
 import javafx.animation.SequentialTransition;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -17,8 +17,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class BasicNode extends Group {
-    private static Color circleColor= ElementParameters.nodeColor;
-    private static double radius=ElementParameters.nodeRadius;
+    private static Color circleColor= Parameters.nodeColor;
+    private static double radius= Parameters.nodeRadius;
 
     private Circle circle,outline;
     private Text text;
@@ -29,7 +29,7 @@ public class BasicNode extends Group {
     public BasicNode(double x, double y, Integer _data,boolean dragable){
 
         circle=new Circle(radius);
-        circle.setStrokeWidth(5);
+        circle.setStrokeWidth(Parameters.nodeStrokeWidth);
         circle.setStroke(Color.BLACK);
         circle.setFill(circleColor);
         circle.setLayoutX(0);
@@ -43,7 +43,7 @@ public class BasicNode extends Group {
 
         text=new Text(_data.toString());
         text.setFont(new Font(20));
-        text.setFill(ElementParameters.nodeTextColor);
+        text.setFill(Parameters.nodeTextColor);
         text.setLayoutX(-0.5*text.getBoundsInLocal().getWidth());
         text.setLayoutY(0.3*text.getBoundsInLocal().getHeight());
 
@@ -55,34 +55,16 @@ public class BasicNode extends Group {
         this.setLayoutX(x);
         this.setLayoutY(y);
 
+        this.setOpacity(0);
+
         if(dragable)
             setDragable();
 
         this.getChildren().addAll(outline,circle,text);
     }
 
-    public SequentialTransition getEmphasizeAnimation(int time,double times){
-        SequentialTransition emphasizeAnimation=new SequentialTransition();
-        for(int i=0;i<times;i++) {
-            emphasizeAnimation.getChildren().add(AnimationGenerator.getAppearAnimation(outline,0.5*time));
-            emphasizeAnimation.getChildren().add(AnimationGenerator.getDisappearAnimation(outline,0.5*time));
-        }
-        return emphasizeAnimation;
-    }
-
     public IntegerProperty getDataProperty(){
         return data;
-    }
-
-    public void setDragable(){
-        DragEventHandler dragEventHandler=new DragEventHandler(this);
-        this.setOnMousePressed(dragEventHandler);
-        this.setOnMouseDragged(dragEventHandler);
-    }
-
-    public void setColor(Color color){
-        circleColor=color;
-        circle.setFill(color);
     }
 
     class DragEventHandler implements  EventHandler<MouseEvent>{
@@ -112,5 +94,24 @@ public class BasicNode extends Group {
                 }
             }
         }
+    }
+    private void setDragable(){
+        DragEventHandler dragEventHandler=new DragEventHandler(this);
+        this.setOnMousePressed(dragEventHandler);
+        this.setOnMouseDragged(dragEventHandler);
+    }
+
+    public void setColor(Color color){
+        circleColor=color;
+        circle.setFill(color);
+    }
+
+    public SequentialTransition getEmphasizeAnimation(int times){
+        SequentialTransition emphasizeAnimation=new SequentialTransition();
+        for(int i=0;i<times;i++) {
+            emphasizeAnimation.getChildren().add(AnimationGenerator.getAppearAnimation(outline));
+            emphasizeAnimation.getChildren().add(AnimationGenerator.getDisappearAnimation(outline));
+        }
+        return emphasizeAnimation;
     }
 }

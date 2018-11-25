@@ -1,6 +1,6 @@
 package VisualElements.Column;
 
-import VisualElements.ElementParameters;
+import Parameters.Parameters;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
@@ -23,8 +23,8 @@ public class Column extends Group {
         rect.widthProperty().bind(rectWidth);
         rect.setHeight(data*5+200);
         rect.setFill(color);
-        rect.setArcHeight(ElementParameters.rectArcRadius);
-        rect.setArcWidth(ElementParameters.rectArcRadius);
+        rect.setArcHeight(Parameters.rectArcRadius);
+        rect.setArcWidth(Parameters.rectArcRadius);
         rect.setLayoutX(-0.5*rect.getWidth());
         rect.setLayoutY(-rect.getHeight());
 

@@ -1,6 +1,7 @@
 package UI;
 
 import BasicAnimation.AnimationGenerator;
+import BasicVisuDS.VisuBinaryTree;
 import VisualElements.Node.BasicNode;
 import VisualElements.Column.Column;
 import VisualElements.Edge.UnwDirEdge;
@@ -25,7 +26,47 @@ public class Main extends Application {
         primaryStage.setTitle("VisuAlgo");
         primaryStage.setScene(new Scene(root, 1280, 720));
 
-        root.setOnMouseClicked(new ClickHandler(root));
+        //root.setOnMouseClicked(new ClickHandler(root));
+
+        VisuBinaryTree visuBinaryTree=new VisuBinaryTree(root);
+
+        for(int i=0;i<6;i++)
+            visuBinaryTree.addNode(i,i-1,true);
+
+        visuBinaryTree.getAllAnimation().play();
+
+        //AnimationGenerator.setRate(3.0);
+
+        primaryStage.show();
+    }
+
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+}
+
+class ClickHandler implements EventHandler<MouseEvent>{
+
+    AnchorPane root;
+
+    public ClickHandler(AnchorPane root){
+        this.root=root;
+    }
+
+    @Override
+    public void handle(MouseEvent e){
+        if(e.getEventType()==MouseEvent.MOUSE_CLICKED&&e.getButton()== MouseButton.SECONDARY) {
+            BasicNode basicNode=new BasicNode(e.getSceneX(), e.getSceneY(), 5, true);
+            root.getChildren().add(basicNode);
+            AnimationGenerator.getAppearAnimation(basicNode).play();
+        }
+    }
+}
+
+
+
+/*
 
         BasicNode bNode1=new BasicNode(100,0,1,true);
         BasicNode bNode2=new BasicNode(00,300,2,true);
@@ -50,31 +91,4 @@ public class Main extends Application {
         Timeline changeToNode=AnimationGenerator.changeEdgeFromNode(root,e13,300,300,bNode2,2000);
         SequentialTransition seq=new SequentialTransition(emp,move2,changeToNode);
 
-        AnimationGenerator.setRate(3.0);
-
-        seq.play();
-
-
-        primaryStage.show();
-    }
-
-
-    public static void main(String[] args) {
-        launch(args);
-    }
-}
-
-class ClickHandler implements EventHandler<MouseEvent>{
-
-    AnchorPane root;
-
-    public ClickHandler(AnchorPane root){
-        this.root=root;
-    }
-
-    @Override
-    public void handle(MouseEvent e){
-        if(e.getEventType()==MouseEvent.MOUSE_CLICKED&&e.getButton()== MouseButton.SECONDARY)
-            root.getChildren().add(new BasicNode(e.getSceneX(),e.getSceneY(),5,true));
-    }
-}
+ */

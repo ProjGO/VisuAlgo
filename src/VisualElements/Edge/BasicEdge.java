@@ -1,6 +1,6 @@
 package VisualElements.Edge;
 
-import VisualElements.ElementParameters;
+import Parameters.Parameters;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.binding.DoubleBinding;
@@ -8,8 +8,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Path;
 
 public abstract class BasicEdge extends Path {
-    protected static double width= ElementParameters.edgeWidth,arrowWidth=ElementParameters.arrowWidth,arrowLength=ElementParameters.arrowLength,nodeRadius=ElementParameters.nodeRadius;
-    protected static Color fillColor=ElementParameters.edgeColor;
+    protected static double width= Parameters.edgeWidth,arrowWidth= Parameters.arrowWidth,arrowLength= Parameters.arrowLength,nodeRadius= Parameters.nodeRadius+ Parameters.nodeStrokeWidth*0.5;
+    protected static Color fillColor= Parameters.edgeColor;
 
     protected SimpleDoubleProperty fromXProperty=new SimpleDoubleProperty(),fromYProperty=new SimpleDoubleProperty(),
             toXProperty=new SimpleDoubleProperty(),toYProperty=new SimpleDoubleProperty();
@@ -33,8 +33,7 @@ public abstract class BasicEdge extends Path {
 
             protected double computeValue() {
                 bind(fromXProperty,fromYProperty,toXProperty,toYProperty);
-                double angle=Math.atan((toYProperty.get()-fromYProperty.get())/(toXProperty.get()-fromXProperty.get()));
-                return angle;
+                return Math.atan((toYProperty.get()-fromYProperty.get())/(toXProperty.get()-fromXProperty.get()));
             }
 
         };
