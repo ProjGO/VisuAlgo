@@ -1,6 +1,9 @@
 package VisualElements.Edge;
 
+import BasicAnimation.AnimationGenerator;
+import Parameters.Parameters;
 import VisualElements.Node.BasicNode;
+import javafx.animation.SequentialTransition;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.Group;
@@ -57,4 +60,13 @@ public class Edge extends Group {
     public double getToY(){ return toY.get(); }
     public double getFromX() {return fromX.get();}
     public double getFromY() {return fromY.get();}
+
+    public SequentialTransition getEmphasizeAnimation(){
+        SequentialTransition sequentialTransition=new SequentialTransition();
+        for(int i=0;i<Parameters.emphaAnimaTimes;i++){
+            sequentialTransition.getChildren().add(AnimationGenerator.getFillTransition(basicEdge,Parameters.edgeColor,Parameters.emphaAnimaColor));
+            sequentialTransition.getChildren().add(AnimationGenerator.getFillTransition(basicEdge,Parameters.emphaAnimaColor,Parameters.edgeColor));
+        }
+        return sequentialTransition;
+    }
 }

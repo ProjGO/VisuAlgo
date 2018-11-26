@@ -9,8 +9,12 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Shape;
 import javafx.util.Duration;
+
+import java.awt.*;
 
 public class AnimationGenerator {
 
@@ -61,9 +65,18 @@ public class AnimationGenerator {
         return timeline;
     }
 
-    public static SequentialTransition getNodeEmphAnimation(BasicNode basicNode){
-        return basicNode.getEmphasizeAnimation(3);
+    public static FillTransition getFillTransition(Shape shape, Color fromColor,Color toColor){
+        return new FillTransition(Duration.millis(Parameters.emphaAnimaDuration),shape,fromColor,toColor);
     }
+
+    public static SequentialTransition getNodeEmphAnimation(BasicNode basicNode){
+        return basicNode.getEmphasizeAnimation();
+    }
+
+    public static SequentialTransition getEdgeEmphaAnimation(Edge edge){
+        return edge.getEmphasizeAnimation();
+    }
+
 
     public static Timeline changeEdgeToNode(AnchorPane pane, Edge edge, double newToNodeX,double newToNodeY,BasicNode newToNode){
         Timeline timeline=new Timeline();

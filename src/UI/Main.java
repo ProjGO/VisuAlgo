@@ -30,7 +30,8 @@ public class Main extends Application {
 
         VisuBinaryTree visuBinaryTree=new VisuBinaryTree(root);
 
-        for(int i=0;i<6;i++)
+        visuBinaryTree.addFirstNode(0);
+        for(int i=1;i<6;i++)
             visuBinaryTree.addNode(i,i-1,true);
 
         visuBinaryTree.getAllAnimation().play();

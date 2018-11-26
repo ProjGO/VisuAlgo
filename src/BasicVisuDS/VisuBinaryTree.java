@@ -9,12 +9,13 @@ import javafx.animation.SequentialTransition;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.layout.AnchorPane;
 
-//最下层32个节点，紧挨着排，节点直径20，长32*40=1280
-//共六层，层间高度120，上下各留60
+//最下层32个节点，紧挨着排，节点直径20，宽32*40=1280
+//共六层，层间高度120，上下各留60,高720
 
 public class VisuBinaryTree {
     private Node[] nodes=new Node[64];
-    private int nodeCnt=0;
+    protected int nodeCnt=0;
+    public final int root=0;
     AnimationManager animationManager=new AnimationManager();
 
     public VisuBinaryTree(AnchorPane anchorPane){
@@ -22,10 +23,21 @@ public class VisuBinaryTree {
     }
 
     public void addNode(int value,int parent,boolean isLeftChild){
-        Node newNode=nodeCnt==0?new Node(value, Parameters.rootLayoutX, Parameters.rootLayoutY):new Node(value,nodes[parent],isLeftChild);
+        Node newNode=new Node(value,nodes[parent],isLeftChild);
+        newNode.id=nodeCnt;
+        if(isLeftChild)
+            nodes[parent].leftChild=newNode.id;
+        else
+            nodes[parent].rightChild=newNode.id;
         nodes[nodeCnt++]=newNode;
         if(nodeCnt>1)
             animationManager.addNewAnimation(AnimationGenerator.getAppearAnimation(newNode.edge));
+        animationManager.addNewAnimation(AnimationGenerator.getAppearAnimation(newNode.visuNode));
+    }
+
+    public void addFirstNode(int value){
+        Node newNode=new Node(value, Parameters.rootLayoutX, Parameters.rootLayoutY);
+        nodes[nodeCnt++]=newNode;
         animationManager.addNewAnimation(AnimationGenerator.getAppearAnimation(newNode.visuNode));
     }
 
@@ -64,8 +76,8 @@ class Node{
 
     private void initialize(int value,double layoutX,double layoutY){
         this.value=new SimpleIntegerProperty(value);
-        leftChild=0;
-        rightChild=0;
+        leftChild=-1;
+        rightChild=-1;
         visuNode=new BasicNode(layoutX,layoutY,value,false);
         visuNode.getDataProperty().bind(this.value);
         height=0;

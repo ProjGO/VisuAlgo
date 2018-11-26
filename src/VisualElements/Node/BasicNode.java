@@ -106,9 +106,9 @@ public class BasicNode extends Group {
         circle.setFill(color);
     }
 
-    public SequentialTransition getEmphasizeAnimation(int times){
+    public SequentialTransition getEmphasizeAnimation(){
         SequentialTransition emphasizeAnimation=new SequentialTransition();
-        for(int i=0;i<times;i++) {
+        for(int i=0;i<Parameters.emphaAnimaTimes;i++) {
             emphasizeAnimation.getChildren().add(AnimationGenerator.getAppearAnimation(outline));
             emphasizeAnimation.getChildren().add(AnimationGenerator.getDisappearAnimation(outline));
         }
