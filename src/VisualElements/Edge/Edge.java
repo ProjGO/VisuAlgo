@@ -4,16 +4,11 @@ import BasicAnimation.AnimationGenerator;
 import Parameters.Parameters;
 import VisualElements.Node.BasicNode;
 import javafx.animation.FillTransition;
-import javafx.animation.ParallelTransition;
 import javafx.animation.SequentialTransition;
-import javafx.animation.Timeline;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
 import javafx.util.Duration;
 
 public class Edge extends Group {
@@ -21,17 +16,16 @@ public class Edge extends Group {
     protected SimpleDoubleProperty toXProperty = new SimpleDoubleProperty(), toYProperty = new SimpleDoubleProperty();//这里的是这个Group内部的坐标值
     private DoubleProperty fromX,fromY,toX,toY;//这里的值是AnchorPane中的坐标值
     private BasicEdge basicEdge;
-    private double nodeRadius=Parameters.nodeRadius;
 
     private SimpleDoubleProperty zero = new SimpleDoubleProperty(0);
 
     protected void initialize(BasicNode from, BasicNode to, BasicEdge _basicEdge) {
         basicEdge=_basicEdge;
         bindLayoutProperty(from.layoutXProperty(),from.layoutYProperty(),to.layoutXProperty(),to.layoutYProperty());
-        basicEdge.setFromXProperty(zero);
-        basicEdge.setFromYProperty(zero);
-        basicEdge.setToXProperty(toXProperty);
-        basicEdge.setToYProperty(toYProperty);
+        basicEdge.setFromNodeXProperty(zero);
+        basicEdge.setFromNodeYProperty(zero);
+        basicEdge.setToNodeXProperty(toXProperty);
+        basicEdge.setToNodeYProperty(toYProperty);
         basicEdge.initialize();
         this.getChildren().add(basicEdge);
 
@@ -88,49 +82,46 @@ public class Edge extends Group {
     }
 
     public SequentialTransition getFromToEmphaAnimation(){
-        double sinAngle=basicEdge.sinAngle.get()*nodeRadius,cosAngle=basicEdge.cosAngle.get()*nodeRadius;
-        BasicNode tempFromNode=new BasicNode(cosAngle,sinAngle,0,false),tempToNode=new BasicNode(cosAngle,sinAngle,0,false);
+        BasicNode tempFromNode=new BasicNode(0,0,0,false),tempToNode=new BasicNode(0,0,0,false);
         UnwUndirEdge tempEdge=new UnwUndirEdge(tempFromNode,tempToNode);
         tempEdge.setFillColor(Color.ORANGE);
         getChildren().addAll(tempFromNode,tempToNode,tempEdge);
         SequentialTransition sequentialTransition=new SequentialTransition();
-        sequentialTransition.getChildren().add(AnimationGenerator.getMoveAnimation(tempToNode,toXProperty.get()-cosAngle,toYProperty.get()-sinAngle));
+        sequentialTransition.getChildren().add(AnimationGenerator.getMoveAnimation(tempToNode,toXProperty.get(),toYProperty.get()));
         sequentialTransition.getChildren().add(AnimationGenerator.getDisappearAnimation(tempEdge));
         sequentialTransition.setOnFinished(e-> {
             getChildren().removeAll(tempFromNode,tempToNode,tempEdge);
             System.out.println("done");
-                });
+        });
         return sequentialTransition;
     }
 
     public SequentialTransition getToFromEmphaAnimation(){
-        double sinAngle=basicEdge.sinAngle.get()*nodeRadius,cosAngle=basicEdge.cosAngle.get()*nodeRadius;
-        BasicNode tempFromNode=new BasicNode(toXProperty.get()-cosAngle,toYProperty.get()-sinAngle,0,false),tempToNode=new BasicNode(toXProperty.get()-cosAngle,toYProperty.get()-sinAngle,0,false);
+        BasicNode tempFromNode=new BasicNode(toXProperty.get(),toYProperty.get(),0,false),tempToNode=new BasicNode(toXProperty.get(),toYProperty.get(),0,false);
         UnwUndirEdge tempEdge=new UnwUndirEdge(tempFromNode,tempToNode);
         tempEdge.setFillColor(Color.ORANGE);
         getChildren().addAll(tempFromNode,tempToNode,tempEdge);
         SequentialTransition sequentialTransition=new SequentialTransition();
-        sequentialTransition.getChildren().add(AnimationGenerator.getMoveAnimation(tempToNode,cosAngle,sinAngle));
+        sequentialTransition.getChildren().add(AnimationGenerator.getMoveAnimation(tempToNode,0,0));
         sequentialTransition.getChildren().add(AnimationGenerator.getDisappearAnimation(tempEdge));
         sequentialTransition.setOnFinished(e-> getChildren().removeAll(tempFromNode,tempToNode,tempEdge));
         return sequentialTransition;
     }
 
     public SequentialTransition getAppearAnimation(){
-        double sinAngle=basicEdge.sinAngle.get()*nodeRadius,cosAngle=basicEdge.cosAngle.get()*nodeRadius;
         SequentialTransition appearAnimation=new SequentialTransition();
 
-        BasicNode TempFromNode=new BasicNode(toXProperty.get()-cosAngle,toYProperty.get()-sinAngle,0,false);
+        BasicNode TempFromNode=new BasicNode(toXProperty.get(),toYProperty.get(),0,false);
         getChildren().add(TempFromNode);
-        basicEdge.setFromXProperty(TempFromNode.layoutXProperty());
-        basicEdge.setFromYProperty(TempFromNode.layoutYProperty());
+        basicEdge.setFromNodeXProperty(TempFromNode.layoutXProperty());
+        basicEdge.setFromNodeYProperty(TempFromNode.layoutYProperty());
         basicEdge.setFill(Color.ORANGE);
-        appearAnimation.getChildren().add(AnimationGenerator.getMoveAnimation(TempFromNode,cosAngle,sinAngle));
+        appearAnimation.getChildren().add(AnimationGenerator.getMoveAnimation(TempFromNode,0,0));
         FillTransition fillTransition=new FillTransition(Duration.millis(500),basicEdge,Color.ORANGE,Parameters.edgeColor);
         appearAnimation.getChildren().add(fillTransition);
         appearAnimation.setOnFinished(e->{
-            basicEdge.setToXProperty(toXProperty);
-            basicEdge.setToYProperty(toYProperty);
+            basicEdge.setFromNodeXProperty(zero);
+            basicEdge.setFromNodeYProperty(zero);
             getChildren().remove(TempFromNode);
         });
         return appearAnimation;

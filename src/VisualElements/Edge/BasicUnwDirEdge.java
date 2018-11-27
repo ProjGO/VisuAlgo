@@ -61,32 +61,32 @@ public class BasicUnwDirEdge extends BasicEdge {
 
         };
 
-        final DoubleBinding fromX=new DoubleBinding() {
+        /*final DoubleBinding fromX=new DoubleBinding() {
             @Override
             protected double computeValue() {
-                bind(fromXProperty,sinAngle);
-                return fromXProperty.get()+cosAngle.get()*nodeRadius*0.99;
+                bind(fromNodeXProperty,sinAngle);
+                return fromNodeXProperty.get()+cosAngle.get()*nodeRadius*0.99;
             }
         };
 
         final DoubleBinding fromY=new DoubleBinding() {
             @Override
             protected double computeValue() {
-                bind(fromYProperty,cosAngle);
-                return fromYProperty.get()+sinAngle.get()*nodeRadius*0.99;
+                bind(fromNodeYProperty,cosAngle);
+                return fromNodeYProperty.get()+sinAngle.get()*nodeRadius*0.99;
             }
-        };
+        };*/
 
-        arrowTop.xProperty().bind(toXProperty.subtract(cosAngle.multiply(nodeRadius)));
-        arrowTop.yProperty().bind(toYProperty.subtract(sinAngle.multiply(nodeRadius)));
-        arrowLeft1.xProperty().bind(toXProperty.subtract(cosAngle.multiply(nodeRadius+arrowLength)).add(XOffset));
-        arrowLeft1.yProperty().bind(toYProperty.subtract(sinAngle.multiply(nodeRadius+arrowLength)).subtract(YOffset));
-        arrowLeft2.xProperty().bind(toXProperty.subtract(cosAngle.multiply(nodeRadius+arrowLength)).add(arrowXOffset));
-        arrowLeft2.yProperty().bind(toYProperty.subtract(sinAngle.multiply(nodeRadius+arrowLength)).subtract(arrowYOffset));
-        arrowRight1.xProperty().bind(toXProperty.subtract(cosAngle.multiply(nodeRadius+arrowLength)).subtract(XOffset));
-        arrowRight1.yProperty().bind(toYProperty.subtract(sinAngle.multiply(nodeRadius+arrowLength)).add(YOffset));
-        arrowRight2.xProperty().bind(toXProperty.subtract(cosAngle.multiply(nodeRadius+arrowLength)).subtract(arrowXOffset));
-        arrowRight2.yProperty().bind(toYProperty.subtract(sinAngle.multiply(nodeRadius+arrowLength)).add(arrowYOffset));
+        arrowTop.xProperty().bind(toX);
+        arrowTop.yProperty().bind(toY);
+        arrowLeft1.xProperty().bind(toNodeXProperty.subtract(cosAngle.multiply(nodeRadius+arrowLength)).add(XOffset));
+        arrowLeft1.yProperty().bind(toNodeYProperty.subtract(sinAngle.multiply(nodeRadius+arrowLength)).subtract(YOffset));
+        arrowLeft2.xProperty().bind(toNodeXProperty.subtract(cosAngle.multiply(nodeRadius+arrowLength)).add(arrowXOffset));
+        arrowLeft2.yProperty().bind(toNodeYProperty.subtract(sinAngle.multiply(nodeRadius+arrowLength)).subtract(arrowYOffset));
+        arrowRight1.xProperty().bind(toNodeXProperty.subtract(cosAngle.multiply(nodeRadius+arrowLength)).subtract(XOffset));
+        arrowRight1.yProperty().bind(toNodeYProperty.subtract(sinAngle.multiply(nodeRadius+arrowLength)).add(YOffset));
+        arrowRight2.xProperty().bind(toNodeXProperty.subtract(cosAngle.multiply(nodeRadius+arrowLength)).subtract(arrowXOffset));
+        arrowRight2.yProperty().bind(toNodeYProperty.subtract(sinAngle.multiply(nodeRadius+arrowLength)).add(arrowYOffset));
         from1.xProperty().bind(fromX.add(XOffset));
         from1.yProperty().bind(fromY.subtract(YOffset));
         from2.xProperty().bind(fromX.subtract(XOffset));

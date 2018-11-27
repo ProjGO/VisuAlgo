@@ -31,38 +31,6 @@ class BasicUnwUndirEdge extends BasicEdge {
                 }
             };
 
-            final DoubleBinding fromX=new DoubleBinding() {
-                @Override
-                protected double computeValue() {
-                    bind(fromXProperty,sinAngle);
-                    return fromXProperty.get()+cosAngle.get()*nodeRadius;
-                }
-            };
-
-            final DoubleBinding fromY=new DoubleBinding() {
-                @Override
-                protected double computeValue() {
-                    bind(fromYProperty,cosAngle);
-                    return fromYProperty.get()+sinAngle.get()*nodeRadius;
-                }
-            };
-
-            final DoubleBinding toX=new DoubleBinding() {
-                @Override
-                protected double computeValue() {
-                    bind(toXProperty,cosAngle);
-                    return toXProperty.get()-cosAngle.get()*nodeRadius;
-                }
-            };
-
-            final DoubleBinding toY=new DoubleBinding() {
-                @Override
-                protected double computeValue() {
-                    bind(toYProperty,sinAngle);
-                    return toYProperty.get()-sinAngle.get()*nodeRadius;
-                }
-            };
-
             MoveToStartPoint1.xProperty().bind(fromX.add(XOffset));
             MoveToStartPoint1.yProperty().bind(fromY.subtract(YOffset));
             endRightPoint.xProperty().bind(toX.add(XOffset));
