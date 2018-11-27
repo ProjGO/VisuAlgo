@@ -36,7 +36,7 @@ public abstract class BasicEdge extends Path {
                 bind(fromNodeXProperty,fromNodeYProperty,toNodeXProperty,toNodeYProperty);
                 double deltaX=fromNodeXProperty.get()-toNodeXProperty.get();
                 double deltaY=fromNodeYProperty.get()-toNodeYProperty.get();
-                return Math.sqrt(deltaX*deltaX+deltaY*deltaY)>2*Parameters.nodeRadius;
+                return Math.sqrt(deltaX*deltaX+deltaY*deltaY)>Parameters.nodeRadius;
             }
         };
 
@@ -80,7 +80,7 @@ public abstract class BasicEdge extends Path {
                 if(distGreaterThanRadius.get())
                     return fromNodeXProperty.get()+cosAngle.get()*nodeRadius;
                 else
-                    return fromNodeXProperty.get();
+                    return toX.get();
             }
         };
 
@@ -91,7 +91,7 @@ public abstract class BasicEdge extends Path {
                 if(distGreaterThanRadius.get())
                     return fromNodeYProperty.get()+sinAngle.get()*nodeRadius;
                 else
-                    return fromNodeYProperty.get();
+                    return toY.get();
             }
         };
 
@@ -99,10 +99,10 @@ public abstract class BasicEdge extends Path {
             @Override
             protected double computeValue() {
                 bind(toNodeXProperty,cosAngle,distGreaterThanRadius);
-                if(distGreaterThanRadius.get())
+                //if(distGreaterThanRadius.get())
                     return toNodeXProperty.get()-cosAngle.get()*nodeRadius;
-                else
-                    return toNodeXProperty.get();
+                //else
+                   // return toNodeXProperty.get();
             }
         };
 
@@ -110,10 +110,10 @@ public abstract class BasicEdge extends Path {
             @Override
             protected double computeValue() {
                 bind(toNodeYProperty,sinAngle,distGreaterThanRadius);
-                if(distGreaterThanRadius.get())
+               // if(distGreaterThanRadius.get())
                     return toNodeYProperty.get()-sinAngle.get()*nodeRadius;
-                else
-                    return toNodeYProperty.get();
+               // else
+                   // return toNodeYProperty.get();
             }
         };
     }

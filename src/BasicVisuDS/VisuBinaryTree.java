@@ -30,12 +30,14 @@ public class VisuBinaryTree {
         if(nodeCnt>1)
             animationManager.addNewAnimation(newNode.edge.getAppearAnimation());
         animationManager.addNewAnimation(AnimationGenerator.getAppearAnimation(newNode.visuNode));
+        animationManager.addNewAnimation(AnimationGenerator.getNodeEmphAnimation(newNode.visuNode));
     }
 
     public void addFirstNode(int value){
         Node newNode=new Node(value, Parameters.rootLayoutX, Parameters.rootLayoutY);
         nodes[nodeCnt++]=newNode;
         animationManager.addNewAnimation(AnimationGenerator.getAppearAnimation(newNode.visuNode));
+        animationManager.addNewAnimation(AnimationGenerator.getNodeEmphAnimation(newNode.visuNode));
     }
 
     public SequentialTransition getAllAnimation(){
