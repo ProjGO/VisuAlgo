@@ -1,5 +1,6 @@
 package UI;
 
+import Algorithm.VisuBSTree;
 import BasicAnimation.AnimationGenerator;
 import BasicVisuDS.VisuBinaryTree;
 import VisualElements.Node.BasicNode;
@@ -15,7 +16,6 @@ import javafx.scene.Scene;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -28,15 +28,19 @@ public class Main extends Application {
 
         //root.setOnMouseClicked(new ClickHandler(root));
 
-        VisuBinaryTree visuBinaryTree=new VisuBinaryTree(root);
+        AnimationGenerator.setRate(1.0);
 
-        visuBinaryTree.addFirstNode(0);
-        for(int i=1;i<6;i++)
-            visuBinaryTree.addNode(i,i-1,true);
+        VisuBSTree visuBSTree=new VisuBSTree(root);
 
-        visuBinaryTree.getAllAnimation().play();
+        int[] a=new int[]{2,1,5,3};
+        for(int i=0;i<4;i++)
+            visuBSTree.insert(a[i]);
+        visuBSTree.getAllAnimation().play();
 
-        //AnimationGenerator.setRate(3.0);
+        /*BasicNode bNode=new BasicNode(100,100,10,true);
+        root.getChildren().add(bNode);
+        bNode.getEmphasizeAnimation().play();*/
+
 
         primaryStage.show();
     }

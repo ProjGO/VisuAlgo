@@ -9,8 +9,8 @@ import javafx.scene.shape.Path;
 
 public class BasicUnwUndirEdge extends BasicEdge {
 
-    private MoveTo MoveToStartPoint1=new MoveTo();
-    private LineTo endRightPoint =new LineTo(), endLeftPoint =new LineTo(), startLeftPoint =new LineTo(), startRightPoint =new LineTo();
+    MoveTo MoveToStartPoint1=new MoveTo();
+    LineTo endRightPoint =new LineTo(), endLeftPoint =new LineTo(), startLeftPoint =new LineTo(), startRightPoint =new LineTo();
 
     public BasicUnwUndirEdge(){}
 

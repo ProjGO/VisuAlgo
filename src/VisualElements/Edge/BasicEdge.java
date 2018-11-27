@@ -9,7 +9,7 @@ import javafx.scene.shape.Path;
 
 public abstract class BasicEdge extends Path {
     protected static double width= Parameters.edgeWidth,arrowWidth= Parameters.arrowWidth,arrowLength= Parameters.arrowLength,nodeRadius= Parameters.nodeRadius+ Parameters.nodeStrokeWidth*0.5;
-    protected static Color fillColor= Parameters.edgeColor;
+    protected static Color fillColor= Parameters.edgeColor;//默认值
 
     protected SimpleDoubleProperty fromXProperty=new SimpleDoubleProperty(),fromYProperty=new SimpleDoubleProperty(),
             toXProperty=new SimpleDoubleProperty(),toYProperty=new SimpleDoubleProperty();
@@ -66,4 +66,5 @@ public abstract class BasicEdge extends Path {
 
         };
     }
+
 }

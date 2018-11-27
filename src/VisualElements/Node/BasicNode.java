@@ -35,7 +35,7 @@ public class BasicNode extends Group {
         circle.setLayoutX(0);
         circle.setLayoutY(0);
 
-        outline=new Circle(1.1*radius);
+        outline=new Circle(1.3*radius);
         outline.setFill(Color.RED);
         outline.setLayoutX(0);
         outline.setLayoutY(0);
