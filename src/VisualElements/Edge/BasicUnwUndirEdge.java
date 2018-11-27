@@ -1,18 +1,16 @@
 package VisualElements.Edge;
 
-import javafx.animation.ParallelTransition;
 import javafx.beans.binding.DoubleBinding;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
 
-public class BasicUnwUndirEdge extends BasicEdge {
+class BasicUnwUndirEdge extends BasicEdge {
 
-    MoveTo MoveToStartPoint1=new MoveTo();
-    LineTo endRightPoint =new LineTo(), endLeftPoint =new LineTo(), startLeftPoint =new LineTo(), startRightPoint =new LineTo();
+    private MoveTo MoveToStartPoint1=new MoveTo();
+    private LineTo endRightPoint =new LineTo(), endLeftPoint =new LineTo(), startLeftPoint =new LineTo(), startRightPoint =new LineTo();
 
-    public BasicUnwUndirEdge(){}
+    BasicUnwUndirEdge(){}
 
     void initialize(){
         super.initialize();

@@ -24,10 +24,10 @@ public class Parameters {
     //Animation
     public static final double appearAnimaDuration=500;
     public static final double disappearAnimaDuration=500;
-    public static final double moveAnimaDuration=500;
+    public static final double moveAnimaDuration=1000;
     public static final double emphaAnimaDuration=250;
     public static final Color emphaAnimaColor=Color.ORANGE;
-    public static final int emphaAnimaTimes=3;
+    public static final int emphaAnimaTimes=1;
 
 
     //BasicVisuDS

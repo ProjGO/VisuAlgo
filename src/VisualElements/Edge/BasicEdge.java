@@ -11,9 +11,10 @@ public abstract class BasicEdge extends Path {
     protected static double width= Parameters.edgeWidth,arrowWidth= Parameters.arrowWidth,arrowLength= Parameters.arrowLength,nodeRadius= Parameters.nodeRadius+ Parameters.nodeStrokeWidth*0.5;
     protected static Color fillColor= Parameters.edgeColor;//默认值
 
-    protected SimpleDoubleProperty fromXProperty=new SimpleDoubleProperty(),fromYProperty=new SimpleDoubleProperty(),
+    SimpleDoubleProperty fromXProperty=new SimpleDoubleProperty(),fromYProperty=new SimpleDoubleProperty(),
             toXProperty=new SimpleDoubleProperty(),toYProperty=new SimpleDoubleProperty();
-    protected DoubleBinding angle,sinAngle,cosAngle;
+    DoubleBinding angle,sinAngle,cosAngle;
+    //protected BooleanBinding distGreaterThanRadius;
 
     protected void setFromXProperty(DoubleProperty _fromXProperty){ fromXProperty.bind(_fromXProperty); }
     protected void setFromYProperty(DoubleProperty _fromYProperty){
@@ -27,10 +28,9 @@ public abstract class BasicEdge extends Path {
     }
 
     void initialize(){
+
         angle=new DoubleBinding() {
-
             @Override
-
             protected double computeValue() {
                 bind(fromXProperty,fromYProperty,toXProperty,toYProperty);
                 return Math.atan((toYProperty.get()-fromYProperty.get())/(toXProperty.get()-fromXProperty.get()));
@@ -39,9 +39,7 @@ public abstract class BasicEdge extends Path {
         };
 
         sinAngle=new DoubleBinding() {
-
             @Override
-
             protected double computeValue() {
                 bind(angle);
                 if(toXProperty.get()<fromXProperty.get())
@@ -53,9 +51,7 @@ public abstract class BasicEdge extends Path {
         };
 
         cosAngle=new DoubleBinding() {
-
             @Override
-
             protected double computeValue() {
                 bind(angle);
                 if(toXProperty.get()<fromXProperty.get())
