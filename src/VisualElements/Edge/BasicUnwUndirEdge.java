@@ -45,5 +45,4 @@ class BasicUnwUndirEdge extends BasicEdge {
             this.getElements().addAll(MoveToStartPoint1, endRightPoint, endLeftPoint, startLeftPoint, startRightPoint);
             this.setFill(Color.GRAY);
     }
-
 }

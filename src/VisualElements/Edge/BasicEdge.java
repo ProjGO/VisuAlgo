@@ -80,7 +80,7 @@ public abstract class BasicEdge extends Path {
                 if(distGreaterThanRadius.get())
                     return fromNodeXProperty.get()+cosAngle.get()*nodeRadius;
                 else
-                    return toX.get();
+                    return fromNodeXProperty.get();
             }
         };
 
@@ -91,7 +91,7 @@ public abstract class BasicEdge extends Path {
                 if(distGreaterThanRadius.get())
                     return fromNodeYProperty.get()+sinAngle.get()*nodeRadius;
                 else
-                    return toY.get();
+                    return fromNodeYProperty.get();
             }
         };
 
@@ -99,10 +99,10 @@ public abstract class BasicEdge extends Path {
             @Override
             protected double computeValue() {
                 bind(toNodeXProperty,cosAngle,distGreaterThanRadius);
-                //if(distGreaterThanRadius.get())
+                if(distGreaterThanRadius.get())
                     return toNodeXProperty.get()-cosAngle.get()*nodeRadius;
-                //else
-                   // return toNodeXProperty.get();
+                else
+                   return toNodeXProperty.get();
             }
         };
 
@@ -110,10 +110,10 @@ public abstract class BasicEdge extends Path {
             @Override
             protected double computeValue() {
                 bind(toNodeYProperty,sinAngle,distGreaterThanRadius);
-               // if(distGreaterThanRadius.get())
+                if(distGreaterThanRadius.get())
                     return toNodeYProperty.get()-sinAngle.get()*nodeRadius;
-               // else
-                   // return toNodeYProperty.get();
+                else
+                    return toNodeYProperty.get();
             }
         };
     }

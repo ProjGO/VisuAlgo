@@ -35,5 +35,5 @@ public class Parameters {
     //Binary Tree
     public static double rootLayoutX=640;
     public static double rootLayoutY=60;
-    public static double layerHeight=120;
+    public static double TreeLayerHeight =120;
 }

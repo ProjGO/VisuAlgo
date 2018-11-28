@@ -7,19 +7,19 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.layout.AnchorPane;
 
 public class Node{
-    private static AnchorPane anchorPane;
+    static AnchorPane anchorPane;
     int id;
     public SimpleIntegerProperty value;
     public int leftChild,rightChild,parent;
     public int depth;//最上面的节点depth为0
-    public int height;
+    public int height;//最下层是0
     public BasicNode visuNode;
     public UnwUndirEdge edge=null;//节点所属的边以自己为from，以父节点为to
 
     public Node(int value,Node parent,boolean isLeftChild){
         double layoutX,layoutY;
         layoutX=parent.visuNode.getLayoutX()+ 2* Parameters.nodeRadius*(isLeftChild?-8/Math.pow(2,parent.depth):8/Math.pow(2,parent.depth));
-        layoutY=parent.visuNode.getLayoutY()+ Parameters.layerHeight;
+        layoutY=parent.visuNode.getLayoutY()+ Parameters.TreeLayerHeight;
         initialize(value,layoutX,layoutY);
         this.parent=parent.id;
         this.depth=parent.depth+1;
@@ -45,6 +45,10 @@ public class Node{
 
     public static void setAnchorPane(AnchorPane anchorPane){
         Node.anchorPane =anchorPane;
+    }
+
+    public static AnchorPane getAnchorPane(){
+        return anchorPane;
     }
 
     public boolean haveLeftChild(){

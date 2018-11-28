@@ -28,13 +28,16 @@ public class Main extends Application {
 
         //root.setOnMouseClicked(new ClickHandler(root));
 
-        AnimationGenerator.setRate(1.0);
+        AnimationGenerator.setRate(2.0);
 
         VisuBSTree visuBSTree=new VisuBSTree(root);
 
-        int[] a=new int[]{2,1,5,3};
-        for(int i=0;i<4;i++)
+        int[] a=new int[]{2,1,5,3,9,6};
+        for(int i=0;i<6;i++)
             visuBSTree.insert(a[i]);
+        //visuBSTree.find(3);
+        //visuBSTree.findMax();
+        //visuBSTree.nodeMoveTest();
         visuBSTree.getAllAnimation().play();
 
         /*BasicNode bNode=new BasicNode(100,100,10,true);
