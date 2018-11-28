@@ -11,24 +11,19 @@ import javafx.scene.layout.AnchorPane;
 //共六层，层间高度120，上下各留60,高720
 
 public class VisuBinaryTree {
-    protected Node[] nodes=new Node[64];
-    protected int nodeCnt=0;
-    protected final int root=0;
+    protected Node root=null;
     protected AnimationManager animationManager=new AnimationManager();
-    protected int curNode=root;
     public VisuBinaryTree(AnchorPane anchorPane){
         Node.setAnchorPane(anchorPane);
     }
 
-    public void addNode(int value,int parent,boolean isLeftChild){
-        Node newNode=new Node(value,nodes[parent],isLeftChild);
-        newNode.id=nodeCnt;
+    public void addNode(int value,Node parent,boolean isLeftChild){
+        Node newNode=new Node(value,parent,isLeftChild);
         if(isLeftChild)
-            nodes[parent].leftChild=newNode.id;
+            parent.leftChild=newNode;
         else
-            nodes[parent].rightChild=newNode.id;
-        nodes[nodeCnt++]=newNode;
-        if(nodeCnt>1)
+            parent.rightChild=newNode;
+        if(root!=null)
             animationManager.addNewAnimation(newNode.edge.getAppearAnimation());
         animationManager.addNewAnimation(AnimationGenerator.getAppearAnimation(newNode.visuNode));
         animationManager.addNewAnimation(AnimationGenerator.getNodeEmphAnimation(newNode.visuNode));
@@ -36,7 +31,7 @@ public class VisuBinaryTree {
 
     public void addFirstNode(int value){
         Node newNode=new Node(value, Parameters.rootLayoutX, Parameters.rootLayoutY);
-        nodes[nodeCnt++]=newNode;
+        root=newNode;
         animationManager.addNewAnimation(AnimationGenerator.getAppearAnimation(newNode.visuNode));
         animationManager.addNewAnimation(AnimationGenerator.getNodeEmphAnimation(newNode.visuNode));
     }
@@ -45,15 +40,15 @@ public class VisuBinaryTree {
         return animationManager.getAll();
     }
 
-    protected SequentialTransition getNodeEmphaAnimation(int nodeId){
-        return AnimationGenerator.getNodeEmphAnimation(nodes[nodeId].visuNode);
+    protected SequentialTransition getNodeEmphaAnimation(Node node){
+        return AnimationGenerator.getNodeEmphAnimation(node.visuNode);
     }
 
-    protected SequentialTransition getEdgeEmphaAnimation(int nodeId,boolean isLeftEdge){
+    protected SequentialTransition getEdgeEmphaAnimation(Node node,boolean isLeftEdge){
         if(isLeftEdge)
-            return nodes[nodes[nodeId].leftChild].edge.getEmphasizeAnimation();
+            return node.leftChild.edge.getEmphasizeAnimation();
         else
-            return nodes[nodes[nodeId].rightChild].edge.getEmphasizeAnimation();
+            return node.rightChild.edge.getEmphasizeAnimation();
     }
 
     private void innerReCalcNodeLayoutsAndGetAnima(Node curNode, Node Parent,double parenLayoutX,double parentLayoutY, boolean isLeftChild,ParallelTransition nodeMoveAnima){
@@ -62,9 +57,9 @@ public class VisuBinaryTree {
         nodeMoveAnima.getChildren().add(AnimationGenerator.getMoveAnimation(curNode.visuNode,newLayoutX,newLayoutY));
         curNode.depth=Parent.depth+1;
         if(curNode.haveLeftChild())
-            innerReCalcNodeLayoutsAndGetAnima(nodes[curNode.leftChild],curNode,newLayoutX,newLayoutY,true,nodeMoveAnima);
+            innerReCalcNodeLayoutsAndGetAnima(curNode.leftChild,curNode,newLayoutX,newLayoutY,true,nodeMoveAnima);
         if(curNode.haveRightChild())
-            innerReCalcNodeLayoutsAndGetAnima(nodes[curNode.rightChild],curNode,newLayoutX,newLayoutY,false,nodeMoveAnima);
+            innerReCalcNodeLayoutsAndGetAnima(curNode.rightChild,curNode,newLayoutX,newLayoutY,false,nodeMoveAnima);
     }
 
     protected ParallelTransition reCalcNodeLayoutAndGetAnima(Node root,Node newParent,boolean isLeftChild){
@@ -72,5 +67,9 @@ public class VisuBinaryTree {
         innerReCalcNodeLayoutsAndGetAnima(root,newParent,newParent.visuNode.getLayoutX(),newParent.visuNode.getLayoutY(),isLeftChild,nodeMoveAnima);
         //nodeMoveAnima.getChildren().add(AnimationGenerator.changeEdgeToNode(Node.anchorPane,root.edge,newParent.visuNode.getLayoutX(),newParent.visuNode.getLayoutY(),newParent.visuNode));
         return nodeMoveAnima;
+    }
+
+    public Node getRoot(){
+        return root;
     }
 }

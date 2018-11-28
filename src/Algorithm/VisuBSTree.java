@@ -15,31 +15,31 @@ public class VisuBSTree extends VisuBinaryTree {
     }
 
     private boolean nodeIsLeftChild(Node node){
-        return node.value.get()<nodes[node.parent].value.get();
+        return node.value.get()<node.parent.value.get();
     }
 
     public boolean insert(int value){
         boolean inserted=false;
-        if(nodeCnt==0) {
+        if(root==null) {
             addFirstNode(value);
             inserted=true;
         }
         else{
-            curNode=root;
+            Node curNode=root;
             while(!inserted){
-                animationManager.addNewAnimation(AnimationGenerator.getNodeEmphAnimation(nodes[curNode].visuNode));
-                if(value<nodes[curNode].value.get()){
-                    if(nodes[curNode].haveLeftChild()) {
-                        curNode = nodes[curNode].leftChild;
-                        animationManager.addNewAnimation(nodes[curNode].edge.getToFromEmphaAnimation());
+                animationManager.addNewAnimation(AnimationGenerator.getNodeEmphAnimation(curNode.visuNode));
+                if(value<curNode.value.get()){
+                    if(curNode.haveLeftChild()) {
+                        curNode = curNode.leftChild;
+                        animationManager.addNewAnimation(curNode.edge.getToFromEmphaAnimation());
                     }else{
                         addNode(value,curNode,true);
                         inserted=true;
                     }
-                }else if(value>nodes[curNode].value.get()){
-                    if(nodes[curNode].haveRightChild()) {
-                        curNode = nodes[curNode].rightChild;
-                        animationManager.addNewAnimation(nodes[curNode].edge.getToFromEmphaAnimation());
+                }else if(value>curNode.value.get()){
+                    if(curNode.haveRightChild()) {
+                        curNode = curNode.rightChild;
+                        animationManager.addNewAnimation(curNode.edge.getToFromEmphaAnimation());
                     }else{
                         addNode(value,curNode,false);
                         inserted=true;
@@ -54,18 +54,18 @@ public class VisuBSTree extends VisuBinaryTree {
 
     public boolean find(int value){
         boolean found=false;
-        curNode=0;
+        Node curNode=root;
         while(!found){
             animationManager.addNewAnimation(getNodeEmphaAnimation(curNode));
-            if(curNode==-1){
+            if(curNode==null){
                 found=false;
                 break;
-            }if(value<nodes[curNode].value.get()) {
+            }if(value<curNode.value.get()) {
                 animationManager.addNewAnimation(getEdgeEmphaAnimation(curNode,true));
-                curNode = nodes[curNode].leftChild;
-            }else if(value>nodes[curNode].value.get()){
+                curNode = curNode.leftChild;
+            }else if(value>curNode.value.get()){
                 animationManager.addNewAnimation(getEdgeEmphaAnimation(curNode,false));
-                curNode=nodes[curNode].rightChild;
+                curNode=curNode.rightChild;
             }else{
                 found=true;
                 animationManager.addNewAnimation(getNodeEmphaAnimation(curNode));
@@ -74,71 +74,71 @@ public class VisuBSTree extends VisuBinaryTree {
         return found;
     }
 
-    public int findMax(int root){
-        curNode=root;
+    public int findMax(Node root){
+        Node curNode=root;
         while(true){
             animationManager.addNewAnimation(getNodeEmphaAnimation(curNode));
-            if(nodes[curNode].haveRightChild()){
+            if(curNode.haveRightChild()){
                 animationManager.addNewAnimation(getEdgeEmphaAnimation(curNode,false));
-                curNode=nodes[curNode].rightChild;
+                curNode=curNode.rightChild;
             }else
                 break;
         }
-        return nodes[curNode].value.get();
+        return curNode.value.get();
     }
 
-    public int findMin(int root){
-        curNode=root;
+    public int findMin(Node root){
+        Node curNode=root;
         while(true){
             animationManager.addNewAnimation(getNodeEmphaAnimation(curNode));
-            if(nodes[curNode].haveLeftChild()) {
+            if(curNode.haveLeftChild()) {
                 animationManager.addNewAnimation(getEdgeEmphaAnimation(curNode, true));
-                curNode = nodes[curNode].leftChild;
+                curNode = curNode.leftChild;
             }else
                 break;
         }
-        return nodes[curNode].value.get();
+        return curNode.value.get();
     }
 
     public boolean delete(int value){
         boolean deleted=false;
-        curNode=0;
+        Node curNode=root;
         while(!deleted){
-            if(curNode==-1){
+            if(curNode==null){
                 break;
             }
-            if(value<nodes[curNode].value.get()){
+            if(value<curNode.value.get()){
                 animationManager.addNewAnimation(getEdgeEmphaAnimation(curNode,true));
-                curNode = nodes[curNode].leftChild;
-            }else if(value>nodes[curNode].value.get()){
+                curNode = curNode.leftChild;
+            }else if(value>curNode.value.get()){
                 animationManager.addNewAnimation(getEdgeEmphaAnimation(curNode,false));
-                curNode=nodes[curNode].rightChild;
+                curNode=curNode.rightChild;
             }else{
-                if(nodes[curNode].haveLeftChild()&&nodes[curNode].haveRightChild()){
-                    int tmp=findMin(nodes[curNode].rightChild);
-                    nodes[curNode].value.setValue(tmp);
+                if(curNode.haveLeftChild()&&curNode.haveRightChild()){
+                    int tmp=findMin(curNode.rightChild);
+                    curNode.value.setValue(tmp);
                     value=tmp;
-                    curNode=nodes[curNode].rightChild;
-                    animationManager.addNewAnimation(nodes[curNode].edge.getToFromEmphaAnimation());
-                    animationManager.addNewAnimation(nodes[curNode].visuNode.getEmphasizeAnimation());
+                    curNode=curNode.rightChild;
+                    animationManager.addNewAnimation(curNode.edge.getToFromEmphaAnimation());
+                    animationManager.addNewAnimation(curNode.visuNode.getEmphasizeAnimation());
                 }else{
-                    boolean isLeftChild=nodeIsLeftChild(nodes[curNode]);
-                    animationManager.addNewAnimation(AnimationGenerator.getDisappearAnimation(nodes[curNode].visuNode));
-                    animationManager.addNewAnimation(AnimationGenerator.getDisappearAnimation(nodes[curNode].edge));
-                    if(nodes[curNode].haveLeftChild()){
+                    boolean isLeftChild=nodeIsLeftChild(curNode);
+                    animationManager.addNewAnimation(AnimationGenerator.getDisappearAnimation(curNode.visuNode));
+                    animationManager.addNewAnimation(AnimationGenerator.getDisappearAnimation(curNode.edge));
+                    if(curNode.haveLeftChild()){
                         if(isLeftChild)
-                            nodes[nodes[curNode].parent].leftChild=nodes[curNode].leftChild;
+                            curNode.parent.leftChild=curNode.leftChild;
                         else
-                            nodes[nodes[curNode].parent].rightChild=nodes[curNode].leftChild;
-                        reCalcNodeLayoutAndGetAnima(nodes[nodes[curNode].leftChild],nodes[nodes[curNode].parent],true);
-                    }else if(nodes[curNode].haveRightChild()){
+                            curNode.parent.rightChild=curNode.leftChild;
+                        reCalcNodeLayoutAndGetAnima(curNode.leftChild,curNode.parent,true);
+                    }else if(curNode.haveRightChild()){
                         if(isLeftChild)
-                            nodes[nodes[curNode].parent].leftChild=nodes[curNode].rightChild;
+                            curNode.parent.leftChild=curNode.rightChild;
                         else
-                            nodes[nodes[curNode].parent].rightChild=nodes[curNode].rightChild;
-                        reCalcNodeLayoutAndGetAnima(nodes[nodes[curNode].rightChild],nodes[nodes[curNode].parent],false);
+                            curNode.parent.rightChild=curNode.rightChild;
+                        reCalcNodeLayoutAndGetAnima(curNode.rightChild,curNode.parent,false);
                     }
-                    Node.getAnchorPane().getChildren().removeAll(nodes[curNode].visuNode,nodes[curNode].edge);
+                    Node.getAnchorPane().getChildren().removeAll(curNode.visuNode,curNode.edge);
                     deleted=true;
                 }
             }

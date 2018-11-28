@@ -33,10 +33,11 @@ public class Main extends Application {
         VisuBSTree visuBSTree=new VisuBSTree(root);
 
         int[] a=new int[]{2,1,5,3,9,6};
+
         for(int i=0;i<6;i++)
             visuBSTree.insert(a[i]);
-        //visuBSTree.find(3);
-        //visuBSTree.findMax();
+        visuBSTree.find(3);
+        visuBSTree.findMax(visuBSTree.getRoot());
         //visuBSTree.nodeMoveTest();
         visuBSTree.getAllAnimation().play();
 
@@ -52,6 +53,7 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
 }
 
 class ClickHandler implements EventHandler<MouseEvent>{
