@@ -34,7 +34,7 @@ public class Main extends Application {
         //visuAVLTree.find(3);
         //visuAVLTree.findMax(visuAVLTree.getRoot());
         //visuAVLTree.delete(2);
-        visuAVLTree.LLRotation(visuAVLTree.root.leftChild.leftChild,true);
+        visuAVLTree.LLRotation(visuAVLTree.root,true);
         visuAVLTree.getAllAnimation().play();
 
         /*BasicNode bNode=new BasicNode(100,100,10,true);

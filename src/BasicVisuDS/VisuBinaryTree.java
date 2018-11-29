@@ -51,13 +51,22 @@ public class VisuBinaryTree {
             return node.rightChild.edge.getEmphasizeAnimation();
     }
 
-    private void innerReCalcNodeLayoutsAndGetAnima(Node curNode, Node Parent,double parentLayoutX,double parentLayoutY, boolean isLeftChild,ParallelTransition nodeMoveAnima){
-        double newLayoutX=parentLayoutX+ 2* Parameters.nodeRadius*(isLeftChild?-8/Math.pow(2,Parent.depth):8/Math.pow(2,Parent.depth));
-        double newLayoutY=parentLayoutY+Parameters.TreeLayerHeight;
-        curNode.layoutX=newLayoutX;
-        curNode.layoutY=newLayoutY;
-        nodeMoveAnima.getChildren().add(AnimationGenerator.getMoveAnimation(curNode.visuNode,newLayoutX,newLayoutY));
-        curNode.depth=Parent.depth+1;
+    private void innerReCalcNodeLayoutsAndGetAnima(Node curNode, Node parent,double parentLayoutX,double parentLayoutY, boolean isLeftChild,ParallelTransition nodeMoveAnima){//根据根节点位置递归计算这颗子树各节点新的位置并生成动画
+        //中间两个layout的参数是因为在动画播放前节点位置并不会改变，而动画是在播放前一次生成完成的，所以要用参数告知节点应该去的地方
+        double newLayoutX,newLayoutY;
+        if(parent!=null) {
+            newLayoutX = parentLayoutX + 2 * Parameters.nodeRadius * (isLeftChild ? -8 / Math.pow(2, parent.depth) : 8 / Math.pow(2, parent.depth));
+            newLayoutY = parentLayoutY + Parameters.TreeLayerHeight;
+            curNode.depth = parent.depth + 1;
+        }else{
+            newLayoutX=Parameters.rootLayoutX;
+            newLayoutY=Parameters.rootLayoutY;
+            curNode.depth=0;
+        }
+        curNode.layoutX = newLayoutX;
+        curNode.layoutY = newLayoutY;
+        nodeMoveAnima.getChildren().add(AnimationGenerator.getMoveAnimation(curNode.visuNode, newLayoutX, newLayoutY));
+
         if(curNode.haveLeftChild())
             innerReCalcNodeLayoutsAndGetAnima(curNode.leftChild,curNode,newLayoutX,newLayoutY,true,nodeMoveAnima);
         if(curNode.haveRightChild())
@@ -74,7 +83,12 @@ public class VisuBinaryTree {
     protected ParallelTransition reCalcNodeLayoutAndGetAnima(Node root,Node newParent,double newParentX,double newParentY,boolean isLeftChild){
         ParallelTransition nodeMoveAnima=new ParallelTransition();
         innerReCalcNodeLayoutsAndGetAnima(root,newParent,newParentX,newParentY,isLeftChild,nodeMoveAnima);
-        //nodeMoveAnima.getChildren().add(AnimationGenerator.changeEdgeToNode(Node.anchorPane,root.edge,newParent.visuNode.getLayoutX(),newParent.visuNode.getLayoutY(),newParent.visuNode));
+        return nodeMoveAnima;
+    }
+
+    protected ParallelTransition reCalcNodeLayoutAndGetAnima(Node root){
+        ParallelTransition nodeMoveAnima=new ParallelTransition();
+        innerReCalcNodeLayoutsAndGetAnima(root,null,Parameters.rootLayoutX,Parameters.rootLayoutY,false,nodeMoveAnima);//中间三个参数在这都没用
         return nodeMoveAnima;
     }
 

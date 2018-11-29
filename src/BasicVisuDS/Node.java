@@ -15,6 +15,7 @@ public class Node{
     public BasicNode visuNode;
     public double layoutX,layoutY;
     public UnwUndirEdge edge=null;//节点所属的边以自己为from，以父节点为to
+    public boolean isRoot;
 
     public Node(int value,Node parent,boolean isLeftChild){
         double layoutX,layoutY;
@@ -31,6 +32,7 @@ public class Node{
         initialize(value,layoutX,layoutY);
         this.parent=null;
         this.depth=0;
+        isRoot=true;
     }
 
     private void initialize(int value,double layoutX,double layoutY){
@@ -43,6 +45,7 @@ public class Node{
         visuNode.getDataProperty().bindBidirectional(this.value);
         height=0;
         anchorPane.getChildren().add(visuNode);
+        isRoot=false;
     }
 
     public static void setAnchorPane(AnchorPane anchorPane){
