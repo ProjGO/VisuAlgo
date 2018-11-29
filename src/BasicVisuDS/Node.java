@@ -37,7 +37,7 @@ public class Node{
         leftChild=null;
         rightChild=null;
         visuNode=new BasicNode(layoutX,layoutY,value,false);
-        visuNode.getDataProperty().bind(this.value);
+        visuNode.getDataProperty().bindBidirectional(this.value);
         height=0;
         anchorPane.getChildren().add(visuNode);
     }

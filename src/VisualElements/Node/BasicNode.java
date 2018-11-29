@@ -2,6 +2,7 @@ package VisualElements.Node;
 
 import BasicAnimation.AnimationGenerator;
 import Parameters.Parameters;
+import javafx.animation.FadeTransition;
 import javafx.animation.SequentialTransition;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -113,5 +114,14 @@ public class BasicNode extends Group {
             emphasizeAnimation.getChildren().add(AnimationGenerator.getDisappearAnimation(outline));
         }
         return emphasizeAnimation;
+    }
+
+    public SequentialTransition getTextChangeAnima(Integer newValue){
+        SequentialTransition sequentialTransition=new SequentialTransition();
+        FadeTransition textDisappear=AnimationGenerator.getDisappearAnimation(text);
+        textDisappear.setOnFinished(e->text.setText(newValue.toString()));
+        FadeTransition textAppear=AnimationGenerator.getAppearAnimation(text);
+        sequentialTransition.getChildren().addAll(textDisappear,textAppear);
+        return sequentialTransition;
     }
 }

@@ -4,6 +4,7 @@ import BasicAnimation.AnimationGenerator;
 import BasicAnimation.AnimationManager;
 import BasicVisuDS.Node;
 import BasicVisuDS.VisuBinaryTree;
+import javafx.animation.FadeTransition;
 import javafx.scene.layout.AnchorPane;
 
 import javax.xml.crypto.dsig.XMLSignature;
@@ -116,7 +117,7 @@ public class VisuBSTree extends VisuBinaryTree {
             }else{
                 if(curNode.haveLeftChild()&&curNode.haveRightChild()){
                     int tmp=findMin(curNode.rightChild);
-                    curNode.value.setValue(tmp);
+                    animationManager.addNewAnimation(curNode.visuNode.getTextChangeAnima(tmp));
                     value=tmp;
                     curNode=curNode.rightChild;
                     animationManager.addNewAnimation(curNode.edge.getToFromEmphaAnimation());
@@ -124,7 +125,10 @@ public class VisuBSTree extends VisuBinaryTree {
                 }else{
                     boolean isLeftChild=nodeIsLeftChild(curNode);
                     animationManager.addNewAnimation(AnimationGenerator.getDisappearAnimation(curNode.visuNode));
-                    animationManager.addNewAnimation(AnimationGenerator.getDisappearAnimation(curNode.edge));
+                    FadeTransition edgeDisappearAnima=AnimationGenerator.getDisappearAnimation(curNode.edge);
+                    Node finalCurNode = curNode;
+                    edgeDisappearAnima.setOnFinished(e->Node.getAnchorPane().getChildren().removeAll(finalCurNode.visuNode, finalCurNode.edge));
+                    animationManager.addNewAnimation(edgeDisappearAnima);
                     if(curNode.haveLeftChild()){
                         if(isLeftChild)
                             curNode.parent.leftChild=curNode.leftChild;
@@ -138,7 +142,6 @@ public class VisuBSTree extends VisuBinaryTree {
                             curNode.parent.rightChild=curNode.rightChild;
                         reCalcNodeLayoutAndGetAnima(curNode.rightChild,curNode.parent,false);
                     }
-                    Node.getAnchorPane().getChildren().removeAll(curNode.visuNode,curNode.edge);
                     deleted=true;
                 }
             }

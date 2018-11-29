@@ -28,7 +28,7 @@ public class Main extends Application {
 
         //root.setOnMouseClicked(new ClickHandler(root));
 
-        AnimationGenerator.setRate(2.0);
+        AnimationGenerator.setRate(5.0);
 
         VisuBSTree visuBSTree=new VisuBSTree(root);
 
@@ -36,9 +36,9 @@ public class Main extends Application {
 
         for(int i=0;i<6;i++)
             visuBSTree.insert(a[i]);
-        visuBSTree.find(3);
-        visuBSTree.findMax(visuBSTree.getRoot());
-        //visuBSTree.nodeMoveTest();
+        //visuBSTree.find(3);
+        //visuBSTree.findMax(visuBSTree.getRoot());
+        //visuBSTree.delete(5);
         visuBSTree.getAllAnimation().play();
 
         /*BasicNode bNode=new BasicNode(100,100,10,true);
