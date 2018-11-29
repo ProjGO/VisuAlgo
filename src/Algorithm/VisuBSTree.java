@@ -15,10 +15,6 @@ public class VisuBSTree extends VisuBinaryTree {
         super(anchorPane);
     }
 
-    private boolean nodeIsLeftChild(Node node){
-        return node.value.get()<node.parent.value.get();
-    }
-
     public boolean insert(int value){
         boolean inserted=false;
         if(root==null) {
@@ -123,7 +119,7 @@ public class VisuBSTree extends VisuBinaryTree {
                     animationManager.addNewAnimation(curNode.edge.getToFromEmphaAnimation());
                     animationManager.addNewAnimation(curNode.visuNode.getEmphasizeAnimation());
                 }else{
-                    boolean isLeftChild=nodeIsLeftChild(curNode);
+                    boolean isLeftChild=curNode.value.get()<curNode.parent.value.get();
                     animationManager.addNewAnimation(AnimationGenerator.getDisappearAnimation(curNode.visuNode));
                     FadeTransition edgeDisappearAnima=AnimationGenerator.getDisappearAnimation(curNode.edge);
                     Node finalCurNode = curNode;
@@ -134,13 +130,15 @@ public class VisuBSTree extends VisuBinaryTree {
                             curNode.parent.leftChild=curNode.leftChild;
                         else
                             curNode.parent.rightChild=curNode.leftChild;
-                        reCalcNodeLayoutAndGetAnima(curNode.leftChild,curNode.parent,true);
+                        animationManager.addNewAnimation(AnimationGenerator.changeEdgeToNode(Node.getAnchorPane(),curNode.leftChild.edge,curNode.parent.visuNode.getLayoutX(),curNode.parent.visuNode.getLayoutY(),curNode.parent.visuNode));
+                        animationManager.addNewAnimation(reCalcNodeLayoutAndGetAnima(curNode.leftChild,curNode.parent,isLeftChild));
                     }else if(curNode.haveRightChild()){
                         if(isLeftChild)
                             curNode.parent.leftChild=curNode.rightChild;
                         else
                             curNode.parent.rightChild=curNode.rightChild;
-                        reCalcNodeLayoutAndGetAnima(curNode.rightChild,curNode.parent,false);
+                        animationManager.addNewAnimation(AnimationGenerator.changeEdgeToNode(Node.getAnchorPane(),curNode.rightChild.edge,curNode.parent.visuNode.getLayoutX(),curNode.parent.visuNode.getLayoutY(),curNode.parent.visuNode));
+                        animationManager.addNewAnimation(reCalcNodeLayoutAndGetAnima(curNode.rightChild,curNode.parent,isLeftChild));
                     }
                     deleted=true;
                 }

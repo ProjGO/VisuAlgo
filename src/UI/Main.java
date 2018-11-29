@@ -1,17 +1,12 @@
 package UI;
 
+import Algorithm.VisuAVLTree;
 import Algorithm.VisuBSTree;
 import BasicAnimation.AnimationGenerator;
-import BasicVisuDS.VisuBinaryTree;
 import VisualElements.Node.BasicNode;
-import VisualElements.Column.Column;
-import VisualElements.Edge.UnwDirEdge;
-import VisualElements.Edge.WDirEdge;
-import javafx.animation.*;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -28,18 +23,19 @@ public class Main extends Application {
 
         //root.setOnMouseClicked(new ClickHandler(root));
 
-        AnimationGenerator.setRate(5.0);
+        AnimationGenerator.setRate(3.0);
 
-        VisuBSTree visuBSTree=new VisuBSTree(root);
+        VisuAVLTree visuAVLTree=new VisuAVLTree(root);
 
-        int[] a=new int[]{2,1,5,3,9,6};
+        int[] a=new int[]{5,4,3,2,1};
 
-        for(int i=0;i<6;i++)
-            visuBSTree.insert(a[i]);
-        //visuBSTree.find(3);
-        //visuBSTree.findMax(visuBSTree.getRoot());
-        //visuBSTree.delete(5);
-        visuBSTree.getAllAnimation().play();
+        for(int i=0;i<5;i++)
+            visuAVLTree.insert(a[i]);
+        //visuAVLTree.find(3);
+        //visuAVLTree.findMax(visuAVLTree.getRoot());
+        //visuAVLTree.delete(2);
+        visuAVLTree.LLRotation(visuAVLTree.root.leftChild.leftChild,true);
+        visuAVLTree.getAllAnimation().play();
 
         /*BasicNode bNode=new BasicNode(100,100,10,true);
         root.getChildren().add(bNode);

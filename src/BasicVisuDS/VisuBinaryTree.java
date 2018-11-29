@@ -11,7 +11,7 @@ import javafx.scene.layout.AnchorPane;
 //共六层，层间高度120，上下各留60,高720
 
 public class VisuBinaryTree {
-    protected Node root=null;
+    public Node root=null;
     protected AnimationManager animationManager=new AnimationManager();
     public VisuBinaryTree(AnchorPane anchorPane){
         Node.setAnchorPane(anchorPane);
