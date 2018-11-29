@@ -23,32 +23,37 @@ public class VisuAVLTree extends VisuBSTree {
 
     public Node LLRotation(Node root,boolean rootIsLeftChild){
         Node parent=root.parent,leftChild=root.leftChild;
-        BasicNode parentVisuNode=root.parent.visuNode,leftChildVisuNode=root.leftChild.visuNode;
+        BasicNode parentVisuNode=parent.visuNode,leftChildVisuNode=leftChild.visuNode;
 
-        Animation leftChildEdgeMove= AnimationGenerator.changeEdgeToNode(Node.getAnchorPane(),root.leftChild.edge,parentVisuNode.getLayoutX(),parentVisuNode.getLayoutY(),parentVisuNode);
-        Animation rootEdgeMove=AnimationGenerator.changeEdgeToNode(Node.getAnchorPane(),root.parent.edge,leftChildVisuNode.getLayoutX(),leftChildVisuNode.getLayoutY(),leftChildVisuNode);
+        Animation leftChildEdgeMove= AnimationGenerator.changeEdgeToNode(Node.getAnchorPane(),leftChild.edge,parentVisuNode.getLayoutX(),parentVisuNode.getLayoutY(),parentVisuNode);
+        Animation rootEdgeMove=AnimationGenerator.changeEdgeToNode(Node.getAnchorPane(),root.edge,leftChildVisuNode.getLayoutX(),leftChildVisuNode.getLayoutY(),leftChildVisuNode);
         ParallelTransition edgeMove=new ParallelTransition(leftChildEdgeMove,rootEdgeMove);
         if(leftChild.haveRightChild())
             animationManager.addNewAnimation(AnimationGenerator.changeEdgeToNode(Node.getAnchorPane(),root.leftChild.rightChild.edge,root.visuNode.getLayoutX(),root.visuNode.getLayoutY(),root.visuNode));
 
         Node tmp=root.leftChild.rightChild;
-        root.leftChild.parent=rootIsLeftChild?root.parent.leftChild:root.parent.rightChild;
+        root.leftChild.parent=parent;
         if(rootIsLeftChild)
             root.parent.leftChild=root.leftChild;
         else
             root.parent.rightChild=root.leftChild;
-        root.parent=root.leftChild;
-        root.leftChild.rightChild=root;
+        root.parent=leftChild;
+        leftChild.rightChild=root;
         root.leftChild=tmp;
         if(tmp!=null)
             tmp.parent=root;
 
         Animation nodeMove1=reCalcNodeLayoutAndGetAnima(leftChild,parent,rootIsLeftChild);
-        Animation nodeMove2=reCalcNodeLayoutAndGetAnima(root,leftChild,false);
+        Animation nodeMove2=reCalcNodeLayoutAndGetAnima(root,leftChild,leftChild.layoutX,leftChild.layoutY,false);
         ParallelTransition nodeMove=new ParallelTransition(nodeMove1,nodeMove2);
 
         animationManager.addNewAnimation(new SequentialTransition(edgeMove,nodeMove));
 
         return leftChild;
+    }
+
+    public Node RRRotation(Node root,boolean rootIsLeftChild){
+        Node parent=root.parent,rightChild=root.rightChild;
+
     }
 }

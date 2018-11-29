@@ -51,9 +51,11 @@ public class VisuBinaryTree {
             return node.rightChild.edge.getEmphasizeAnimation();
     }
 
-    private void innerReCalcNodeLayoutsAndGetAnima(Node curNode, Node Parent,double parenLayoutX,double parentLayoutY, boolean isLeftChild,ParallelTransition nodeMoveAnima){
-        double newLayoutX=parenLayoutX+ 2* Parameters.nodeRadius*(isLeftChild?-8/Math.pow(2,Parent.depth):8/Math.pow(2,Parent.depth));
+    private void innerReCalcNodeLayoutsAndGetAnima(Node curNode, Node Parent,double parentLayoutX,double parentLayoutY, boolean isLeftChild,ParallelTransition nodeMoveAnima){
+        double newLayoutX=parentLayoutX+ 2* Parameters.nodeRadius*(isLeftChild?-8/Math.pow(2,Parent.depth):8/Math.pow(2,Parent.depth));
         double newLayoutY=parentLayoutY+Parameters.TreeLayerHeight;
+        curNode.layoutX=newLayoutX;
+        curNode.layoutY=newLayoutY;
         nodeMoveAnima.getChildren().add(AnimationGenerator.getMoveAnimation(curNode.visuNode,newLayoutX,newLayoutY));
         curNode.depth=Parent.depth+1;
         if(curNode.haveLeftChild())
@@ -65,6 +67,13 @@ public class VisuBinaryTree {
     protected ParallelTransition reCalcNodeLayoutAndGetAnima(Node root,Node newParent,boolean isLeftChild){
         ParallelTransition nodeMoveAnima=new ParallelTransition();
         innerReCalcNodeLayoutsAndGetAnima(root,newParent,newParent.visuNode.getLayoutX(),newParent.visuNode.getLayoutY(),isLeftChild,nodeMoveAnima);
+        //nodeMoveAnima.getChildren().add(AnimationGenerator.changeEdgeToNode(Node.anchorPane,root.edge,newParent.visuNode.getLayoutX(),newParent.visuNode.getLayoutY(),newParent.visuNode));
+        return nodeMoveAnima;
+    }
+
+    protected ParallelTransition reCalcNodeLayoutAndGetAnima(Node root,Node newParent,double newParentX,double newParentY,boolean isLeftChild){
+        ParallelTransition nodeMoveAnima=new ParallelTransition();
+        innerReCalcNodeLayoutsAndGetAnima(root,newParent,newParentX,newParentY,isLeftChild,nodeMoveAnima);
         //nodeMoveAnima.getChildren().add(AnimationGenerator.changeEdgeToNode(Node.anchorPane,root.edge,newParent.visuNode.getLayoutX(),newParent.visuNode.getLayoutY(),newParent.visuNode));
         return nodeMoveAnima;
     }
