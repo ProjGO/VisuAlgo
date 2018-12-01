@@ -1,7 +1,6 @@
 package UI;
 
 import Algorithm.VisuAVLTree;
-import Algorithm.VisuBSTree;
 import BasicAnimation.AnimationGenerator;
 import VisualElements.Node.BasicNode;
 import javafx.application.Application;
@@ -27,14 +26,14 @@ public class Main extends Application {
 
         VisuAVLTree visuAVLTree=new VisuAVLTree(root);
 
-        int[] a=new int[]{5,4,3,2,1};
+        int[] a=new int[]{5,1,4};
 
-        for(int i=0;i<5;i++)
-            visuAVLTree.insert(a[i]);
+        for(int i=0;i<3;i++)
+            visuAVLTree.innerInsert(a[i]);
         //visuAVLTree.find(3);
         //visuAVLTree.findMax(visuAVLTree.getRoot());
         //visuAVLTree.delete(2);
-        visuAVLTree.LLRotation(visuAVLTree.root,true);
+        visuAVLTree.LRRotation(visuAVLTree.root,true);
         visuAVLTree.getAllAnimation().play();
 
         /*BasicNode bNode=new BasicNode(100,100,10,true);

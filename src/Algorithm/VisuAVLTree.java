@@ -10,9 +10,7 @@ import javafx.animation.ParallelTransition;
 import javafx.animation.SequentialTransition;
 import javafx.scene.layout.AnchorPane;
 
-import javax.swing.table.TableModel;
-
-public class VisuAVLTree extends VisuBSTree {
+public class VisuAVLTree extends VisuBinaryTree {
     public VisuAVLTree(AnchorPane anchorPane){
         super(anchorPane);
     }
@@ -130,5 +128,53 @@ public class VisuAVLTree extends VisuBSTree {
             animationManager.addNewAnimation(animation);
             return rightChild;
         }
+    }
+
+    public Node LRRotation(Node root,boolean rootIsLeftChild){
+        root.leftChild=RRRotation(root.leftChild,true);
+        return LLRotation(root,rootIsLeftChild);
+    }
+
+    public Node RLRotation(Node root,boolean rootIsLeftChild){
+        root.rightChild=LLRotation(root.rightChild,false);
+        return RRRotation(root,rootIsLeftChild);
+    }
+
+    private Node innerInsert(Node curNode, int value, boolean isLeftChild){
+        if(value<curNode.value.get()){
+            if(curNode.haveLeftChild()){
+                animationManager.addNewAnimation(curNode.leftChild.edge.getToFromEmphaAnimation());
+                animationManager.addNewAnimation(curNode.leftChild.visuNode.getEmphasizeAnimation());
+                curNode.leftChild= innerInsert(curNode.leftChild,value,true);
+                if(getHeight(curNode.leftChild)-getHeight(curNode.rightChild)>1){
+                    if(value<curNode.leftChild.value.get())
+                        curNode=LLRotation(curNode,isLeftChild);
+                    else
+                        curNode=LRRotation(curNode,isLeftChild);
+                }
+            }else{
+                addNode(value,curNode,true);
+            }
+        }else if(value>curNode.value.get()){
+            if(curNode.haveRightChild()){
+                animationManager.addNewAnimation(curNode.rightChild.edge.getToFromEmphaAnimation());
+                animationManager.addNewAnimation(curNode.rightChild.visuNode.getEmphasizeAnimation());
+                curNode.rightChild= innerInsert(curNode.rightChild,value,false);
+                if(getHeight(curNode.rightChild)-getHeight(curNode.leftChild)>1){
+                    if(value<curNode.rightChild.value.get())
+                        curNode=RLRotation(curNode,isLeftChild);
+                    else
+                        curNode=RRRotation(curNode,isLeftChild);
+                }
+            }else{
+                addNode(value,curNode,false);
+            }
+        }
+        curNode.height=Math.max(getHeight(curNode.leftChild),getHeight(curNode.rightChild))+1;
+        return curNode;
+    }
+
+    public boolean insert(int value){
+
     }
 }
