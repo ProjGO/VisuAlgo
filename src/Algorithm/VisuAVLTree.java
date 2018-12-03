@@ -6,11 +6,12 @@ import BasicVisuDS.VisuBinaryTree;
 import VisualElements.Edge.UnwUndirEdge;
 import VisualElements.Node.BasicNode;
 import javafx.animation.Animation;
+import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.SequentialTransition;
 import javafx.scene.layout.AnchorPane;
 
-public class VisuAVLTree extends VisuBinaryTree {
+public class VisuAVLTree extends VisuBSTree {
     public VisuAVLTree(AnchorPane anchorPane){
         super(anchorPane);
     }
@@ -63,6 +64,7 @@ public class VisuAVLTree extends VisuBinaryTree {
             root.leftChild = leftChild.rightChild;
             root.parent=leftChild;
             leftChild.rightChild=root;
+            leftChild.parent=null;
             this.root=leftChild;
             Animation animation=reCalcNodeLayoutAndGetAnima(leftChild);
             animation.setOnFinished(e->{
@@ -120,6 +122,7 @@ public class VisuAVLTree extends VisuBinaryTree {
             root.rightChild = rightChild.leftChild;
             root.parent=rightChild;
             rightChild.leftChild=root;
+            rightChild.parent=null;
             this.root=rightChild;
             Animation animation=reCalcNodeLayoutAndGetAnima(rightChild);
             animation.setOnFinished(e->{
@@ -185,6 +188,7 @@ public class VisuAVLTree extends VisuBinaryTree {
         return curNode;
     }
 
+    @Override
     public boolean insert(int value){
         if(root==null)
             addFirstNode(value);

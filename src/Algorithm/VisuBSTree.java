@@ -4,7 +4,10 @@ import BasicAnimation.AnimationGenerator;
 import BasicAnimation.AnimationManager;
 import BasicVisuDS.Node;
 import BasicVisuDS.VisuBinaryTree;
+import VisualElements.Edge.Edge;
+import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
+import javafx.animation.ParallelTransition;
 import javafx.scene.layout.AnchorPane;
 
 import javax.xml.crypto.dsig.XMLSignature;
@@ -119,26 +122,62 @@ public class VisuBSTree extends VisuBinaryTree {
                     animationManager.addNewAnimation(curNode.edge.getToFromEmphaAnimation());
                     animationManager.addNewAnimation(curNode.visuNode.getEmphasizeAnimation());
                 }else{
-                    boolean isLeftChild=curNode.value.get()<curNode.parent.value.get();
-                    animationManager.addNewAnimation(AnimationGenerator.getDisappearAnimation(curNode.visuNode));
-                    FadeTransition edgeDisappearAnima=AnimationGenerator.getDisappearAnimation(curNode.edge);
-                    Node finalCurNode = curNode;
-                    edgeDisappearAnima.setOnFinished(e->Node.getAnchorPane().getChildren().removeAll(finalCurNode.visuNode, finalCurNode.edge));
-                    animationManager.addNewAnimation(edgeDisappearAnima);
-                    if(curNode.haveLeftChild()){
-                        if(isLeftChild)
-                            curNode.parent.leftChild=curNode.leftChild;
-                        else
-                            curNode.parent.rightChild=curNode.leftChild;
-                        animationManager.addNewAnimation(AnimationGenerator.changeEdgeToNode(Node.getAnchorPane(),curNode.leftChild.edge,curNode.parent.visuNode.getLayoutX(),curNode.parent.visuNode.getLayoutY(),curNode.parent.visuNode));
-                        animationManager.addNewAnimation(reCalcNodeLayoutAndGetAnima(curNode.leftChild,curNode.parent,isLeftChild));
-                    }else if(curNode.haveRightChild()){
-                        if(isLeftChild)
-                            curNode.parent.leftChild=curNode.rightChild;
-                        else
-                            curNode.parent.rightChild=curNode.rightChild;
-                        animationManager.addNewAnimation(AnimationGenerator.changeEdgeToNode(Node.getAnchorPane(),curNode.rightChild.edge,curNode.parent.visuNode.getLayoutX(),curNode.parent.visuNode.getLayoutY(),curNode.parent.visuNode));
-                        animationManager.addNewAnimation(reCalcNodeLayoutAndGetAnima(curNode.rightChild,curNode.parent,isLeftChild));
+                    if(curNode!=root) {
+                        boolean isLeftChild = curNode.value.get() < curNode.parent.value.get();
+                        animationManager.addNewAnimation(AnimationGenerator.getDisappearAnimation(curNode.visuNode));
+                        FadeTransition edgeDisappearAnima = AnimationGenerator.getDisappearAnimation(curNode.edge);
+                        Node finalCurNode = curNode;
+                        edgeDisappearAnima.setOnFinished(e -> Node.getAnchorPane().getChildren().removeAll(finalCurNode.visuNode, finalCurNode.edge));
+                        animationManager.addNewAnimation(edgeDisappearAnima);
+                        if (curNode.haveLeftChild()) {
+                            if (isLeftChild)
+                                curNode.parent.leftChild = curNode.leftChild;
+                            else
+                                curNode.parent.rightChild = curNode.leftChild;
+                            animationManager.addNewAnimation(AnimationGenerator.changeEdgeToNode(Node.getAnchorPane(), curNode.leftChild.edge, curNode.parent.visuNode.getLayoutX(), curNode.parent.visuNode.getLayoutY(), curNode.parent.visuNode));
+                            animationManager.addNewAnimation(reCalcNodeLayoutAndGetAnima(curNode.leftChild, curNode.parent, isLeftChild));
+                        } else if (curNode.haveRightChild()) {
+                            if (isLeftChild)
+                                curNode.parent.leftChild = curNode.rightChild;
+                            else
+                                curNode.parent.rightChild = curNode.rightChild;
+                            animationManager.addNewAnimation(AnimationGenerator.changeEdgeToNode(Node.getAnchorPane(), curNode.rightChild.edge, curNode.parent.visuNode.getLayoutX(), curNode.parent.visuNode.getLayoutY(), curNode.parent.visuNode));
+                            animationManager.addNewAnimation(reCalcNodeLayoutAndGetAnima(curNode.rightChild, curNode.parent, isLeftChild));
+                        }
+                    }else{//要删除根节点
+                        Node child,oldRoot;
+                        ParallelTransition removeRootAnima;
+                        if(curNode.haveLeftChild()) {//如果根节点有左儿子
+                            child = root.leftChild;
+                            oldRoot = root;
+                            Edge edge = child.edge;
+                            removeRootAnima = new ParallelTransition();
+                            removeRootAnima.getChildren().add(AnimationGenerator.getDisappearAnimation(root.visuNode));
+                            removeRootAnima.getChildren().add(AnimationGenerator.getDisappearAnimation(root.leftChild.edge));
+                            removeRootAnima.setOnFinished(e -> { Node.getAnchorPane().getChildren().removeAll(oldRoot.visuNode, edge);});
+                            animationManager.addNewAnimation(removeRootAnima);
+                            child.parent = null;
+                            root = child;
+                            animationManager.addNewAnimation(reCalcNodeLayoutAndGetAnima(child));
+                        }else if(curNode.haveRightChild()){
+                            child = root.rightChild;
+                            oldRoot = root;
+                            Edge edge = child.edge;
+                            removeRootAnima = new ParallelTransition();
+                            removeRootAnima.getChildren().add(AnimationGenerator.getDisappearAnimation(root.visuNode));
+                            removeRootAnima.getChildren().add(AnimationGenerator.getDisappearAnimation(root.rightChild.edge));
+                            removeRootAnima.setOnFinished(e -> { Node.getAnchorPane().getChildren().removeAll(oldRoot.visuNode, edge); });
+                            animationManager.addNewAnimation(removeRootAnima);
+                            child.parent = null;
+                            root = child;
+                            animationManager.addNewAnimation(reCalcNodeLayoutAndGetAnima(child));
+                        }else{
+                            oldRoot=root;
+                            Animation removeRoot=AnimationGenerator.getDisappearAnimation(root.visuNode);
+                            removeRoot.setOnFinished(e->{Node.getAnchorPane().getChildren().removeAll(oldRoot.visuNode);});
+                            animationManager.addNewAnimation(removeRoot);
+                            root=null;
+                        }
                     }
                     deleted=true;
                 }

@@ -42,8 +42,14 @@ public class TreeController implements Initializable {
     }
 
     public void onFindClick(ActionEvent actionEvent) {
+        visuAVLTree.clearAllAnimation();
+        visuAVLTree.find(Integer.parseInt(textField.getText()));
+        visuAVLTree.getAllAnimation().play();
     }
 
     public void onDeleteClick(ActionEvent actionEvent) {
+        visuAVLTree.clearAllAnimation();
+        visuAVLTree.delete(Integer.parseInt(textField.getText()));
+        visuAVLTree.getAllAnimation().play();
     }
 }
