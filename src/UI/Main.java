@@ -16,7 +16,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        AnchorPane root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        FXMLLoader loader=new FXMLLoader(Main.class.getResource("TreeScene.fxml"));
+        AnchorPane root = loader.load();
+        TreeController controller=loader.getController();
+        controller.setAnchoPane(root);
         primaryStage.setTitle("VisuAlgo");
         primaryStage.setScene(new Scene(root, 1280, 720));
 
@@ -24,17 +27,17 @@ public class Main extends Application {
 
         AnimationGenerator.setRate(3.0);
 
-        VisuAVLTree visuAVLTree=new VisuAVLTree(root);
+        //VisuAVLTree visuAVLTree=new VisuAVLTree(root);
 
-        int[] a=new int[]{5,1,4};
+        //int[] a=new int[]{6,5,4,3,2,1};
 
-        for(int i=0;i<3;i++)
-            visuAVLTree.innerInsert(a[i]);
+        //for(int i=0;i<5;i++)
+        //    visuAVLTree.insert(a[i]);
         //visuAVLTree.find(3);
         //visuAVLTree.findMax(visuAVLTree.getRoot());
         //visuAVLTree.delete(2);
-        visuAVLTree.LRRotation(visuAVLTree.root,true);
-        visuAVLTree.getAllAnimation().play();
+        //visuAVLTree.LRRotation(visuAVLTree.root,true);
+        //visuAVLTree.getAllAnimation().play();
 
         /*BasicNode bNode=new BasicNode(100,100,10,true);
         root.getChildren().add(bNode);

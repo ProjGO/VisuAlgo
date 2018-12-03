@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.TreeScene">
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.TreeController">
    <children>
-      <AnchorPane layoutX="263.0" layoutY="116.0" prefHeight="489.0" prefWidth="755.0" />
-      <Button layoutX="37.0" layoutY="66.0" mnemonicParsing="false" text="Button" />
+      <TextField fx:id="textField" layoutX="1054.0" layoutY="67.0" />
+      <Button fx:id="insertButton" layoutX="1150.0" layoutY="132.0" mnemonicParsing="false" onAction="#onInsertClick" text="Insert" />
+      <Button fx:id="findButton" layoutX="1155.0" layoutY="188.0" mnemonicParsing="false" onAction="#onFindClick" text="Find" />
+      <Button fx:id="deleteButton" layoutX="1146.0" layoutY="247.0" mnemonicParsing="false" onAction="#onDeleteClick" text="Delete" />
    </children>
 </AnchorPane>

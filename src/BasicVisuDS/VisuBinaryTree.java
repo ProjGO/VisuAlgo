@@ -95,4 +95,8 @@ public class VisuBinaryTree {
     public Node getRoot(){
         return root;
     }
+
+    public void clearAllAnimation(){
+        animationManager.clear();
+    }
 }

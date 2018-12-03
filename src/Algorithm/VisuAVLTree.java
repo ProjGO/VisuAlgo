@@ -46,15 +46,13 @@ public class VisuAVLTree extends VisuBinaryTree {
                 tmp.parent = root;
 
             Animation nodeMove1;
-            if (parent != null)
-                nodeMove1 = reCalcNodeLayoutAndGetAnima(leftChild, parent, rootIsLeftChild);
-            else
-                nodeMove1 = reCalcNodeLayoutAndGetAnima(leftChild);
+            nodeMove1 = reCalcNodeLayoutAndGetAnima(leftChild, parent, rootIsLeftChild);
             Animation nodeMove2 = reCalcNodeLayoutAndGetAnima(root, leftChild, leftChild.layoutX, leftChild.layoutY, false);
             ParallelTransition nodeMove = new ParallelTransition(nodeMove1, nodeMove2);
 
             animationManager.addNewAnimation(new SequentialTransition(edgeMove, nodeMove));
-
+            root.height=Math.max(getHeight(root.leftChild),getHeight(root.rightChild))+1;
+            leftChild.height=Math.max(getHeight(leftChild.leftChild),getHeight(leftChild.rightChild))+1;
             return leftChild;
         }else{
             Node leftChild=root.leftChild;
@@ -74,6 +72,8 @@ public class VisuAVLTree extends VisuBinaryTree {
                 leftChild.edge=null;
             });
             animationManager.addNewAnimation(animation);
+            root.height=Math.max(getHeight(root.leftChild),getHeight(root.rightChild))+1;
+            leftChild.height=Math.max(getHeight(leftChild.leftChild),getHeight(leftChild.rightChild))+1;
             return leftChild;
         }
     }
@@ -107,6 +107,9 @@ public class VisuAVLTree extends VisuBinaryTree {
 
             animationManager.addNewAnimation(new SequentialTransition(edgeMove, nodeMove));
 
+            root.height=Math.max(getHeight(root.leftChild),getHeight(root.rightChild))+1;
+            rightChild.height=Math.max(getHeight(rightChild.leftChild),getHeight(rightChild.rightChild))+1;
+
             return rightChild;
         }else{
             Node rightChild=root.rightChild;
@@ -126,6 +129,10 @@ public class VisuAVLTree extends VisuBinaryTree {
                 rightChild.edge=null;
             });
             animationManager.addNewAnimation(animation);
+
+            root.height=Math.max(getHeight(root.leftChild),getHeight(root.rightChild))+1;
+            rightChild.height=Math.max(getHeight(rightChild.leftChild),getHeight(rightChild.rightChild))+1;
+
             return rightChild;
         }
     }
@@ -171,10 +178,18 @@ public class VisuAVLTree extends VisuBinaryTree {
             }
         }
         curNode.height=Math.max(getHeight(curNode.leftChild),getHeight(curNode.rightChild))+1;
+        if(curNode==root)
+            reCalcNodeLayoutAndGetAnima(curNode);
+        else
+            reCalcNodeLayoutAndGetAnima(curNode, curNode.parent,isLeftChild);
         return curNode;
     }
 
     public boolean insert(int value){
-
+        if(root==null)
+            addFirstNode(value);
+        else
+            innerInsert(root,value,false);
+        return true;
     }
 }
