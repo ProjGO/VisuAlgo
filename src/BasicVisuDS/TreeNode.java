@@ -2,22 +2,22 @@ package BasicVisuDS;
 
 import Parameters.Parameters;
 import VisualElements.Edge.UnwUndirEdge;
-import VisualElements.Node.BasicNode;
+import VisualElements.Node.BasicVisuNode;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.layout.AnchorPane;
 
-public class Node{
-    static AnchorPane anchorPane;
+public class TreeNode {
+    private static AnchorPane anchorPane;
     public SimpleIntegerProperty value;
-    public Node leftChild,rightChild,parent;
-    public int depth;//最上面的节点depth为0
+    public TreeNode leftChild,rightChild,parent;
+    int depth;//最上面的节点depth为0
     public int height;//最下层是0
-    public BasicNode visuNode;
+    public BasicVisuNode visuNode;
     public double layoutX,layoutY;
     public UnwUndirEdge edge=null;//节点所属的边以自己为from，以父节点为to
     public boolean isRoot;
 
-    public Node(int value,Node parent,boolean isLeftChild){
+    public TreeNode(int value, TreeNode parent, boolean isLeftChild){
         double layoutX,layoutY;
         layoutX=parent.visuNode.getLayoutX()+ 2* Parameters.nodeRadius*(isLeftChild?-8/Math.pow(2,parent.depth):8/Math.pow(2,parent.depth));
         layoutY=parent.visuNode.getLayoutY()+ Parameters.TreeLayerHeight;
@@ -28,7 +28,7 @@ public class Node{
         anchorPane.getChildren().addAll(edge);
     }
 
-    public Node(int value,double layoutX,double layoutY){
+    public TreeNode(int value, double layoutX, double layoutY){
         initialize(value,layoutX,layoutY);
         this.parent=null;
         this.depth=0;
@@ -39,7 +39,7 @@ public class Node{
         this.value=new SimpleIntegerProperty(value);
         leftChild=null;
         rightChild=null;
-        visuNode=new BasicNode(layoutX,layoutY,value,false);
+        visuNode=new BasicVisuNode(layoutX,layoutY,value,false);
         this.layoutX=layoutX;
         this.layoutY=layoutY;
         visuNode.getDataProperty().bindBidirectional(this.value);
@@ -49,7 +49,7 @@ public class Node{
     }
 
     public static void setAnchorPane(AnchorPane anchorPane){
-        Node.anchorPane =anchorPane;
+        TreeNode.anchorPane =anchorPane;
     }
 
     public static AnchorPane getAnchorPane(){

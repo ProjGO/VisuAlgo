@@ -1,13 +1,9 @@
 package UI;
 
 import BasicAnimation.AnimationGenerator;
-import VisualElements.Node.BasicNode;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -18,7 +14,7 @@ public class Main extends Application {
         FXMLLoader loader=new FXMLLoader(Main.class.getResource("TreeScene.fxml"));
         AnchorPane root = loader.load();
         TreeController controller=loader.getController();
-        controller.setAnchoPane(root);
+        controller.setAnchorPane(root);
         primaryStage.setTitle("VisuAlgo");
         primaryStage.setScene(new Scene(root, 1280, 720));
 
@@ -36,34 +32,16 @@ public class Main extends Application {
 
 }
 
-class ClickHandler implements EventHandler<MouseEvent>{
-
-    AnchorPane root;
-
-    public ClickHandler(AnchorPane root){
-        this.root=root;
-    }
-
-    @Override
-    public void handle(MouseEvent e){
-        if(e.getEventType()==MouseEvent.MOUSE_CLICKED&&e.getButton()== MouseButton.SECONDARY) {
-            BasicNode basicNode=new BasicNode(e.getSceneX(), e.getSceneY(), 5, true);
-            root.getChildren().add(basicNode);
-            AnimationGenerator.getAppearAnimation(basicNode).play();
-        }
-    }
-}
-
 
 
 /*
 
-        BasicNode bNode1=new BasicNode(100,0,1,true);
-        BasicNode bNode2=new BasicNode(00,300,2,true);
+        BasicVisuNode bNode1=new BasicVisuNode(100,0,1,true);
+        BasicVisuNode bNode2=new BasicVisuNode(00,300,2,true);
         bNode2.setDragable();
         bNode1.setDragable();
 
-        BasicNode bNode3=new BasicNode(500,500,3,true);
+        BasicVisuNode bNode3=new BasicVisuNode(500,500,3,true);
         bNode3.setDragable();
 
         //root.getChildren().addAll(new UndirectedEdge(bNode1.layoutXProperty(),bNode1.layoutYProperty(),bNode2.layoutXProperty(),bNode2.layoutYProperty(),3),bNode1,bNode2,bNode3);
@@ -96,6 +74,6 @@ class ClickHandler implements EventHandler<MouseEvent>{
 //visuAVLTree.LRRotation(visuAVLTree.root,true);
 //visuAVLTree.getAllAnimation().play();
 
-        /*BasicNode bNode=new BasicNode(100,100,10,true);
+        /*BasicVisuNode bNode=new BasicVisuNode(100,100,10,true);
         root.getChildren().add(bNode);
         bNode.getEmphasizeAnimation().play();*/

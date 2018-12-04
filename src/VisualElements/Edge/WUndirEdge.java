@@ -1,10 +1,10 @@
 package VisualElements.Edge;
 
-import VisualElements.Node.BasicNode;
+import VisualElements.Node.BasicVisuNode;
 
 public class WUndirEdge extends WeightedEdge {
 
-    public WUndirEdge(BasicNode from, BasicNode to, int weight){
+    public WUndirEdge(BasicVisuNode from, BasicVisuNode to, int weight){
         BasicUnwDirEdge BasicUnwDirEdge =new BasicUnwDirEdge();
     }
 

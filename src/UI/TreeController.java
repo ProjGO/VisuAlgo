@@ -1,7 +1,7 @@
 package UI;
 
 import Algorithm.VisuAVLTree;
-import BasicVisuDS.Node;
+import BasicVisuDS.TreeNode;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -31,8 +31,8 @@ public class TreeController implements Initializable {
         visuAVLTree=new VisuAVLTree(null);
     }
 
-    public void setAnchoPane(AnchorPane anchorPane){
-        Node.setAnchorPane(anchorPane);
+    public void setAnchorPane(AnchorPane anchorPane){
+        TreeNode.setAnchorPane(anchorPane);
     }
 
     public void onInsertClick(ActionEvent actionEvent) {

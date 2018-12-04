@@ -1,11 +1,11 @@
 package VisualElements.Edge;
 
-import VisualElements.Node.BasicNode;
+import VisualElements.Node.BasicVisuNode;
 
 public class UnwUndirEdge extends Edge {
     BasicUnwUndirEdge basicUnwUndirEdge=new BasicUnwUndirEdge();
 
-    public UnwUndirEdge(BasicNode from, BasicNode to){
+    public UnwUndirEdge(BasicVisuNode from, BasicVisuNode to){
         super.initialize(from,to,basicUnwUndirEdge);
     }
 

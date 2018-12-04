@@ -2,7 +2,7 @@ package VisualElements.Edge;
 
 import BasicAnimation.AnimationGenerator;
 import Parameters.Parameters;
-import VisualElements.Node.BasicNode;
+import VisualElements.Node.BasicVisuNode;
 import javafx.animation.FillTransition;
 import javafx.animation.SequentialTransition;
 import javafx.beans.property.DoubleProperty;
@@ -19,7 +19,7 @@ public class Edge extends Group {
 
     private SimpleDoubleProperty zero = new SimpleDoubleProperty(0);
 
-    protected void initialize(BasicNode from, BasicNode to, BasicEdge _basicEdge) {
+    protected void initialize(BasicVisuNode from, BasicVisuNode to, BasicEdge _basicEdge) {
         basicEdge=_basicEdge;
         bindLayoutProperty(from.layoutXProperty(),from.layoutYProperty(),to.layoutXProperty(),to.layoutYProperty());
         basicEdge.setFromNodeXProperty(zero);
@@ -82,7 +82,7 @@ public class Edge extends Group {
     }
 
     public SequentialTransition getFromToEmphaAnimation(){
-        BasicNode tempFromNode=new BasicNode(0,0,0,false),tempToNode=new BasicNode(0,0,0,false);
+        BasicVisuNode tempFromNode=new BasicVisuNode(0,0,0,false),tempToNode=new BasicVisuNode(0,0,0,false);
         UnwUndirEdge tempEdge=new UnwUndirEdge(tempFromNode,tempToNode);
         tempEdge.setFillColor(Color.ORANGE);
         getChildren().addAll(tempFromNode,tempToNode,tempEdge);
@@ -97,7 +97,7 @@ public class Edge extends Group {
     }
 
     public SequentialTransition getToFromEmphaAnimation(){
-        BasicNode tempFromNode=new BasicNode(toXProperty.get(),toYProperty.get(),0,false),tempToNode=new BasicNode(toXProperty.get(),toYProperty.get(),0,false);
+        BasicVisuNode tempFromNode=new BasicVisuNode(toXProperty.get(),toYProperty.get(),0,false),tempToNode=new BasicVisuNode(toXProperty.get(),toYProperty.get(),0,false);
         UnwUndirEdge tempEdge=new UnwUndirEdge(tempFromNode,tempToNode);
         tempEdge.setFillColor(Color.ORANGE);
         getChildren().addAll(tempFromNode,tempToNode,tempEdge);
@@ -111,7 +111,7 @@ public class Edge extends Group {
     public SequentialTransition getAppearAnimation(){
         SequentialTransition appearAnimation=new SequentialTransition();
 
-        BasicNode TempFromNode=new BasicNode(toXProperty.get(),toYProperty.get(),0,false);
+        BasicVisuNode TempFromNode=new BasicVisuNode(toXProperty.get(),toYProperty.get(),0,false);
         getChildren().add(TempFromNode);
         basicEdge.setFromNodeXProperty(TempFromNode.layoutXProperty());
         basicEdge.setFromNodeYProperty(TempFromNode.layoutYProperty());

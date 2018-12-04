@@ -5,7 +5,7 @@ import javafx.scene.paint.Color;
 public class Parameters {
     //VisuElements
 
-    //Node
+    //TreeNode
     public static final double nodeRadius=20;
     public static final double nodeStrokeWidth=5;
     public static final Color nodeColor=Color.WHITE;

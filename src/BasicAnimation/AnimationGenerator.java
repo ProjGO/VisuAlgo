@@ -1,7 +1,7 @@
 package BasicAnimation;
 
 import Parameters.Parameters;
-import VisualElements.Node.BasicNode;
+import VisualElements.Node.BasicVisuNode;
 import VisualElements.Edge.Edge;
 import javafx.animation.*;
 import javafx.beans.property.DoubleProperty;
@@ -13,8 +13,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 import javafx.util.Duration;
-
-import java.awt.*;
 
 public class AnimationGenerator {
 
@@ -69,8 +67,8 @@ public class AnimationGenerator {
         return new FillTransition(Duration.millis(Parameters.emphaAnimaDuration),shape,fromColor,toColor);
     }
 
-    public static SequentialTransition getNodeEmphAnimation(BasicNode basicNode){
-        return basicNode.getEmphasizeAnimation();
+    public static SequentialTransition getNodeEmphAnimation(BasicVisuNode basicVisuNode){
+        return basicVisuNode.getEmphasizeAnimation();
     }
 
     public static SequentialTransition getEdgeEmphaAnimation(Edge edge){
@@ -78,7 +76,7 @@ public class AnimationGenerator {
     }
 
 
-    public static Timeline changeEdgeToNode(AnchorPane pane, Edge edge, double newToNodeX,double newToNodeY,BasicNode newToNode){
+    public static Timeline changeEdgeToNode(AnchorPane pane, Edge edge, double newToNodeX, double newToNodeY, BasicVisuNode newToNode){
         Timeline timeline=new Timeline();
         Circle toPoint=new Circle(0);
         toPoint.setLayoutX(edge.getToX());
@@ -97,7 +95,7 @@ public class AnimationGenerator {
         return timeline;
     }
 
-    public static Timeline changeEdgeFromNode(AnchorPane pane, Edge edge, double newFromNodeX,double newFromNodeY,BasicNode newFromNode){
+    public static Timeline changeEdgeFromNode(AnchorPane pane, Edge edge, double newFromNodeX, double newFromNodeY, BasicVisuNode newFromNode){
         Timeline timeline=new Timeline();
         Circle fromPoint=new Circle(0);
         edge.unbindFromLayoutProperty();

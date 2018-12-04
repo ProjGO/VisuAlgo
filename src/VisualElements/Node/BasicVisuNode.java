@@ -17,7 +17,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-public class BasicNode extends Group {
+public class BasicVisuNode extends Group {
     private static Color circleColor= Parameters.nodeColor;
     private static double radius= Parameters.nodeRadius;
 
@@ -27,7 +27,7 @@ public class BasicNode extends Group {
 
     private static boolean isDragging=false;
 
-    public BasicNode(double x, double y, Integer _data,boolean dragable){
+    public BasicVisuNode(double x, double y, Integer _data, boolean dragable){
 
         circle=new Circle(radius);
         circle.setStrokeWidth(Parameters.nodeStrokeWidth);
@@ -49,9 +49,8 @@ public class BasicNode extends Group {
         text.setLayoutY(0.3*text.getBoundsInLocal().getHeight());
 
         data=new SimpleIntegerProperty(_data);
-        ChangeListener changeListener=(prop,oldValue,newValue)->
-            text.setText(newValue.toString());
-        data.addListener(changeListener);
+        data.addListener((prop,oldValue,newValue)->
+                text.setText(newValue.toString()));
 
         this.setLayoutX(x);
         this.setLayoutY(y);
@@ -74,7 +73,7 @@ public class BasicNode extends Group {
         double oldSceneX, oldSceneY;
         double oldLayoutX,oldLayoutY;
 
-        public DragEventHandler(Node node){
+        DragEventHandler(Node node){
             _node=node;
         }
 

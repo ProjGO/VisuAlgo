@@ -1,6 +1,6 @@
 package VisualElements.Edge;
 
-import VisualElements.Node.BasicNode;
+import VisualElements.Node.BasicVisuNode;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.text.Font;
@@ -8,14 +8,15 @@ import javafx.scene.text.Text;
 
 public class WeightedEdge extends Edge {
 
-    protected SimpleDoubleProperty midXProperty,midYProperty;
-    protected SimpleIntegerProperty weight;
-    protected Text text;
+    private SimpleDoubleProperty midXProperty,midYProperty;
+    private SimpleIntegerProperty weight;
+    private Text text;
 
-    protected void initialize(BasicNode from, BasicNode to, BasicEdge basicEdge, Integer _weight){
+    protected void initialize(BasicVisuNode from, BasicVisuNode to, BasicEdge basicEdge, Integer _weight){
         super.initialize(from,to,basicEdge);
 
         weight=new SimpleIntegerProperty(_weight);
+        weight.addListener((prop,oldValue,newValue)->text.setText(newValue.toString()));
 
         midXProperty=new SimpleDoubleProperty();
         midYProperty=new SimpleDoubleProperty();
@@ -29,4 +30,9 @@ public class WeightedEdge extends Edge {
 
         this.getChildren().add(text);
     }
+
+    public SimpleIntegerProperty getWeightProperty(){
+        return weight;
+    }
+
 }
