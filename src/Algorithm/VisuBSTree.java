@@ -113,16 +113,16 @@ public class VisuBSTree extends VisuBinaryTree {
             }else if(value>curNode.value.get()){
                 animationManager.addNewAnimation(getEdgeEmphaAnimation(curNode,false));
                 curNode=curNode.rightChild;
-            }else{
-                if(curNode.haveLeftChild()&&curNode.haveRightChild()){
+            }else{//找到了要删除的节点
+                if(curNode.haveLeftChild()&&curNode.haveRightChild()){//如果有两个儿子则用右子树中的最小值代替当前节点的值,并在右子树中继续删除右子树中的最小值
                     int tmp=findMin(curNode.rightChild);
                     animationManager.addNewAnimation(curNode.visuNode.getTextChangeAnima(tmp));
                     value=tmp;
                     curNode=curNode.rightChild;
                     animationManager.addNewAnimation(curNode.edge.getToFromEmphaAnimation());
                     animationManager.addNewAnimation(curNode.visuNode.getEmphasizeAnimation());
-                }else{
-                    if(curNode!=root) {
+                }else{//如果只有一个儿子或没有儿子
+                    if(curNode!=root) {//如果当前节点不是根节点
                         boolean isLeftChild = curNode.value.get() < curNode.parent.value.get();
                         animationManager.addNewAnimation(AnimationGenerator.getDisappearAnimation(curNode.visuNode));
                         FadeTransition edgeDisappearAnima = AnimationGenerator.getDisappearAnimation(curNode.edge);
@@ -143,6 +143,11 @@ public class VisuBSTree extends VisuBinaryTree {
                                 curNode.parent.rightChild = curNode.rightChild;
                             animationManager.addNewAnimation(AnimationGenerator.changeEdgeToNode(Node.getAnchorPane(), curNode.rightChild.edge, curNode.parent.visuNode.getLayoutX(), curNode.parent.visuNode.getLayoutY(), curNode.parent.visuNode));
                             animationManager.addNewAnimation(reCalcNodeLayoutAndGetAnima(curNode.rightChild, curNode.parent, isLeftChild));
+                        }else{
+                            if(isLeftChild)
+                                curNode.parent.leftChild=null;
+                            else
+                                curNode.parent.rightChild=null;
                         }
                     }else{//要删除根节点
                         Node child,oldRoot;
@@ -154,7 +159,7 @@ public class VisuBSTree extends VisuBinaryTree {
                             removeRootAnima = new ParallelTransition();
                             removeRootAnima.getChildren().add(AnimationGenerator.getDisappearAnimation(root.visuNode));
                             removeRootAnima.getChildren().add(AnimationGenerator.getDisappearAnimation(root.leftChild.edge));
-                            removeRootAnima.setOnFinished(e -> { Node.getAnchorPane().getChildren().removeAll(oldRoot.visuNode, edge);});
+                            removeRootAnima.setOnFinished(e ->Node.getAnchorPane().getChildren().removeAll(oldRoot.visuNode, edge));
                             animationManager.addNewAnimation(removeRootAnima);
                             child.parent = null;
                             root = child;
@@ -166,7 +171,7 @@ public class VisuBSTree extends VisuBinaryTree {
                             removeRootAnima = new ParallelTransition();
                             removeRootAnima.getChildren().add(AnimationGenerator.getDisappearAnimation(root.visuNode));
                             removeRootAnima.getChildren().add(AnimationGenerator.getDisappearAnimation(root.rightChild.edge));
-                            removeRootAnima.setOnFinished(e -> { Node.getAnchorPane().getChildren().removeAll(oldRoot.visuNode, edge); });
+                            removeRootAnima.setOnFinished(e ->Node.getAnchorPane().getChildren().removeAll(oldRoot.visuNode, edge));
                             animationManager.addNewAnimation(removeRootAnima);
                             child.parent = null;
                             root = child;

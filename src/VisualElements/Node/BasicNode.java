@@ -116,10 +116,11 @@ public class BasicNode extends Group {
         return emphasizeAnimation;
     }
 
-    public SequentialTransition getTextChangeAnima(Integer newValue){
+    public SequentialTransition getTextChangeAnima(Integer newValue){//产生节点数字改变的动画并且真的改变节点的值
         SequentialTransition sequentialTransition=new SequentialTransition();
         FadeTransition textDisappear=AnimationGenerator.getDisappearAnimation(text);
-        textDisappear.setOnFinished(e->text.setText(newValue.toString()));
+        //textDisappear.setOnFinished(e->text.setText(newValue.toString()));
+        textDisappear.setOnFinished(e->data.setValue(newValue));
         FadeTransition textAppear=AnimationGenerator.getAppearAnimation(text);
         sequentialTransition.getChildren().addAll(textDisappear,textAppear);
         return sequentialTransition;
