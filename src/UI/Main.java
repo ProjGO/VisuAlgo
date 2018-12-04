@@ -1,6 +1,5 @@
 package UI;
 
-import Algorithm.VisuAVLTree;
 import BasicAnimation.AnimationGenerator;
 import VisualElements.Node.BasicNode;
 import javafx.application.Application;
@@ -26,23 +25,6 @@ public class Main extends Application {
         //root.setOnMouseClicked(new ClickHandler(root));
 
         AnimationGenerator.setRate(3.0);
-
-        //VisuAVLTree visuAVLTree=new VisuAVLTree(root);
-
-        //int[] a=new int[]{6,5,4,3,2,1};
-
-        //for(int i=0;i<5;i++)
-        //    visuAVLTree.insert(a[i]);
-        //visuAVLTree.find(3);
-        //visuAVLTree.findMax(visuAVLTree.getRoot());
-        //visuAVLTree.delete(2);
-        //visuAVLTree.LRRotation(visuAVLTree.root,true);
-        //visuAVLTree.getAllAnimation().play();
-
-        /*BasicNode bNode=new BasicNode(100,100,10,true);
-        root.getChildren().add(bNode);
-        bNode.getEmphasizeAnimation().play();*/
-
 
         primaryStage.show();
     }
@@ -100,3 +82,20 @@ class ClickHandler implements EventHandler<MouseEvent>{
         SequentialTransition seq=new SequentialTransition(emp,move2,changeToNode);
 
  */
+
+
+//VisuAVLTree visuAVLTree=new VisuAVLTree(root);
+
+//int[] a=new int[]{6,5,4,3,2,1};
+
+//for(int i=0;i<5;i++)
+//    visuAVLTree.insert(a[i]);
+//visuAVLTree.find(3);
+//visuAVLTree.findMax(visuAVLTree.getRoot());
+//visuAVLTree.delete(2);
+//visuAVLTree.LRRotation(visuAVLTree.root,true);
+//visuAVLTree.getAllAnimation().play();
+
+        /*BasicNode bNode=new BasicNode(100,100,10,true);
+        root.getChildren().add(bNode);
+        bNode.getEmphasizeAnimation().play();*/

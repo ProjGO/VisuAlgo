@@ -188,6 +188,18 @@ public class VisuAVLTree extends VisuBSTree {
         return curNode;
     }
 
+    private void reBalance(Node curNode){
+        while(curNode!=null) {
+            boolean isLeftChild = curNode.parent != null && curNode.value.get() < curNode.parent.value.get();
+            if (getHeight(curNode.leftChild) - getHeight(curNode.rightChild) > 1)
+                curNode = LLRotation(curNode, isLeftChild);
+            else if (getHeight(curNode.leftChild) - getHeight(curNode.rightChild) < -1)
+                curNode = RRRotation(curNode, isLeftChild);
+            curNode.height = Math.max(getHeight(curNode.leftChild), getHeight(curNode.rightChild)) + 1;
+            curNode=curNode.parent;
+        }
+    }
+
     @Override
     public boolean insert(int value){
         if(root==null)
@@ -219,7 +231,7 @@ public class VisuAVLTree extends VisuBSTree {
                     curNode=curNode.rightChild;
                     animationManager.addNewAnimation(curNode.edge.getToFromEmphaAnimation());
                     animationManager.addNewAnimation(curNode.visuNode.getEmphasizeAnimation());
-                    rebalance(curNode.parent);
+                    reBalance(curNode.parent);
                 }else{//如果只有一个儿子或没有儿子
                     if(curNode!=root) {//如果当前节点不是根节点
                         boolean isLeftChild = curNode.value.get() < curNode.parent.value.get();
@@ -248,7 +260,7 @@ public class VisuAVLTree extends VisuBSTree {
                             else
                                 curNode.parent.rightChild=null;
                         }
-                        rebalance(curNode.parent);
+                        reBalance(curNode.parent);
                     }else{//要删除根节点
                         Node child,oldRoot;
                         ParallelTransition removeRootAnima;
@@ -279,7 +291,7 @@ public class VisuAVLTree extends VisuBSTree {
                         }else{
                             oldRoot=root;
                             Animation removeRoot=AnimationGenerator.getDisappearAnimation(root.visuNode);
-                            removeRoot.setOnFinished(e->{Node.getAnchorPane().getChildren().removeAll(oldRoot.visuNode);});
+                            removeRoot.setOnFinished(e->Node.getAnchorPane().getChildren().removeAll(oldRoot.visuNode));
                             animationManager.addNewAnimation(removeRoot);
                             root=null;
                         }
@@ -289,17 +301,5 @@ public class VisuAVLTree extends VisuBSTree {
             }
         }
         return deleted;
-    }
-
-    private void rebalance(Node curNode){
-        while(curNode!=null) {
-            boolean isLeftChild = curNode.parent != null && curNode.value.get() < curNode.parent.value.get();
-            if (getHeight(curNode.leftChild) - getHeight(curNode.rightChild) > 1)
-                curNode = LLRotation(curNode, isLeftChild);
-            else if (getHeight(curNode.leftChild) - getHeight(curNode.rightChild) < -1)
-                curNode = RRRotation(curNode, isLeftChild);
-            curNode.height = Math.max(getHeight(curNode.leftChild), getHeight(curNode.rightChild)) + 1;
-            curNode=curNode.parent;
-        }
     }
 }
