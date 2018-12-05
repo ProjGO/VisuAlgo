@@ -14,17 +14,18 @@ import java.util.ArrayList;
 public class GraphNode {
     static private AnchorPane scene;
     static private AnimationManager animationManager;
+
     private BasicVisuNode visuNode;
     private ArrayList<EdgeAndNode> out=new ArrayList<>(),in=new ArrayList<>();//出/入边及这条边另一端的节点
-    public SimpleDoubleProperty layoutX=new SimpleDoubleProperty(),layoutY=new SimpleDoubleProperty();
     boolean visited=false;
 
-    public GraphNode(double layoutX,double layoutY,int id){
+    public SimpleDoubleProperty layoutX=new SimpleDoubleProperty(),layoutY=new SimpleDoubleProperty();
+
+    GraphNode(double layoutX, double layoutY, int id){
         visuNode=new BasicVisuNode(layoutX,layoutY,id,true);
         scene.getChildren().add(visuNode);
         this.layoutX.bind(visuNode.layoutXProperty());
         this.layoutY.bind(visuNode.layoutYProperty());
-        scene.getChildren().add(visuNode);
         animationManager.addNewAnimation(AnimationGenerator.getAppearAnimation(visuNode));
     }
 
@@ -80,11 +81,11 @@ public class GraphNode {
         animationManager.addNewAnimation(deleteAnima);
     }
 
-    static public void setAnchorPane(AnchorPane anchorPane){
+    static void setAnchorPane(AnchorPane anchorPane){
         scene=anchorPane;
     }
 
-    static public void setAnimationManager(AnimationManager am){
+    static void setAnimationManager(AnimationManager am){
         animationManager=am;
     }
 
