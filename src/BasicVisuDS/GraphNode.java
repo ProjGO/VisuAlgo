@@ -15,7 +15,7 @@ public class GraphNode {
     static private AnchorPane scene;
     static private AnimationManager animationManager;
 
-    private BasicVisuNode visuNode;
+    BasicVisuNode visuNode;
     private ArrayList<EdgeAndNode> out=new ArrayList<>(),in=new ArrayList<>();//出/入边及这条边另一端的节点
     boolean visited=false;
 
@@ -89,6 +89,9 @@ public class GraphNode {
         animationManager=am;
     }
 
+    public BasicVisuNode getVisuNode(){
+        return visuNode;
+    }
     class EdgeAndNode{
         GraphNode node;
         Edge edge;

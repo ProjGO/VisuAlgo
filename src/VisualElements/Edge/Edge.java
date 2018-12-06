@@ -14,7 +14,7 @@ import javafx.util.Duration;
 public class Edge extends Group {
 
     protected SimpleDoubleProperty toXProperty = new SimpleDoubleProperty(), toYProperty = new SimpleDoubleProperty();//这里的是这个Group内部的坐标值
-    private DoubleProperty fromX,fromY,toX,toY;//这里的值是AnchorPane中的坐标值
+    private DoubleProperty fromX,fromY,toX,toY;//这里的值是外部AnchorPane中的坐标值
     private BasicEdge basicEdge;
 
     private SimpleDoubleProperty zero = new SimpleDoubleProperty(0);
@@ -125,5 +125,47 @@ public class Edge extends Group {
             getChildren().remove(TempFromNode);
         });
         return appearAnimation;
+    }
+
+    public SequentialTransition getAppearAnimation(boolean fromTo){
+        SequentialTransition appearAnimation=new SequentialTransition();
+        if(fromTo){
+            BasicVisuNode TempFromNode=new BasicVisuNode(0,0,0,false);
+            getChildren().add(TempFromNode);
+            basicEdge.setToNodeXProperty(TempFromNode.layoutXProperty());
+            basicEdge.setToNodeYProperty(TempFromNode.layoutYProperty());
+            basicEdge.setFill(Color.ORANGE);
+            appearAnimation.getChildren().add(AnimationGenerator.getMoveAnimation(TempFromNode,toXProperty.get(),toYProperty.get()));
+            FillTransition fillTransition=new FillTransition(Duration.millis(500),basicEdge,Color.ORANGE,Parameters.edgeColor);
+            appearAnimation.getChildren().add(fillTransition);
+            appearAnimation.setOnFinished(e->{
+                basicEdge.setToNodeXProperty(toXProperty);
+                basicEdge.setToNodeYProperty(toYProperty);
+                getChildren().remove(TempFromNode);
+            });
+        }else{
+            BasicVisuNode TempFromNode=new BasicVisuNode(toXProperty.get(),toYProperty.get(),0,false);
+            getChildren().add(TempFromNode);
+            basicEdge.setFromNodeXProperty(TempFromNode.layoutXProperty());
+            basicEdge.setFromNodeYProperty(TempFromNode.layoutYProperty());
+            basicEdge.setFill(Color.ORANGE);
+            appearAnimation.getChildren().add(AnimationGenerator.getMoveAnimation(TempFromNode,0,0));
+            FillTransition fillTransition=new FillTransition(Duration.millis(500),basicEdge,Color.ORANGE,Parameters.edgeColor);
+            appearAnimation.getChildren().add(fillTransition);
+            appearAnimation.setOnFinished(e->{
+                basicEdge.setFromNodeXProperty(zero);
+                basicEdge.setFromNodeYProperty(zero);
+                getChildren().remove(TempFromNode);
+            });
+        }
+        return appearAnimation;
+    }
+
+    public void setToX(double X){
+        toX.set(X);
+    }
+
+    public void setToY(double Y){
+        toY.set(Y);
     }
 }

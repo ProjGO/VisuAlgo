@@ -6,7 +6,6 @@ import javafx.animation.FadeTransition;
 import javafx.animation.SequentialTransition;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -16,6 +15,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 public class BasicVisuNode extends Group {
     private static Color circleColor= Parameters.nodeColor;
@@ -37,7 +37,7 @@ public class BasicVisuNode extends Group {
         circle.setLayoutY(0);
 
         outline=new Circle(1.3*radius);
-        outline.setFill(Color.RED);
+        outline.setFill(Parameters.emphaAnimaColor);
         outline.setLayoutX(0);
         outline.setLayoutY(0);
         outline.setOpacity(0.0f);
@@ -63,42 +63,26 @@ public class BasicVisuNode extends Group {
         this.getChildren().addAll(outline,circle,text);
     }
 
+    public static BasicVisuNode getFakeVisuNode(double x,double y)//透明节点，用于实现鼠标移动时让边也跟着动
+    //即这个节点处理MOUSE_MOVED事件更新自身的LayoutProperty，并将边的一头绑定在这个节点上，
+    // 因为Edge必须得绑在DoubleProperty上，而MouseEvent中的鼠标位置又不是Property，故出此下策
+    {
+        BasicVisuNode fakeNode=new BasicVisuNode(x,y,0,false);
+        fakeNode.setOpacity(0);
+        MouseEventHandler mouseEventHandler=new MouseEventHandler(fakeNode);
+        fakeNode.setOnMouseClicked(mouseEventHandler);
+        fakeNode.setOnMouseMoved(mouseEventHandler);
+        return fakeNode;
+    }
+
     public IntegerProperty getDataProperty(){
         return data;
     }
 
-    class DragEventHandler implements  EventHandler<MouseEvent>{
-
-        Node _node;
-        double oldSceneX, oldSceneY;
-        double oldLayoutX,oldLayoutY;
-
-        DragEventHandler(Node node){
-            _node=node;
-        }
-
-        @Override
-        public void handle(MouseEvent e){
-            if(e.getButton()== MouseButton.PRIMARY) {
-                if (e.getEventType() == MouseEvent.MOUSE_PRESSED) {
-                    System.out.println("clicked");
-                    oldSceneX = e.getSceneX();
-                    oldSceneY = e.getSceneY();
-                    oldLayoutX = _node.getLayoutX();
-                    oldLayoutY = _node.getLayoutY();
-                } else if (e.getEventType() == MouseEvent.MOUSE_DRAGGED) {
-                    double newLayoutX = e.getSceneX() - oldSceneX + oldLayoutX;
-                    double newLayoutY = e.getSceneY() - oldSceneY + oldLayoutY;
-                    _node.setLayoutX(newLayoutX);
-                    _node.setLayoutY(newLayoutY);
-                }
-            }
-        }
-    }
     private void setDragable(){
-        DragEventHandler dragEventHandler=new DragEventHandler(this);
-        this.setOnMousePressed(dragEventHandler);
-        this.setOnMouseDragged(dragEventHandler);
+        MouseEventHandler mouseEventHandler =new MouseEventHandler(this);
+        this.setOnMousePressed(mouseEventHandler);
+        this.setOnMouseDragged(mouseEventHandler);
     }
 
     public void setColor(Color color){
@@ -123,5 +107,49 @@ public class BasicVisuNode extends Group {
         FadeTransition textAppear=AnimationGenerator.getAppearAnimation(text);
         sequentialTransition.getChildren().addAll(textDisappear,textAppear);
         return sequentialTransition;
+    }
+
+    public FadeTransition getSelectedAnimation(){
+        FadeTransition fadeTransition=new FadeTransition(Duration.millis(Parameters.emphaAnimaDuration),outline);
+        fadeTransition.setFromValue(0.0);
+        fadeTransition.setToValue(0.7);
+        return fadeTransition;
+    }
+
+    public FadeTransition getUnselectedAnimation(){
+        FadeTransition fadeTransition=new FadeTransition(Duration.millis(Parameters.emphaAnimaDuration),outline);
+        fadeTransition.setFromValue(0.7);
+        fadeTransition.setToValue(0.0);
+        return fadeTransition;
+    }
+}
+
+class MouseEventHandler implements  EventHandler<MouseEvent>{
+
+    Node _node;
+    private double oldSceneX, oldSceneY;
+    private double oldLayoutX,oldLayoutY;
+
+    MouseEventHandler(Node node){
+        _node=node;
+    }
+
+    @Override
+    public void handle(MouseEvent e){
+        if(e.getButton()== MouseButton.PRIMARY) {
+            if (e.getEventType() == MouseEvent.MOUSE_PRESSED) {
+                System.out.println("clicked");
+                oldSceneX = e.getSceneX();
+                oldSceneY = e.getSceneY();
+                oldLayoutX = _node.getLayoutX();
+                oldLayoutY = _node.getLayoutY();
+            } else if (e.getEventType() == MouseEvent.MOUSE_DRAGGED||e.getEventType()==MouseEvent.MOUSE_MOVED) {
+                double newLayoutX = e.getSceneX() - oldSceneX + oldLayoutX;
+                double newLayoutY = e.getSceneY() - oldSceneY + oldLayoutY;
+                _node.setLayoutX(newLayoutX);
+                _node.setLayoutY(newLayoutY);
+            }
+            e.consume();
+        }
     }
 }

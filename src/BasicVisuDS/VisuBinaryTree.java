@@ -24,7 +24,7 @@ public class VisuBinaryTree extends VisuDS{
         else
             parent.rightChild= newTreeNode;
         if(root!=null)
-            animationManager.addNewAnimation(newTreeNode.edge.getAppearAnimation());
+            animationManager.addNewAnimation(newTreeNode.edge.getAppearAnimation(false));
         animationManager.addNewAnimation(AnimationGenerator.getAppearAnimation(newTreeNode.visuNode));
         animationManager.addNewAnimation(AnimationGenerator.getNodeEmphAnimation(newTreeNode.visuNode));
     }
