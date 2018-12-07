@@ -1,8 +1,15 @@
 package VisualElements.Edge;
 
+import BasicAnimation.AnimationGenerator;
+import Parameters.Parameters;
 import VisualElements.Node.BasicVisuNode;
+import javafx.animation.Animation;
+import javafx.animation.FillTransition;
+import javafx.animation.ParallelTransition;
+import javafx.animation.SequentialTransition;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -20,8 +27,8 @@ public class WeightedEdge extends Edge {
 
         midXProperty=new SimpleDoubleProperty();
         midYProperty=new SimpleDoubleProperty();
-        midXProperty.bind(toXProperty.divide(2));
-        midYProperty.bind(toYProperty.divide(2));
+        midXProperty.bind(toXProperty.divide(3));
+        midYProperty.bind(toYProperty.divide(3));
 
         text=new Text(weight.getValue().toString());
         text.setFont(new Font(20));
@@ -33,6 +40,19 @@ public class WeightedEdge extends Edge {
 
     public SimpleIntegerProperty getWeightProperty(){
         return weight;
+    }
+
+    @Override
+    public Animation getEmphasizeAnimation(){
+        SequentialTransition edgeEmpha=new SequentialTransition(),textEmpha=new SequentialTransition();
+        for(int i = 0; i< Parameters.emphaAnimaTimes; i++){
+            edgeEmpha.getChildren().add(AnimationGenerator.getFillTransition(basicEdge,Parameters.edgeColor,Parameters.emphaAnimaColor));
+            edgeEmpha.getChildren().add(AnimationGenerator.getFillTransition(basicEdge,Parameters.emphaAnimaColor,Parameters.edgeColor));
+            textEmpha.getChildren().add(AnimationGenerator.getFillTransition(text,Color.BLACK,Parameters.emphaAnimaColor));
+            textEmpha.getChildren().add(AnimationGenerator.getFillTransition(text,Parameters.emphaAnimaColor,Color.BLACK));
+        }
+        ParallelTransition emphaAnima=new ParallelTransition(edgeEmpha,textEmpha);
+        return emphaAnima;
     }
 
 }

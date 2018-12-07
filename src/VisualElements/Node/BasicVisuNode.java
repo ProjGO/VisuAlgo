@@ -63,18 +63,6 @@ public class BasicVisuNode extends Group {
         this.getChildren().addAll(outline,circle,text);
     }
 
-    public static BasicVisuNode getFakeVisuNode(double x,double y)//透明节点，用于实现鼠标移动时让边也跟着动
-    //即这个节点处理MOUSE_MOVED事件更新自身的LayoutProperty，并将边的一头绑定在这个节点上，
-    // 因为Edge必须得绑在DoubleProperty上，而MouseEvent中的鼠标位置又不是Property，故出此下策
-    {
-        BasicVisuNode fakeNode=new BasicVisuNode(x,y,0,false);
-        fakeNode.setOpacity(0);
-        MouseEventHandler mouseEventHandler=new MouseEventHandler(fakeNode);
-        fakeNode.setOnMouseClicked(mouseEventHandler);
-        fakeNode.setOnMouseMoved(mouseEventHandler);
-        return fakeNode;
-    }
-
     public IntegerProperty getDataProperty(){
         return data;
     }
@@ -83,6 +71,7 @@ public class BasicVisuNode extends Group {
         MouseEventHandler mouseEventHandler =new MouseEventHandler(this);
         this.setOnMousePressed(mouseEventHandler);
         this.setOnMouseDragged(mouseEventHandler);
+        //this.setOnMouseClicked(mouseEventHandler);
     }
 
     public void setColor(Color color){
@@ -138,18 +127,17 @@ class MouseEventHandler implements  EventHandler<MouseEvent>{
     public void handle(MouseEvent e){
         if(e.getButton()== MouseButton.PRIMARY) {
             if (e.getEventType() == MouseEvent.MOUSE_PRESSED) {
-                System.out.println("clicked");
                 oldSceneX = e.getSceneX();
                 oldSceneY = e.getSceneY();
                 oldLayoutX = _node.getLayoutX();
                 oldLayoutY = _node.getLayoutY();
-            } else if (e.getEventType() == MouseEvent.MOUSE_DRAGGED||e.getEventType()==MouseEvent.MOUSE_MOVED) {
+            } else if (e.getEventType() == MouseEvent.MOUSE_DRAGGED) {
                 double newLayoutX = e.getSceneX() - oldSceneX + oldLayoutX;
                 double newLayoutY = e.getSceneY() - oldSceneY + oldLayoutY;
                 _node.setLayoutX(newLayoutX);
                 _node.setLayoutY(newLayoutY);
             }
-            e.consume();
+            //e.consume();
         }
     }
 }

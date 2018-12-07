@@ -4,7 +4,6 @@ import Parameters.Parameters;
 import VisualElements.Edge.Edge;
 import javafx.scene.layout.AnchorPane;
 
-import java.awt.image.AbstractMultiResolutionImage;
 import java.util.ArrayList;
 
 public class VisuGraph extends VisuDS{
@@ -29,12 +28,23 @@ public class VisuGraph extends VisuDS{
         animationManager.addNewAnimation(nodes.get(nodes.size()-1).visuNode.getEmphasizeAnimation());
     }
 
-    public void addEdge(int fromNodeIdx, int toNodeIdx, Edge edge){
+    private boolean haveEdge(int fromNodeIdx,int toNodeIdx){
+        for(int i=0;i<nodes.get(fromNodeIdx).out.size();i++) {
+            if (nodes.get(fromNodeIdx).out.get(i).node == nodes.get(toNodeIdx))
+                return true;
+        }
+        return false;
+    }
+
+    public void addDirEdge(int fromNodeIdx, int toNodeIdx, Edge edge) throws VisuGraphException {
+        if(haveEdge(fromNodeIdx, toNodeIdx))
+            throw(new VisuGraphException("这两点之间已存在边"));
         nodes.get(fromNodeIdx).addAdjacentNode(nodes.get(toNodeIdx),edge,true);
         nodes.get(toNodeIdx).addAdjacentNode(nodes.get(fromNodeIdx),edge,false);
         anchorPane.getChildren().add(edge);
         animationManager.clear();
         animationManager.addNewAnimation(edge.getAppearAnimation(true));
+        animationManager.addNewAnimation(edge.getEmphasizeAnimation());
     }
 
     public int getSelectedNodeIdx(double X,double Y) {

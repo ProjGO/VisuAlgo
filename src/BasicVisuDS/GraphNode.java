@@ -16,7 +16,7 @@ public class GraphNode {
     static private AnimationManager animationManager;
 
     BasicVisuNode visuNode;
-    private ArrayList<EdgeAndNode> out=new ArrayList<>(),in=new ArrayList<>();//出/入边及这条边另一端的节点
+    ArrayList<EdgeAndNode> out=new ArrayList<>(),in=new ArrayList<>();//出/入边及这条边另一端的节点
     boolean visited=false;
 
     public SimpleDoubleProperty layoutX=new SimpleDoubleProperty(),layoutY=new SimpleDoubleProperty();

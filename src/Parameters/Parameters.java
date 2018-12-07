@@ -16,6 +16,7 @@ public class Parameters {
     public static final double arrowWidth=10;
     public static final double arrowLength=20;
     public static final Color edgeColor=Color.GRAY;
+    public static final Color textColor=Color.BLACK;
 
     //Rectangle
     public static final double rectArcRadius=20;

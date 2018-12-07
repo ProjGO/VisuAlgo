@@ -3,6 +3,7 @@ package BasicVisuDS;
 import BasicAnimation.AnimationGenerator;
 import BasicAnimation.AnimationManager;
 import Parameters.Parameters;
+import javafx.animation.Animation;
 import javafx.animation.ParallelTransition;
 import javafx.animation.SequentialTransition;
 import javafx.scene.layout.AnchorPane;
@@ -40,7 +41,7 @@ public class VisuBinaryTree extends VisuDS{
         return AnimationGenerator.getNodeEmphAnimation(treeNode.visuNode);
     }
 
-    protected SequentialTransition getEdgeEmphaAnimation(TreeNode treeNode, boolean isLeftEdge){
+    protected Animation getEdgeEmphaAnimation(TreeNode treeNode, boolean isLeftEdge){
         if(isLeftEdge)
             return treeNode.leftChild.edge.getEmphasizeAnimation();
         else

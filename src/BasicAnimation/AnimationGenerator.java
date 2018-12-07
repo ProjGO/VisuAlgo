@@ -71,7 +71,7 @@ public class AnimationGenerator {
         return basicVisuNode.getEmphasizeAnimation();
     }
 
-    public static SequentialTransition getEdgeEmphaAnimation(Edge edge){
+    public static Animation getEdgeEmphaAnimation(Edge edge){
         return edge.getEmphasizeAnimation();
     }
 

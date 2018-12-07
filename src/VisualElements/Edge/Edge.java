@@ -3,6 +3,7 @@ package VisualElements.Edge;
 import BasicAnimation.AnimationGenerator;
 import Parameters.Parameters;
 import VisualElements.Node.BasicVisuNode;
+import javafx.animation.Animation;
 import javafx.animation.FillTransition;
 import javafx.animation.SequentialTransition;
 import javafx.beans.property.DoubleProperty;
@@ -15,7 +16,7 @@ public class Edge extends Group {
 
     protected SimpleDoubleProperty toXProperty = new SimpleDoubleProperty(), toYProperty = new SimpleDoubleProperty();//这里的是这个Group内部的坐标值
     private DoubleProperty fromX,fromY,toX,toY;//这里的值是外部AnchorPane中的坐标值
-    private BasicEdge basicEdge;
+    protected BasicEdge basicEdge;
 
     private SimpleDoubleProperty zero = new SimpleDoubleProperty(0);
 
@@ -72,7 +73,7 @@ public class Edge extends Group {
         basicEdge.setFill(color);
     }
 
-    public SequentialTransition getEmphasizeAnimation(){
+    public Animation getEmphasizeAnimation(){
         SequentialTransition sequentialTransition=new SequentialTransition();
         for(int i=0;i<Parameters.emphaAnimaTimes;i++){
             sequentialTransition.getChildren().add(AnimationGenerator.getFillTransition(basicEdge,Parameters.edgeColor,Parameters.emphaAnimaColor));
