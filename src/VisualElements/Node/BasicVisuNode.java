@@ -3,6 +3,8 @@ package VisualElements.Node;
 import BasicAnimation.AnimationGenerator;
 import Parameters.Parameters;
 import javafx.animation.FadeTransition;
+import javafx.animation.FillTransition;
+import javafx.animation.ParallelTransition;
 import javafx.animation.SequentialTransition;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -111,11 +113,17 @@ public class BasicVisuNode extends Group {
         fadeTransition.setToValue(0.0);
         return fadeTransition;
     }
+
+    public FillTransition getVisitedAnimation(){
+        FillTransition fillTransition=new FillTransition(Duration.millis(Parameters.emphaAnimaDuration),outline);
+        fillTransition.setToValue(Color.GREENYELLOW);
+        return fillTransition;
+    }
 }
 
 class MouseEventHandler implements  EventHandler<MouseEvent>{
 
-    Node _node;
+    private Node _node;
     private double oldSceneX, oldSceneY;
     private double oldLayoutX,oldLayoutY;
 

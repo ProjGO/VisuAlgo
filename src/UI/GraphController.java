@@ -1,5 +1,6 @@
 package UI;
 
+import Algorithm.VisuDFS;
 import BasicVisuDS.VisuGraph;
 import BasicVisuDS.VisuGraphException;
 import VisualElements.Edge.WDirEdge;
@@ -17,10 +18,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class GraphController implements Initializable {
-    VisuGraph visuGraph;
+    private VisuGraph visuGraph;
+    private VisuDFS visuDFS;
 
     @FXML
-    private Button addNodeButton,addEdgeButton;
+    private Button addNodeButton,addEdgeButton,DFSButton,BFSButton;
 
     @FXML
     private TextField weightField;
@@ -34,6 +36,7 @@ public class GraphController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         visuGraph=new VisuGraph(graphPane);
+        visuDFS=new VisuDFS(visuGraph);
         hintInfo.setText("点击\"添加节点\"开始建图");
     }
 
@@ -84,6 +87,7 @@ public class GraphController implements Initializable {
                             visuGraph.setNodeUnselected(fromNodeIdx.get());
                             visuGraph.getAllAnimation().play();
                             fromNodeSelected.set(false);
+                            weightField.clear();
                         }else if(state==-1)
                             hintInfo.setText("请先输入权值");
                         else if(state==1)
@@ -98,6 +102,23 @@ public class GraphController implements Initializable {
 
     }
 
+    public void onDFSButtonClick(ActionEvent actionEvent){
+        hintInfo.setText("请选择起始节点");
+        AtomicBoolean pressed=new AtomicBoolean(false);
+        graphPane.setOnMousePressed(e->pressed.set(true));
+        graphPane.setOnMouseDragged(e-> pressed.set(false));
+        graphPane.setOnMouseReleased(e->{
+            int selectedNodeIdx=visuGraph.getSelectedNodeIdx(e.getX(),e.getY());
+            if(selectedNodeIdx>=0)
+                visuDFS.setStartNode(selectedNodeIdx);
+            visuDFS.start();
+            visuGraph.getAllAnimation().play();
+        });
+    }
+
+    public void onBFSButtonClick(ActionEvent actionEvent) {
+    }
+
     private int weightInputJudge(String input){//0 合法 1 不是数字 2 超过范围
         if(input.isEmpty())
             return -1;
@@ -110,4 +131,5 @@ public class GraphController implements Initializable {
             return 2;
         return 0;
     }
+
 }

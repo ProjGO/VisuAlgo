@@ -27,8 +27,8 @@ public class WeightedEdge extends Edge {
 
         midXProperty=new SimpleDoubleProperty();
         midYProperty=new SimpleDoubleProperty();
-        midXProperty.bind(toXProperty.divide(3));
-        midYProperty.bind(toYProperty.divide(3));
+        midXProperty.bind(toXProperty.divide(2));
+        midYProperty.bind(toYProperty.divide(2));
 
         text=new Text(weight.getValue().toString());
         text.setFont(new Font(20));

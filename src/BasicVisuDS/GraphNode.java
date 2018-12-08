@@ -6,6 +6,7 @@ import VisualElements.Edge.Edge;
 import VisualElements.Node.BasicVisuNode;
 import javafx.animation.Animation;
 import javafx.animation.ParallelTransition;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.layout.AnchorPane;
 
@@ -16,10 +17,10 @@ public class GraphNode {
     static private AnimationManager animationManager;
 
     BasicVisuNode visuNode;
-    ArrayList<EdgeAndNode> out=new ArrayList<>(),in=new ArrayList<>();//出/入边及这条边另一端的节点
-    boolean visited=false;
+    public ArrayList<EdgeAndNode> out=new ArrayList<>(),in=new ArrayList<>();//出/入边及这条边另一端的节点
+    SimpleBooleanProperty visited=new SimpleBooleanProperty(false);
 
-    public SimpleDoubleProperty layoutX=new SimpleDoubleProperty(),layoutY=new SimpleDoubleProperty();
+    private SimpleDoubleProperty layoutX=new SimpleDoubleProperty(),layoutY=new SimpleDoubleProperty();
 
     GraphNode(double layoutX, double layoutY, int id){
         visuNode=new BasicVisuNode(layoutX,layoutY,id,true);
@@ -27,6 +28,7 @@ public class GraphNode {
         this.layoutX.bind(visuNode.layoutXProperty());
         this.layoutY.bind(visuNode.layoutYProperty());
         animationManager.addNewAnimation(AnimationGenerator.getAppearAnimation(visuNode));
+        visited.addListener((prop,oldVlaue,newValue)->animationManager.addNewAnimation(visuNode.getVisitedAnimation()));
     }
 
     public void addAdjacentNode(GraphNode node,Edge edge){
@@ -92,6 +94,23 @@ public class GraphNode {
     public BasicVisuNode getVisuNode(){
         return visuNode;
     }
+
+    public void setVisited(){
+        visited.set(true);
+    }
+
+    public Edge getOutEdge(int idx){
+        return out.get(idx).edge;
+    }
+
+    public GraphNode getOutNode(int idx){
+        return out.get(idx).node;
+    }
+
+    public boolean isVisited(){
+        return visited.get();
+    }
+
     class EdgeAndNode{
         GraphNode node;
         Edge edge;

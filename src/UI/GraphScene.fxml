@@ -1,25 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.GraphController">
    <children>
-      <AnchorPane fx:id="graphPane" layoutY="8.0" prefHeight="600.0" prefWidth="1100.0" />
-      <Button fx:id="addNodeButton" layoutX="1117.0" layoutY="208.0" mnemonicParsing="false" onAction="#onAddNodeClick" text="Add New Node" />
-      <Button fx:id="addEdgeButton" layoutX="1119.0" layoutY="360.0" mnemonicParsing="false" onAction="#onAddEdgeClick" text="Add New Edge" />
-      <TextField fx:id="weightField" layoutX="1110.0" layoutY="293.0" prefHeight="30.0" prefWidth="145.0" />
-      <Text layoutX="1110.0" layoutY="288.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Weight:" />
-      <TableView fx:id="distanceTable" layoutY="623.0" prefHeight="94.0" prefWidth="1043.0">
-        <columns>
-          <TableColumn prefWidth="75.0" text="C1" />
-          <TableColumn prefWidth="75.0" text="C2" />
-        </columns>
-      </TableView>
-      <Text fx:id="hintInfo" layoutX="1058.0" layoutY="701.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="215.30029296875" />
+      <AnchorPane fx:id="graphPane" layoutY="8.0" prefHeight="617.0" prefWidth="1121.0">
+         <children>
+            <Text fx:id="hintInfo" layoutX="14.0" layoutY="600.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="159.30029296875" />
+         </children></AnchorPane>
+      <TableView fx:id="distanceTable" layoutY="623.0" prefHeight="94.0" prefWidth="1121.0" />
+      <VBox layoutX="1130.0" layoutY="242.0" prefHeight="257.0" prefWidth="150.0" spacing="50.0">
+         <children>
+            <Button fx:id="addNodeButton" mnemonicParsing="false" onAction="#onAddNodeClick" prefHeight="23.0" prefWidth="198.0" text="Add New Node" />
+            <VBox prefHeight="56.0" prefWidth="126.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Weight:" />
+                  <TextField fx:id="weightField" prefHeight="30.0" prefWidth="145.0" />
+               </children>
+            </VBox>
+            <Button fx:id="addEdgeButton" mnemonicParsing="false" onAction="#onAddEdgeClick" prefHeight="23.0" prefWidth="150.0" text="Add New Edge" />
+            <HBox prefHeight="23.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="DFSButton" mnemonicParsing="false" onAction="#onDFSButtonClick" prefWidth="75.0" text="DFS" />
+                  <Button fx:id="BFSButton" mnemonicParsing="false" onAction="#onBFSButtonClick" prefHeight="23.0" prefWidth="75.0" text="BFS" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
    </children>
 </AnchorPane>

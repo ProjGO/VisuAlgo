@@ -1,6 +1,7 @@
 package BasicVisuDS;
 
 import BasicAnimation.AnimationManager;
+import javafx.animation.Animation;
 import javafx.animation.SequentialTransition;
 import javafx.scene.layout.AnchorPane;
 
@@ -16,4 +17,8 @@ abstract public class VisuDS {
     }
 
     abstract public void setAnchorPane(AnchorPane anchorPane);
+
+    public void addNewAnimation(Animation animation){
+        animationManager.addNewAnimation(animation);
+    }
 }

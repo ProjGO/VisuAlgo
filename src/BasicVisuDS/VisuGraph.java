@@ -7,7 +7,7 @@ import javafx.scene.layout.AnchorPane;
 import java.util.ArrayList;
 
 public class VisuGraph extends VisuDS{
-    private ArrayList<GraphNode> nodes=new ArrayList<>();
+    protected ArrayList<GraphNode> nodes=new ArrayList<>();
     private AnchorPane anchorPane;
     private int nodeCnt=1;
 
@@ -47,7 +47,7 @@ public class VisuGraph extends VisuDS{
         animationManager.addNewAnimation(edge.getEmphasizeAnimation());
     }
 
-    public int getSelectedNodeIdx(double X,double Y) {
+    public int getSelectedNodeIdx(double X,double Y) {//鼠标没点在节点上时返回-1
         for(int i=0;i<nodes.size();i++) {
             if (Math.pow(X - nodes.get(i).visuNode.getLayoutX(), 2) + Math.pow(Y - nodes.get(i).visuNode.getLayoutY(), 2) <= Parameters.nodeRadius*Parameters.nodeRadius)
                 return i;
