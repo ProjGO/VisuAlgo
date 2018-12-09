@@ -18,7 +18,7 @@ public class GraphNode {
 
     BasicVisuNode visuNode;
     public ArrayList<EdgeAndNode> out=new ArrayList<>(),in=new ArrayList<>();//出/入边及这条边另一端的节点
-    SimpleBooleanProperty visited=new SimpleBooleanProperty(false);
+    boolean visited=false;
 
     private SimpleDoubleProperty layoutX=new SimpleDoubleProperty(),layoutY=new SimpleDoubleProperty();
 
@@ -28,7 +28,6 @@ public class GraphNode {
         this.layoutX.bind(visuNode.layoutXProperty());
         this.layoutY.bind(visuNode.layoutYProperty());
         animationManager.addNewAnimation(AnimationGenerator.getAppearAnimation(visuNode));
-        visited.addListener((prop,oldVlaue,newValue)->animationManager.addNewAnimation(visuNode.getVisitedAnimation()));
     }
 
     public void addAdjacentNode(GraphNode node,Edge edge){
@@ -95,10 +94,6 @@ public class GraphNode {
         return visuNode;
     }
 
-    public void setVisited(){
-        visited.set(true);
-    }
-
     public Edge getOutEdge(int idx){
         return out.get(idx).edge;
     }
@@ -108,7 +103,19 @@ public class GraphNode {
     }
 
     public boolean isVisited(){
-        return visited.get();
+        return visited;
+    }
+
+    public void setVisited(boolean visited){
+        this.visited=visited;
+    }
+
+    public Animation getSelectedAnimation(){
+        return visuNode.getSelectedAnimation();
+    }
+
+    public Animation getUnselectedAnimation(){
+        return visuNode.getUnselectedAnimation();
     }
 
     class EdgeAndNode{

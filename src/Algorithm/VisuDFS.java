@@ -15,11 +15,12 @@ public class VisuDFS {
 
     public void setStartNode(int idx){
         startNodeIdx=idx;
-        visuGraph.setNodeSelected(idx);
+        visuGraph.addNewAnimation(visuGraph.getNode(idx).getSelectedAnimation());
     }
 
     public void dfs(GraphNode cur, Edge inEdge){
-        cur.setVisited();
+        cur.setVisited(true);
+        visuGraph.addNewAnimation(cur.getSelectedAnimation());
         for(int i=0;i<cur.out.size();i++)
         {
             if(!cur.getOutNode(i).isVisited()) {

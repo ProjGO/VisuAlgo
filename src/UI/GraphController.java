@@ -3,11 +3,14 @@ package UI;
 import Algorithm.VisuDFS;
 import BasicVisuDS.VisuGraph;
 import BasicVisuDS.VisuGraphException;
+import VisualElements.Edge.Edge;
 import VisualElements.Edge.WDirEdge;
+import VisualElements.Edge.WUndirEdge;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
@@ -23,13 +26,12 @@ public class GraphController implements Initializable {
 
     @FXML
     private Button addNodeButton,addEdgeButton,DFSButton,BFSButton;
-
     @FXML
     private TextField weightField;
-
+    @FXML
+    private CheckBox directedCheckBox;
     @FXML
     private AnchorPane graphPane;
-
     @FXML
     private Text hintInfo;
 
@@ -38,9 +40,11 @@ public class GraphController implements Initializable {
         visuGraph=new VisuGraph(graphPane);
         visuDFS=new VisuDFS(visuGraph);
         hintInfo.setText("点击\"添加节点\"开始建图");
+
     }
 
     public void onAddNodeClick(ActionEvent actionEvent){
+        hintInfo.setText("在屏幕上点击以添加节点");
         AtomicBoolean pressed=new AtomicBoolean(false);
         graphPane.setOnMousePressed(e->pressed.set(true));
         graphPane.setOnMouseDragged(e->pressed.set(false));
@@ -55,6 +59,7 @@ public class GraphController implements Initializable {
     }
 
     public void onAddEdgeClick(ActionEvent actionEvent) {
+        hintInfo.setText("请输入权值(0~100)并依次点击起始、终止节点添加有向边");
         AtomicBoolean pressed=new AtomicBoolean(false),fromNodeSelected= new AtomicBoolean(false);
         AtomicInteger fromNodeIdx = new AtomicInteger(),toNodeIdx=new AtomicInteger();
 
@@ -77,13 +82,22 @@ public class GraphController implements Initializable {
                         toNodeIdx.set(_toIdx);
                         String weightStr=weightField.getText();
                         int state=weightInputJudge(weightStr);
-                        if(state==0) {
-                            WDirEdge wDirEdge = new WDirEdge(visuGraph.getNode(fromNodeIdx.get()).getVisuNode(), visuGraph.getNode(toNodeIdx.get()).getVisuNode(), Integer.parseInt(weightField.getText()));
-                            try {
-                                visuGraph.addDirEdge(fromNodeIdx.get(), toNodeIdx.get(), wDirEdge);
+                        Edge newEdge=null;
+                        if(state==0) {//输入合法
+                            try{
+                                if(directedCheckBox.isSelected()) {
+                                    newEdge = new WDirEdge(visuGraph.getNode(fromNodeIdx.get()).getVisuNode(), visuGraph.getNode(toNodeIdx.get()).getVisuNode(), Integer.parseInt(weightField.getText()));
+                                    visuGraph.addDirEdge(fromNodeIdx.get(), toNodeIdx.get(), newEdge);
+                                }else{
+                                    newEdge=new WUndirEdge(visuGraph.getNode(fromNodeIdx.get()).getVisuNode(),visuGraph.getNode(toNodeIdx.get()).getVisuNode(),Integer.parseInt(weightField.getText()));
+                                    visuGraph.addUDirEdge(fromNodeIdx.get(),toNodeIdx.get(),newEdge);
+                                }
                             }catch(VisuGraphException exception){
                                 hintInfo.setText(exception.getInfo());
                             }
+                            graphPane.getChildren().add(newEdge);
+                            visuGraph.clearAllAnimation();
+                            visuGraph.addNewAnimation(newEdge.getAppearAnimation(true));
                             visuGraph.setNodeUnselected(fromNodeIdx.get());
                             visuGraph.getAllAnimation().play();
                             fromNodeSelected.set(false);
@@ -108,6 +122,8 @@ public class GraphController implements Initializable {
         graphPane.setOnMousePressed(e->pressed.set(true));
         graphPane.setOnMouseDragged(e-> pressed.set(false));
         graphPane.setOnMouseReleased(e->{
+            visuGraph.clearAllAnimation();
+            visuGraph.reset();
             int selectedNodeIdx=visuGraph.getSelectedNodeIdx(e.getX(),e.getY());
             if(selectedNodeIdx>=0)
                 visuDFS.setStartNode(selectedNodeIdx);

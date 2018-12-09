@@ -2,9 +2,11 @@ package BasicVisuDS;
 
 import Parameters.Parameters;
 import VisualElements.Edge.Edge;
+import javafx.animation.ParallelTransition;
 import javafx.scene.layout.AnchorPane;
 
 import java.util.ArrayList;
+import java.util.FormatFlagsConversionMismatchException;
 
 public class VisuGraph extends VisuDS{
     protected ArrayList<GraphNode> nodes=new ArrayList<>();
@@ -29,22 +31,33 @@ public class VisuGraph extends VisuDS{
     }
 
     private boolean haveEdge(int fromNodeIdx,int toNodeIdx){
+        return getEdge(fromNodeIdx,toNodeIdx)==null;
+    }
+
+    private Edge getEdge(int fromNodeIdx,int toNodeIdx){
         for(int i=0;i<nodes.get(fromNodeIdx).out.size();i++) {
             if (nodes.get(fromNodeIdx).out.get(i).node == nodes.get(toNodeIdx))
-                return true;
+                return nodes.get(fromNodeIdx).out.get(i).edge;
         }
-        return false;
+        return null;
     }
 
     public void addDirEdge(int fromNodeIdx, int toNodeIdx, Edge edge) throws VisuGraphException {
         if(haveEdge(fromNodeIdx, toNodeIdx))
-            throw(new VisuGraphException("这两点之间已存在边"));
+            throw(new VisuGraphException("这两点之间已存在有向边"));
+        if(haveEdge(toNodeIdx,fromNodeIdx))
+            throw(new VisuGraphException("这两点之间已存在反向边，请添加无向边"));
         nodes.get(fromNodeIdx).addAdjacentNode(nodes.get(toNodeIdx),edge,true);
         nodes.get(toNodeIdx).addAdjacentNode(nodes.get(fromNodeIdx),edge,false);
-        anchorPane.getChildren().add(edge);
-        animationManager.clear();
-        animationManager.addNewAnimation(edge.getAppearAnimation(true));
-        animationManager.addNewAnimation(edge.getEmphasizeAnimation());
+    }
+
+    public void addUDirEdge(int fromNodeIdx,int toNodeIdx,Edge edge) throws VisuGraphException{
+        if(haveEdge(fromNodeIdx,toNodeIdx)&&haveEdge(toNodeIdx,fromNodeIdx))
+            throw(new VisuGraphException("这两点间已存在无向边"));
+        if(haveEdge(fromNodeIdx,toNodeIdx)||haveEdge(toNodeIdx,fromNodeIdx)){
+
+        }
+
     }
 
     public int getSelectedNodeIdx(double X,double Y) {//鼠标没点在节点上时返回-1
@@ -61,6 +74,15 @@ public class VisuGraph extends VisuDS{
 
     public void setNodeUnselected(int idx){
         animationManager.addNewAnimation(nodes.get(idx).visuNode.getUnselectedAnimation());
+    }
+
+    public void reset(){//将所有节点的visited设为false,并生成取消所有节点的选中的动画加入到animationManager中
+        ParallelTransition unselAllNodes=new ParallelTransition();
+        for(int i=0;i<nodes.size();i++) {
+            nodes.get(i).setVisited(false);
+            unselAllNodes.getChildren().add(nodes.get(i).getUnselectedAnimation());
+        }
+        animationManager.addNewAnimation(unselAllNodes);
     }
 
     public GraphNode getNode(int idx){

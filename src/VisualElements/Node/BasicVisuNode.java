@@ -109,7 +109,6 @@ public class BasicVisuNode extends Group {
 
     public FadeTransition getUnselectedAnimation(){
         FadeTransition fadeTransition=new FadeTransition(Duration.millis(Parameters.emphaAnimaDuration),outline);
-        fadeTransition.setFromValue(0.7);
         fadeTransition.setToValue(0.0);
         return fadeTransition;
     }
