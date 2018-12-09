@@ -55,4 +55,18 @@ public class WeightedEdge extends Edge {
         return emphaAnima;
     }
 
+    @Override
+    public Animation getAppearAnimation(){
+        Animation appearAnimation=super.getAppearAnimation();
+        ((SequentialTransition) appearAnimation).getChildren().add(AnimationGenerator.getAppearAnimation(text));
+        return appearAnimation;
+    }
+
+    @Override
+    public Animation getAppearAnimation(boolean fromTo){
+        Animation appearAnimation=super.getAppearAnimation(fromTo);
+        ((SequentialTransition) appearAnimation).getChildren().add(AnimationGenerator.getAppearAnimation(text));
+        return appearAnimation;
+    }
+
 }

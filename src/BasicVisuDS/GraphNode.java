@@ -4,6 +4,7 @@ import BasicAnimation.AnimationGenerator;
 import BasicAnimation.AnimationManager;
 import VisualElements.Edge.Edge;
 import VisualElements.Node.BasicVisuNode;
+import VisualElements.Node.GraphVisuNode;
 import javafx.animation.Animation;
 import javafx.animation.ParallelTransition;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -16,26 +17,27 @@ public class GraphNode {
     static private AnchorPane scene;
     static private AnimationManager animationManager;
 
-    BasicVisuNode visuNode;
+    GraphVisuNode visuNode;
     public ArrayList<EdgeAndNode> out=new ArrayList<>(),in=new ArrayList<>();//出/入边及这条边另一端的节点
-    boolean visited=false;
+    private boolean visited=false;
+    private int distance=-1;
 
     private SimpleDoubleProperty layoutX=new SimpleDoubleProperty(),layoutY=new SimpleDoubleProperty();
 
     GraphNode(double layoutX, double layoutY, int id){
-        visuNode=new BasicVisuNode(layoutX,layoutY,id,true);
+        visuNode=new GraphVisuNode(layoutX,layoutY,id,true);
         scene.getChildren().add(visuNode);
         this.layoutX.bind(visuNode.layoutXProperty());
         this.layoutY.bind(visuNode.layoutYProperty());
         animationManager.addNewAnimation(AnimationGenerator.getAppearAnimation(visuNode));
     }
 
-    public void addAdjacentNode(GraphNode node,Edge edge){
+    void addAdjacentNode(GraphNode node,Edge edge){
         out.add(new EdgeAndNode(node,edge));
         in.add(new EdgeAndNode(node,edge));
     }
 
-    public void addAdjacentNode(GraphNode node,Edge edge,boolean isFromNode){
+    void addAdjacentNode(GraphNode node,Edge edge,boolean isFromNode){
         if(isFromNode)
             out.add(new EdgeAndNode(node,edge));
         else
@@ -90,7 +92,7 @@ public class GraphNode {
         animationManager=am;
     }
 
-    public BasicVisuNode getVisuNode(){
+    public GraphVisuNode getVisuNode(){
         return visuNode;
     }
 
@@ -108,6 +110,14 @@ public class GraphNode {
 
     public void setVisited(boolean visited){
         this.visited=visited;
+    }
+
+    public int getDistance(){
+        return distance;
+    }
+
+    public void setDistance(){
+        this.distance=distance;
     }
 
     public Animation getSelectedAnimation(){

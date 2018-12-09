@@ -1,5 +1,6 @@
 package BasicVisuDS;
 
+import BasicAnimation.AnimationGenerator;
 import Parameters.Parameters;
 import VisualElements.Edge.Edge;
 import javafx.animation.ParallelTransition;
@@ -31,20 +32,20 @@ public class VisuGraph extends VisuDS{
     }
 
     private boolean haveEdge(int fromNodeIdx,int toNodeIdx){
-        return getEdge(fromNodeIdx,toNodeIdx)==null;
+        return getEdge(fromNodeIdx,toNodeIdx)!=null;
     }
 
-    private Edge getEdge(int fromNodeIdx,int toNodeIdx){
+    private GraphNode.EdgeAndNode getEdge(int fromNodeIdx, int toNodeIdx){
         for(int i=0;i<nodes.get(fromNodeIdx).out.size();i++) {
             if (nodes.get(fromNodeIdx).out.get(i).node == nodes.get(toNodeIdx))
-                return nodes.get(fromNodeIdx).out.get(i).edge;
+                return nodes.get(fromNodeIdx).out.get(i);
         }
         return null;
     }
 
     public void addDirEdge(int fromNodeIdx, int toNodeIdx, Edge edge) throws VisuGraphException {
         if(haveEdge(fromNodeIdx, toNodeIdx))
-            throw(new VisuGraphException("这两点之间已存在有向边"));
+            throw(new VisuGraphException("这两点之间已存在边"));
         if(haveEdge(toNodeIdx,fromNodeIdx))
             throw(new VisuGraphException("这两点之间已存在反向边，请添加无向边"));
         nodes.get(fromNodeIdx).addAdjacentNode(nodes.get(toNodeIdx),edge,true);
@@ -54,10 +55,19 @@ public class VisuGraph extends VisuDS{
     public void addUDirEdge(int fromNodeIdx,int toNodeIdx,Edge edge) throws VisuGraphException{
         if(haveEdge(fromNodeIdx,toNodeIdx)&&haveEdge(toNodeIdx,fromNodeIdx))
             throw(new VisuGraphException("这两点间已存在无向边"));
-        if(haveEdge(fromNodeIdx,toNodeIdx)||haveEdge(toNodeIdx,fromNodeIdx)){
-
+        if(haveEdge(fromNodeIdx, toNodeIdx)||haveEdge(toNodeIdx,fromNodeIdx)) {
+            GraphNode.EdgeAndNode existEdge=null;
+            if (haveEdge(fromNodeIdx, toNodeIdx))
+                existEdge = getEdge(fromNodeIdx, toNodeIdx);
+            else
+                existEdge=getEdge(toNodeIdx,fromNodeIdx);
+            animationManager.addNewAnimation(AnimationGenerator.getDisappearAnimation(existEdge.edge));
+            anchorPane.getChildren().remove(existEdge.edge);
+            nodes.get(fromNodeIdx).out.remove(existEdge);
+            nodes.get(toNodeIdx).in.remove(existEdge);
         }
-
+        nodes.get(fromNodeIdx).addAdjacentNode(nodes.get(toNodeIdx),edge);
+        nodes.get(toNodeIdx).addAdjacentNode(nodes.get(fromNodeIdx),edge);
     }
 
     public int getSelectedNodeIdx(double X,double Y) {//鼠标没点在节点上时返回-1
@@ -85,8 +95,19 @@ public class VisuGraph extends VisuDS{
         animationManager.addNewAnimation(unselAllNodes);
     }
 
+    public void showAllDist(){
+        ParallelTransition distAppear=new ParallelTransition();
+        for(int i=0;i<nodes.size();i++)
+            distAppear.getChildren().add(nodes.get(i).getVisuNode().setDistVisibleAnima());
+        addNewAnimation(distAppear);
+    }
+
     public GraphNode getNode(int idx){
         return nodes.get(idx);
+    }
+
+    public ArrayList<GraphNode> getNodes(){
+        return nodes;
     }
 
 }

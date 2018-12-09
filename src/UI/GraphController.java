@@ -1,11 +1,14 @@
 package UI;
 
+import Algorithm.Dijkstra;
+import Algorithm.VisuBFS;
 import Algorithm.VisuDFS;
 import BasicVisuDS.VisuGraph;
 import BasicVisuDS.VisuGraphException;
 import VisualElements.Edge.Edge;
 import VisualElements.Edge.WDirEdge;
 import VisualElements.Edge.WUndirEdge;
+import javafx.animation.Animation;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,16 +16,17 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 import java.net.URL;
+import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class GraphController implements Initializable {
     private VisuGraph visuGraph;
-    private VisuDFS visuDFS;
 
     @FXML
     private Button addNodeButton,addEdgeButton,DFSButton,BFSButton;
@@ -38,12 +42,12 @@ public class GraphController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         visuGraph=new VisuGraph(graphPane);
-        visuDFS=new VisuDFS(visuGraph);
+        hintInfo.setFont(new Font(15));
         hintInfo.setText("点击\"添加节点\"开始建图");
-
     }
 
     public void onAddNodeClick(ActionEvent actionEvent){
+        reset();
         hintInfo.setText("在屏幕上点击以添加节点");
         AtomicBoolean pressed=new AtomicBoolean(false);
         graphPane.setOnMousePressed(e->pressed.set(true));
@@ -59,7 +63,8 @@ public class GraphController implements Initializable {
     }
 
     public void onAddEdgeClick(ActionEvent actionEvent) {
-        hintInfo.setText("请输入权值(0~100)并依次点击起始、终止节点添加有向边");
+        reset();
+        hintInfo.setText("请输入权值(0~100)并依次点击起始、终止节点添加有向边(若不输入则将随机赋值)");
         AtomicBoolean pressed=new AtomicBoolean(false),fromNodeSelected= new AtomicBoolean(false);
         AtomicInteger fromNodeIdx = new AtomicInteger(),toNodeIdx=new AtomicInteger();
 
@@ -83,7 +88,10 @@ public class GraphController implements Initializable {
                         String weightStr=weightField.getText();
                         int state=weightInputJudge(weightStr);
                         Edge newEdge=null;
-                        if(state==0) {//输入合法
+                        if(state==0||state==-1) {//输入合法
+                            visuGraph.clearAllAnimation();
+                            if(state==-1)
+                                weightField.setText(Integer.toString(new Random().nextInt()%20+20));
                             try{
                                 if(directedCheckBox.isSelected()) {
                                     newEdge = new WDirEdge(visuGraph.getNode(fromNodeIdx.get()).getVisuNode(), visuGraph.getNode(toNodeIdx.get()).getVisuNode(), Integer.parseInt(weightField.getText()));
@@ -94,17 +102,15 @@ public class GraphController implements Initializable {
                                 }
                             }catch(VisuGraphException exception){
                                 hintInfo.setText(exception.getInfo());
+                                return;
                             }
                             graphPane.getChildren().add(newEdge);
-                            visuGraph.clearAllAnimation();
                             visuGraph.addNewAnimation(newEdge.getAppearAnimation(true));
                             visuGraph.setNodeUnselected(fromNodeIdx.get());
                             visuGraph.getAllAnimation().play();
                             fromNodeSelected.set(false);
                             weightField.clear();
-                        }else if(state==-1)
-                            hintInfo.setText("请先输入权值");
-                        else if(state==1)
+                        }else if(state==1)
                             hintInfo.setText("请输入数字");
                         else if(state==2)
                             hintInfo.setText("请输入0~100间的数字");
@@ -117,22 +123,54 @@ public class GraphController implements Initializable {
     }
 
     public void onDFSButtonClick(ActionEvent actionEvent){
+        VisuDFS visuDFS=new VisuDFS(visuGraph);
+        reset();
         hintInfo.setText("请选择起始节点");
         AtomicBoolean pressed=new AtomicBoolean(false);
         graphPane.setOnMousePressed(e->pressed.set(true));
         graphPane.setOnMouseDragged(e-> pressed.set(false));
         graphPane.setOnMouseReleased(e->{
-            visuGraph.clearAllAnimation();
-            visuGraph.reset();
-            int selectedNodeIdx=visuGraph.getSelectedNodeIdx(e.getX(),e.getY());
-            if(selectedNodeIdx>=0)
-                visuDFS.setStartNode(selectedNodeIdx);
-            visuDFS.start();
-            visuGraph.getAllAnimation().play();
+            if(pressed.get()) {
+                visuGraph.clearAllAnimation();
+                visuGraph.reset();
+                int selectedNodeIdx = visuGraph.getSelectedNodeIdx(e.getX(), e.getY());
+                if (selectedNodeIdx >= 0)
+                    visuDFS.setStartNodeIdx(selectedNodeIdx);
+                visuDFS.start();
+                Animation animation = visuGraph.getAllAnimation();
+                animation.setOnFinished(event -> hintInfo.setText("完毕"));
+                animation.play();
+            }
         });
     }
 
     public void onBFSButtonClick(ActionEvent actionEvent) {
+        VisuBFS visuBFS=new VisuBFS(visuGraph);
+        reset();
+        hintInfo.setText("请选择起始节点");
+        AtomicBoolean pressed=new AtomicBoolean(false);
+        graphPane.setOnMousePressed(e->pressed.set(true));
+        graphPane.setOnMouseDragged(e-> pressed.set(false));
+        graphPane.setOnMouseReleased(e->{
+            if(pressed.get()) {
+                visuGraph.clearAllAnimation();
+                visuGraph.reset();
+                int selectedNodeIdx = visuGraph.getSelectedNodeIdx(e.getX(), e.getY());
+                if (selectedNodeIdx >= 0)
+                    visuBFS.setStartNodeIdx(selectedNodeIdx);
+                visuBFS.start();
+                Animation animation = visuGraph.getAllAnimation();
+                animation.setOnFinished(event -> hintInfo.setText("完毕"));
+                animation.play();
+            }
+        });
+    }
+
+    public void onDijkstraClick(ActionEvent actionEvent) {
+        Dijkstra dijkstra=new Dijkstra(visuGraph);
+        visuGraph.clearAllAnimation();
+        visuGraph.showAllDist();
+        visuGraph.getAllAnimation().play();
     }
 
     private int weightInputJudge(String input){//0 合法 1 不是数字 2 超过范围
@@ -148,4 +186,9 @@ public class GraphController implements Initializable {
         return 0;
     }
 
+    private void reset(){
+        visuGraph.clearAllAnimation();
+        visuGraph.reset();
+        visuGraph.getAllAnimation().play();
+    }
 }

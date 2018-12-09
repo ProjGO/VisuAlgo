@@ -17,10 +17,13 @@ public class Edge extends Group {
     protected SimpleDoubleProperty toXProperty = new SimpleDoubleProperty(), toYProperty = new SimpleDoubleProperty();//这里的是这个Group内部的坐标值
     private DoubleProperty fromX,fromY,toX,toY;//这里的值是外部AnchorPane中的坐标值
     protected BasicEdge basicEdge;
+    private BasicVisuNode fromVisuNode,toVisuNode;
 
     private SimpleDoubleProperty zero = new SimpleDoubleProperty(0);
 
     protected void initialize(BasicVisuNode from, BasicVisuNode to, BasicEdge _basicEdge) {
+        fromVisuNode=from;
+        toVisuNode=to;
         basicEdge=_basicEdge;
         bindLayoutProperty(from.layoutXProperty(),from.layoutYProperty(),to.layoutXProperty(),to.layoutYProperty());
         basicEdge.setFromNodeXProperty(zero);
@@ -109,7 +112,7 @@ public class Edge extends Group {
         return sequentialTransition;
     }
 
-    public SequentialTransition getAppearAnimation(){
+    public Animation getAppearAnimation(){
         SequentialTransition appearAnimation=new SequentialTransition();
 
         BasicVisuNode TempFromNode=new BasicVisuNode(toXProperty.get(),toYProperty.get(),0,false);
@@ -128,7 +131,7 @@ public class Edge extends Group {
         return appearAnimation;
     }
 
-    public SequentialTransition getAppearAnimation(boolean fromTo){
+    public Animation getAppearAnimation(boolean fromTo){
         SequentialTransition appearAnimation=new SequentialTransition();
         if(fromTo){
             BasicVisuNode TempFromNode=new BasicVisuNode(0,0,0,false);
@@ -160,6 +163,14 @@ public class Edge extends Group {
             });
         }
         return appearAnimation;
+    }
+
+    public BasicVisuNode getFromVisuNode(){
+        return fromVisuNode;
+    }
+
+    public BasicVisuNode getToVisuNode(){
+        return toVisuNode;
     }
 
     public void setToX(double X){

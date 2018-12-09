@@ -6,30 +6,36 @@ import VisualElements.Edge.Edge;
 
 public class VisuDFS {
 
-    VisuGraph visuGraph;
+    private VisuGraph visuGraph;
     private int startNodeIdx;
 
     public VisuDFS(VisuGraph visuGraph){
         this.visuGraph=visuGraph;
     }
 
-    public void setStartNode(int idx){
+    public void setStartNodeIdx(int idx){
         startNodeIdx=idx;
-        visuGraph.addNewAnimation(visuGraph.getNode(idx).getSelectedAnimation());
     }
 
-    public void dfs(GraphNode cur, Edge inEdge){
+    private void dfs(GraphNode cur, Edge inEdge){
         cur.setVisited(true);
         visuGraph.addNewAnimation(cur.getSelectedAnimation());
         for(int i=0;i<cur.out.size();i++)
         {
             if(!cur.getOutNode(i).isVisited()) {
-                visuGraph.addNewAnimation(cur.getOutEdge(i).getFromToEmphaAnimation());
+                if(cur.getVisuNode()==cur.getOutEdge(i).getFromVisuNode())
+                    visuGraph.addNewAnimation(cur.getOutEdge(i).getFromToEmphaAnimation());
+                else
+                    visuGraph.addNewAnimation(cur.getOutEdge(i).getToFromEmphaAnimation());
                 dfs(cur.getOutNode(i),cur.getOutEdge(i));
             }
         }
-        if(inEdge!=null)
-            visuGraph.addNewAnimation(inEdge.getToFromEmphaAnimation());
+        if(inEdge!=null) {
+            if (inEdge.getToVisuNode() == cur.getVisuNode())
+                visuGraph.addNewAnimation(inEdge.getToFromEmphaAnimation());
+            else
+                visuGraph.addNewAnimation(inEdge.getFromToEmphaAnimation());
+        }
     }
 
     public void start(){

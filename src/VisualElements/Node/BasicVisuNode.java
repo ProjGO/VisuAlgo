@@ -4,7 +4,6 @@ import BasicAnimation.AnimationGenerator;
 import Parameters.Parameters;
 import javafx.animation.FadeTransition;
 import javafx.animation.FillTransition;
-import javafx.animation.ParallelTransition;
 import javafx.animation.SequentialTransition;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -24,12 +23,10 @@ public class BasicVisuNode extends Group {
     private static double radius= Parameters.nodeRadius;
 
     private Circle circle,outline;
-    private Text text;
+    private Text dataText;
     private SimpleIntegerProperty data;
 
-    private static boolean isDragging=false;
-
-    public BasicVisuNode(double x, double y, Integer _data, boolean dragable){
+    public BasicVisuNode(double x, double y, Integer data, boolean dragable){
 
         circle=new Circle(radius);
         circle.setStrokeWidth(Parameters.nodeStrokeWidth);
@@ -44,15 +41,15 @@ public class BasicVisuNode extends Group {
         outline.setLayoutY(0);
         outline.setOpacity(0.0f);
 
-        text=new Text(_data.toString());
-        text.setFont(new Font(20));
-        text.setFill(Parameters.nodeTextColor);
-        text.setLayoutX(-0.5*text.getBoundsInLocal().getWidth());
-        text.setLayoutY(0.3*text.getBoundsInLocal().getHeight());
+        dataText =new Text(data.toString());
+        dataText.setFont(new Font(20));
+        dataText.setFill(Parameters.nodeTextColor);
+        dataText.setLayoutX(-0.5* dataText.getBoundsInLocal().getWidth());
+        dataText.setLayoutY(0.3* dataText.getBoundsInLocal().getHeight());
 
-        data=new SimpleIntegerProperty(_data);
-        data.addListener((prop,oldValue,newValue)->
-                text.setText(newValue.toString()));
+        this.data=new SimpleIntegerProperty(data);
+        this.data.addListener((prop,oldValue,newValue)->
+                dataText.setText(newValue.toString()));
 
         this.setLayoutX(x);
         this.setLayoutY(y);
@@ -62,7 +59,7 @@ public class BasicVisuNode extends Group {
         if(dragable)
             setDragable();
 
-        this.getChildren().addAll(outline,circle,text);
+        this.getChildren().addAll(outline,circle, dataText);
     }
 
     public IntegerProperty getDataProperty(){
@@ -92,10 +89,10 @@ public class BasicVisuNode extends Group {
 
     public SequentialTransition getTextChangeAnima(Integer newValue){//产生节点数字改变的动画并且真的改变节点的值
         SequentialTransition sequentialTransition=new SequentialTransition();
-        FadeTransition textDisappear=AnimationGenerator.getDisappearAnimation(text);
-        //textDisappear.setOnFinished(e->text.setText(newValue.toString()));
+        FadeTransition textDisappear=AnimationGenerator.getDisappearAnimation(dataText);
+        //textDisappear.setOnFinished(e->dataText.setText(newValue.toString()));
         textDisappear.setOnFinished(e->data.setValue(newValue));
-        FadeTransition textAppear=AnimationGenerator.getAppearAnimation(text);
+        FadeTransition textAppear=AnimationGenerator.getAppearAnimation(dataText);
         sequentialTransition.getChildren().addAll(textDisappear,textAppear);
         return sequentialTransition;
     }

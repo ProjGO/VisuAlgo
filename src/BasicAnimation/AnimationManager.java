@@ -19,8 +19,9 @@ public class AnimationManager {
 
     public SequentialTransition getAll(){
         SequentialTransition sequentialTransition=new SequentialTransition();
-        for(int i=0;i<animations.size();i++)
-            sequentialTransition.getChildren().add(animations.get(i));
+        for(int i=0;i<animations.size();i++) {
+                sequentialTransition.getChildren().add(animations.get(i));
+        }
         return sequentialTransition;
     }
 
