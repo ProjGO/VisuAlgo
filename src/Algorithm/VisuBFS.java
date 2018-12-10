@@ -23,14 +23,15 @@ public class VisuBFS {
     private void DFS(){
         q.offer(visuGraph.getNode(startNodeIdx));
         visuGraph.addNewAnimation(q.peek().getSelectedAnimation());
+        visuGraph.getNode(startNodeIdx).setVisited(true);
         int curLayerNodeCnt=1,nextLayerNodeCnt=0;
         ParallelTransition edgeEmphaAnima=new ParallelTransition(),nodeEmphaAnima=new ParallelTransition();
         while(!q.isEmpty()){
             GraphNode cur=q.poll();
-            cur.setVisited(true);
             for(int i=0;i<cur.out.size();i++){
                 nextLayerNodeCnt++;
                 if(!cur.getOutNode(i).isVisited()) {
+                    cur.getOutNode(i).setVisited(true);
                     if (cur.getVisuNode() == cur.getOutEdge(i).getFromVisuNode())
                         edgeEmphaAnima.getChildren().add(cur.getOutEdge(i).getFromToEmphaAnimation());
                     else

@@ -36,6 +36,14 @@ public class VisuGraph extends VisuDS{
         return getEdge(fromNodeIdx,toNodeIdx)!=null;
     }
 
+    public Edge getEdge(GraphNode from,GraphNode to){
+        for(int i=0;i<from.out.size();i++){
+            if(from.out.get(i).node==to)
+                return from.out.get(i).edge;
+        }
+        return null;
+    }
+
     private GraphNode.EdgeAndNode getEdge(int fromNodeIdx, int toNodeIdx){
         for(int i=0;i<nodes.get(fromNodeIdx).out.size();i++) {
             if (nodes.get(fromNodeIdx).out.get(i).node == nodes.get(toNodeIdx))
@@ -107,7 +115,7 @@ public class VisuGraph extends VisuDS{
         animationManager.addNewAnimation(nodes.get(idx).visuNode.getUnselectedAnimation());
     }
 
-    public void reset(){//将所有节点的visited设为false,并生成取消所有节点的选中的动画加入到animationManager中
+    public void resetSelectState(){//将所有节点的visited设为false,并生成取消所有节点的选中的动画加入到animationManager中
         ParallelTransition unselAllNodes=new ParallelTransition();
         for(int i=0;i<nodes.size();i++) {
             nodes.get(i).setVisited(false);
@@ -116,11 +124,28 @@ public class VisuGraph extends VisuDS{
         animationManager.addNewAnimation(unselAllNodes);
     }
 
-    public void showAllDist(){
+    public void showAllDistAndLastNode(){
         ParallelTransition distAppear=new ParallelTransition();
-        for(int i=0;i<nodes.size();i++)
-            distAppear.getChildren().add(nodes.get(i).getVisuNode().setDistVisibleAnima());
+        for(GraphNode node:nodes)
+            distAppear.getChildren().add(node.getVisuNode().getDistAppearAnima());
         addNewAnimation(distAppear);
+    }
+
+    public void hideAllDistAndLastNode(){
+        ParallelTransition distDisappear=new ParallelTransition();
+        for(GraphNode node:nodes) {
+            distDisappear.getChildren().add(node.getVisuNode().getDistDisappearAnima());
+        }
+        addNewAnimation(distDisappear);
+    }
+
+    public void resetDistAndGetAnima(){
+        ParallelTransition distChangeAnima=new ParallelTransition();
+        for(GraphNode node:nodes){
+            node.setDistance(GraphNode.inf);
+            distChangeAnima.getChildren().add(node.getDistChangeAnimation(GraphNode.inf));
+        }
+        animationManager.addNewAnimation(distChangeAnima);
     }
 
     public GraphNode getNode(int idx){
@@ -130,6 +155,4 @@ public class VisuGraph extends VisuDS{
     public ArrayList<GraphNode> getNodes(){
         return nodes;
     }
-
-
 }

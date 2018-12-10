@@ -3,6 +3,8 @@ package UI;
 import Algorithm.Dijkstra;
 import Algorithm.VisuBFS;
 import Algorithm.VisuDFS;
+import BasicAnimation.AnimationGenerator;
+import BasicAnimation.AnimationManager;
 import BasicVisuDS.VisuGraph;
 import BasicVisuDS.VisuGraphException;
 import VisualElements.Edge.Edge;
@@ -20,6 +22,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 import java.net.URL;
+import java.nio.file.FileAlreadyExistsException;
 import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -37,13 +40,15 @@ public class GraphController implements Initializable {
     @FXML
     private AnchorPane graphPane;
     @FXML
-    private Text hintInfo;
+    private Text hintInfo,instructionText;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         visuGraph=new VisuGraph(graphPane);
         hintInfo.setFont(new Font(15));
+        instructionText.setFont(new Font(15));
         hintInfo.setText("点击\"添加节点\"开始建图");
+        instructionText.setText("");
     }
 
     public void onAddNodeClick(ActionEvent actionEvent){
@@ -132,7 +137,7 @@ public class GraphController implements Initializable {
         graphPane.setOnMouseReleased(e->{
             if(pressed.get()) {
                 visuGraph.clearAllAnimation();
-                visuGraph.reset();
+                visuGraph.resetSelectState();
                 int selectedNodeIdx = visuGraph.getSelectedNodeIdx(e.getX(), e.getY());
                 if (selectedNodeIdx >= 0)
                     visuDFS.setStartNodeIdx(selectedNodeIdx);
@@ -154,7 +159,7 @@ public class GraphController implements Initializable {
         graphPane.setOnMouseReleased(e->{
             if(pressed.get()) {
                 visuGraph.clearAllAnimation();
-                visuGraph.reset();
+                visuGraph.resetSelectState();
                 int selectedNodeIdx = visuGraph.getSelectedNodeIdx(e.getX(), e.getY());
                 if (selectedNodeIdx >= 0)
                     visuBFS.setStartNodeIdx(selectedNodeIdx);
@@ -167,10 +172,34 @@ public class GraphController implements Initializable {
     }
 
     public void onDijkstraClick(ActionEvent actionEvent) {
-        Dijkstra dijkstra=new Dijkstra(visuGraph);
+        Dijkstra dijkstra=new Dijkstra(visuGraph,instructionText);
         visuGraph.clearAllAnimation();
-        visuGraph.showAllDist();
+        visuGraph.resetDistAndGetAnima();
+        visuGraph.showAllDistAndLastNode();
+        visuGraph.resetSelectState();
         visuGraph.getAllAnimation().play();
+        hintInfo.setText("请选择起始节点");
+        AtomicBoolean pressed=new AtomicBoolean(false);
+        graphPane.setOnMousePressed(e->pressed.set(true));
+        graphPane.setOnMouseDragged(e-> pressed.set(false));
+        graphPane.setOnMouseReleased(e-> {
+            if(pressed.get()) {
+                AnimationGenerator.setRate(1.0);
+                visuGraph.clearAllAnimation();
+                visuGraph.resetSelectState();
+                visuGraph.resetDistAndGetAnima();
+                int selectedNodeIdx = visuGraph.getSelectedNodeIdx(e.getX(), e.getY());
+                if (selectedNodeIdx >= 0)
+                    dijkstra.setStartNodeIdx(selectedNodeIdx);
+                dijkstra.start();
+                Animation animation = visuGraph.getAllAnimation();
+                animation.setOnFinished(event -> {
+                    hintInfo.setText("完毕");
+                    instructionText.setText("所有节点的最短距离已找到");
+                });
+                animation.playFromStart();
+            }
+        });
     }
 
     public void onClearAllClick(ActionEvent actionEvent) {
@@ -194,7 +223,9 @@ public class GraphController implements Initializable {
 
     private void reset(){
         visuGraph.clearAllAnimation();
-        visuGraph.reset();
+        visuGraph.resetSelectState();
+        visuGraph.hideAllDistAndLastNode();
         visuGraph.getAllAnimation().play();
+        instructionText.setText("");
     }
 }

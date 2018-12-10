@@ -3,11 +3,10 @@ package BasicVisuDS;
 import BasicAnimation.AnimationGenerator;
 import BasicAnimation.AnimationManager;
 import VisualElements.Edge.Edge;
-import VisualElements.Node.BasicVisuNode;
+import VisualElements.Edge.WeightedEdge;
 import VisualElements.Node.GraphVisuNode;
 import javafx.animation.Animation;
 import javafx.animation.ParallelTransition;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.layout.AnchorPane;
 
@@ -20,7 +19,11 @@ public class GraphNode {
     GraphVisuNode visuNode;
     public ArrayList<EdgeAndNode> out=new ArrayList<>(),in=new ArrayList<>();//出/入边及这条边另一端的节点
     private boolean visited=false;
-    private int distance=-1;
+    private int id;
+
+    public static final int inf=9999;
+    private int distance=inf;
+    private GraphNode last=null;
 
     private SimpleDoubleProperty layoutX=new SimpleDoubleProperty(),layoutY=new SimpleDoubleProperty();
 
@@ -30,6 +33,7 @@ public class GraphNode {
         this.layoutX.bind(visuNode.layoutXProperty());
         this.layoutY.bind(visuNode.layoutYProperty());
         animationManager.addNewAnimation(AnimationGenerator.getAppearAnimation(visuNode));
+        this.id=id;
     }
 
     void addAdjacentNode(GraphNode node,Edge edge){
@@ -96,8 +100,8 @@ public class GraphNode {
         return visuNode;
     }
 
-    public Edge getOutEdge(int idx){
-        return out.get(idx).edge;
+    public WeightedEdge getOutEdge(int idx){
+        return (WeightedEdge)out.get(idx).edge;
     }
 
     public GraphNode getOutNode(int idx){
@@ -116,7 +120,7 @@ public class GraphNode {
         return distance;
     }
 
-    public void setDistance(){
+    public void setDistance(int distance){
         this.distance=distance;
     }
 
@@ -126,6 +130,33 @@ public class GraphNode {
 
     public Animation getUnselectedAnimation(){
         return visuNode.getUnselectedAnimation();
+    }
+
+    public Animation getEdgeToNodeAnimation(Edge edge){
+        if(edge.getToVisuNode()==this.visuNode)
+            return edge.getFromToEmphaAnimation();
+        else
+            return edge.getToFromEmphaAnimation();
+    }
+
+    public Animation getDistChangeAnimation(int newDist){
+        return visuNode.getDistChangeAnima(newDist);
+    }
+
+    public Animation getLastNodeChangeAnimation(int newLastNode){
+        return visuNode.getLastNodeChangeAnima(newLastNode);
+    }
+
+    public GraphNode getLast() {
+        return last;
+    }
+
+    public void setLast(GraphNode last) {
+        this.last = last;
+    }
+
+    public int getId(){
+        return id;
     }
 
     class EdgeAndNode{

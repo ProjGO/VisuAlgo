@@ -33,7 +33,6 @@ public class AnimationGenerator {
 
     public static FadeTransition getAppearAnimation(Group group){
         FadeTransition appearAnimation=new FadeTransition(Duration.millis(Parameters.disappearAnimaDuration));
-        appearAnimation.setFromValue(0.0f);
         appearAnimation.setToValue(1.0f);
         appearAnimation.setNode(group);
         appearAnimation.rateProperty().bind(rate);
@@ -42,7 +41,6 @@ public class AnimationGenerator {
 
     public static FadeTransition getDisappearAnimation(Node node){
         FadeTransition disappearAnimation=new FadeTransition(Duration.millis(Parameters.disappearAnimaDuration));
-        disappearAnimation.setFromValue(1.0f);
         disappearAnimation.setToValue(0.0f);
         disappearAnimation.setNode(node);
         disappearAnimation.rateProperty().bind(rate);

@@ -14,6 +14,7 @@
       <AnchorPane fx:id="graphPane" layoutY="8.0" prefHeight="720.0" prefWidth="1121.0">
          <children>
             <Text fx:id="hintInfo" layoutY="701.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="632.30029296875" />
+            <Text fx:id="instructionText" layoutX="769.0" layoutY="663.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="351.30029296875" />
          </children></AnchorPane>
       <VBox layoutX="1116.0" layoutY="151.0" prefHeight="257.0" prefWidth="150.0" spacing="50.0">
          <children>
