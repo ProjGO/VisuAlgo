@@ -43,5 +43,6 @@
             <Button fx:id="dijkstraButton" mnemonicParsing="false" onAction="#onDijkstraClick" prefWidth="150.0" text="Dijkstra" />
          </children>
       </VBox>
+      <Button fx:id="clearAllButton" layoutX="1164.0" layoutY="574.0" mnemonicParsing="false" onAction="#onClearAllClick" text="Clear All" />
    </children>
 </AnchorPane>

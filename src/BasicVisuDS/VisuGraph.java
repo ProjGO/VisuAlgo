@@ -7,10 +7,11 @@ import javafx.animation.ParallelTransition;
 import javafx.scene.layout.AnchorPane;
 
 import java.util.ArrayList;
-import java.util.FormatFlagsConversionMismatchException;
 
 public class VisuGraph extends VisuDS{
-    protected ArrayList<GraphNode> nodes=new ArrayList<>();
+    private ArrayList<GraphNode> nodes=new ArrayList<>();
+    private ArrayList<Edge> edges=new ArrayList<>();
+
     private AnchorPane anchorPane;
     private int nodeCnt=1;
 
@@ -50,6 +51,7 @@ public class VisuGraph extends VisuDS{
             throw(new VisuGraphException("这两点之间已存在反向边，请添加无向边"));
         nodes.get(fromNodeIdx).addAdjacentNode(nodes.get(toNodeIdx),edge,true);
         nodes.get(toNodeIdx).addAdjacentNode(nodes.get(fromNodeIdx),edge,false);
+        edges.add(edge);
     }
 
     public void addUDirEdge(int fromNodeIdx,int toNodeIdx,Edge edge) throws VisuGraphException{
@@ -68,6 +70,25 @@ public class VisuGraph extends VisuDS{
         }
         nodes.get(fromNodeIdx).addAdjacentNode(nodes.get(toNodeIdx),edge);
         nodes.get(toNodeIdx).addAdjacentNode(nodes.get(fromNodeIdx),edge);
+        edges.add(edge);
+    }
+
+    public void clearAll(){
+        ParallelTransition clearAllAnima=new ParallelTransition();
+        for(GraphNode node:nodes)
+            clearAllAnima.getChildren().add(AnimationGenerator.getDisappearAnimation(node.getVisuNode()));
+        for(Edge edge:edges)
+            clearAllAnima.getChildren().add(AnimationGenerator.getDisappearAnimation(edge));
+        nodeCnt=1;
+        clearAllAnima.setOnFinished(e->{
+            for(GraphNode node:nodes)
+                anchorPane.getChildren().remove(node);
+            for(Edge edge:edges)
+                anchorPane.getChildren().remove(edge);
+            nodes.clear();
+            edges.clear();
+        });
+        addNewAnimation(clearAllAnima);
     }
 
     public int getSelectedNodeIdx(double X,double Y) {//鼠标没点在节点上时返回-1
@@ -109,5 +130,6 @@ public class VisuGraph extends VisuDS{
     public ArrayList<GraphNode> getNodes(){
         return nodes;
     }
+
 
 }

@@ -173,6 +173,12 @@ public class GraphController implements Initializable {
         visuGraph.getAllAnimation().play();
     }
 
+    public void onClearAllClick(ActionEvent actionEvent) {
+        visuGraph.clearAllAnimation();
+        visuGraph.clearAll();
+        visuGraph.getAllAnimation().play();
+    }
+
     private int weightInputJudge(String input){//0 合法 1 不是数字 2 超过范围
         if(input.isEmpty())
             return -1;
