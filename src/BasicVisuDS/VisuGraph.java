@@ -12,7 +12,7 @@ public class VisuGraph extends VisuDS{
     private ArrayList<GraphNode> nodes=new ArrayList<>();
     private ArrayList<Edge> edges=new ArrayList<>();
 
-    private AnchorPane anchorPane;
+    //private AnchorPane anchorPane;
     private int nodeCnt=1;
 
     public VisuGraph(AnchorPane anchorPane){

@@ -8,6 +8,7 @@ import javafx.animation.FillTransition;
 import javafx.animation.SequentialTransition;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
@@ -18,6 +19,7 @@ public class Edge extends Group {
     private DoubleProperty fromX,fromY,toX,toY;//这里的值是外部AnchorPane中的坐标值
     protected BasicEdge basicEdge;
     private BasicVisuNode fromVisuNode,toVisuNode;
+    protected SimpleIntegerProperty weight=new SimpleIntegerProperty(1);
 
     private SimpleDoubleProperty zero = new SimpleDoubleProperty(0);
 
@@ -173,11 +175,7 @@ public class Edge extends Group {
         return toVisuNode;
     }
 
-    public void setToX(double X){
-        toX.set(X);
-    }
-
-    public void setToY(double Y){
-        toY.set(Y);
+    public SimpleIntegerProperty getWeightProperty(){
+        return weight;
     }
 }

@@ -111,6 +111,7 @@ public class BasicVisuNode extends Group {
     }
 
     public FillTransition getVisitedAnimation(){
+        outline.setOpacity(0.7);
         FillTransition fillTransition=new FillTransition(Duration.millis(Parameters.emphaAnimaDuration),outline);
         fillTransition.setToValue(Color.GREENYELLOW);
         return fillTransition;

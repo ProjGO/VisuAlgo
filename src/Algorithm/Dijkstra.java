@@ -42,7 +42,9 @@ public class Dijkstra {
             if(curNode==null)
                 break;
             curNode.setVisited(true);
-            Animation selectNode=curNode.getSelectedAnimation();
+            SequentialTransition selectNode=new SequentialTransition();
+            selectNode.getChildren().add(curNode.getVisuNode().getEmphasizeAnimation());
+            selectNode.getChildren().add(curNode.getSelectedAnimation());
             GraphNode finalCurNode = curNode;
             selectNode.setOnFinished(e->instructionText.setText("节点"+ finalCurNode.getId()+"已经找到最短距离\n下面将用它松弛其它节点"));
             visuGraph.addNewAnimation(selectNode);

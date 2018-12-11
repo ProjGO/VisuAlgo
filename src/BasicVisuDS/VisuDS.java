@@ -7,6 +7,7 @@ import javafx.scene.layout.AnchorPane;
 
 abstract public class VisuDS {
     protected AnimationManager animationManager=new AnimationManager();
+    protected AnchorPane anchorPane;
 
     public void clearAllAnimation(){
         animationManager.clear();

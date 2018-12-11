@@ -100,8 +100,8 @@ public class GraphNode {
         return visuNode;
     }
 
-    public WeightedEdge getOutEdge(int idx){
-        return (WeightedEdge)out.get(idx).edge;
+    public Edge getOutEdge(int idx){
+        return out.get(idx).edge;
     }
 
     public GraphNode getOutNode(int idx){

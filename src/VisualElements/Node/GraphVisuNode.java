@@ -20,10 +20,10 @@ public class GraphVisuNode extends BasicVisuNode {
         distText.setLayoutX(-0.5* distText.getBoundsInLocal().getWidth());
         distText.setLayoutY(-Parameters.nodeRadius-5);
         distText.setOpacity(0);
-        lastNodeText=new Text("");
+        lastNodeText=new Text("  ");
         lastNodeText.setFont(new Font(20));
-        lastNodeText.setLayoutX(-0.5* distText.getBoundsInLocal().getWidth());
-        lastNodeText.setLayoutY(Parameters.nodeRadius+15);
+        lastNodeText.setLayoutX(-0.3* distText.getBoundsInLocal().getWidth());
+        lastNodeText.setLayoutY(Parameters.nodeRadius+20);
         lastNodeText.setOpacity(0);
         getChildren().addAll(distText,lastNodeText);
     }

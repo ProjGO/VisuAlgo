@@ -6,15 +6,14 @@ import Algorithm.VisuDFS;
 import BasicAnimation.AnimationGenerator;
 import BasicVisuDS.VisuGraph;
 import BasicVisuDS.VisuGraphException;
-import VisualElements.Edge.Edge;
-import VisualElements.Edge.WDirEdge;
-import VisualElements.Edge.WUndirEdge;
+import VisualElements.Edge.*;
 import javafx.animation.Animation;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
@@ -34,7 +33,7 @@ public class GraphController implements Initializable {
     @FXML
     private TextField weightField;
     @FXML
-    private CheckBox directedCheckBox;
+    private CheckBox directedCheckBox,weightedCheckBox;
     @FXML
     private AnchorPane graphPane;
     @FXML
@@ -47,6 +46,15 @@ public class GraphController implements Initializable {
         instructionText.setFont(new Font(15));
         hintInfo.setText("点击\"添加节点\"开始建图");
         instructionText.setText("");
+        weightField.setDisable(true);
+        weightedCheckBox.selectedProperty().addListener((prop,oldValue,newValue)->{
+            if(!newValue){
+                weightField.setText("");
+                weightField.setDisable(true);
+            }else{
+                weightField.setDisable(false);
+            }
+        });
     }
 
     public void onAddNodeClick(ActionEvent actionEvent){
@@ -97,14 +105,24 @@ public class GraphController implements Initializable {
                                 weightField.setText(Integer.toString(new Random().nextInt()%20+20));
                             try{
                                 if(directedCheckBox.isSelected()) {
-                                    newEdge = new WDirEdge(visuGraph.getNode(fromNodeIdx.get()).getVisuNode(), visuGraph.getNode(toNodeIdx.get()).getVisuNode(), Integer.parseInt(weightField.getText()));
+                                    if(weightedCheckBox.isSelected())
+                                        newEdge = new WDirEdge(visuGraph.getNode(fromNodeIdx.get()).getVisuNode(), visuGraph.getNode(toNodeIdx.get()).getVisuNode(), Integer.parseInt(weightField.getText()));
+                                    else
+                                        newEdge=new UnwDirEdge(visuGraph.getNode(fromNodeIdx.get()).getVisuNode(), visuGraph.getNode(toNodeIdx.get()).getVisuNode());
                                     visuGraph.addDirEdge(fromNodeIdx.get(), toNodeIdx.get(), newEdge);
                                 }else{
-                                    newEdge=new WUndirEdge(visuGraph.getNode(fromNodeIdx.get()).getVisuNode(),visuGraph.getNode(toNodeIdx.get()).getVisuNode(),Integer.parseInt(weightField.getText()));
+                                    if(weightedCheckBox.isSelected())
+                                        newEdge=new WUndirEdge(visuGraph.getNode(fromNodeIdx.get()).getVisuNode(),visuGraph.getNode(toNodeIdx.get()).getVisuNode(),Integer.parseInt(weightField.getText()));
+                                    else
+                                        newEdge=new UnwUndirEdge(visuGraph.getNode(fromNodeIdx.get()).getVisuNode(),visuGraph.getNode(toNodeIdx.get()).getVisuNode());
                                     visuGraph.addUDirEdge(fromNodeIdx.get(),toNodeIdx.get(),newEdge);
                                 }
                             }catch(VisuGraphException exception){
                                 hintInfo.setText(exception.getInfo());
+                                visuGraph.clearAllAnimation();
+                                visuGraph.setNodeUnselected(fromNodeIdx.get());
+                                visuGraph.getAllAnimation().play();
+                                fromNodeSelected.set(false);
                                 return;
                             }
                             graphPane.getChildren().add(newEdge);

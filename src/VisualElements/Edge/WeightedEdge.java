@@ -16,7 +16,6 @@ import javafx.scene.text.Text;
 public class WeightedEdge extends Edge {
 
     private SimpleDoubleProperty midXProperty,midYProperty;
-    private SimpleIntegerProperty weight;
     private Text text;
 
     protected void initialize(BasicVisuNode from, BasicVisuNode to, BasicEdge basicEdge, Integer _weight){
@@ -36,10 +35,6 @@ public class WeightedEdge extends Edge {
         text.layoutYProperty().bind(midYProperty.subtract(3));
 
         this.getChildren().add(text);
-    }
-
-    public SimpleIntegerProperty getWeightProperty(){
-        return weight;
     }
 
     @Override
