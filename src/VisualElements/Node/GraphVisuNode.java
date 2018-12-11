@@ -20,10 +20,10 @@ public class GraphVisuNode extends BasicVisuNode {
         distText.setLayoutX(-0.5* distText.getBoundsInLocal().getWidth());
         distText.setLayoutY(-Parameters.nodeRadius-5);
         distText.setOpacity(0);
-        lastNodeText=new Text();
+        lastNodeText=new Text("");
         lastNodeText.setFont(new Font(20));
         lastNodeText.setLayoutX(-0.5* distText.getBoundsInLocal().getWidth());
-        lastNodeText.setLayoutY(Parameters.nodeRadius+5);
+        lastNodeText.setLayoutY(Parameters.nodeRadius+15);
         lastNodeText.setOpacity(0);
         getChildren().addAll(distText,lastNodeText);
     }
@@ -51,13 +51,21 @@ public class GraphVisuNode extends BasicVisuNode {
     public Animation getLastNodeChangeAnima(int newLastNodeId){
         Animation textDisappear=AnimationGenerator.getDisappearAnimation(lastNodeText);
         textDisappear.setOnFinished(e-> {
-            if(newLastNodeId== GraphNode.inf)
-                lastNodeText.setText("-");
+            if(newLastNodeId== -1)
+                lastNodeText.setText("");
             else
                 lastNodeText.setText(Integer.toString(newLastNodeId));
         });
         Animation textAppear=AnimationGenerator.getAppearAnimation(lastNodeText);
         return new SequentialTransition(textDisappear,textAppear);
+    }
+
+    public Animation getLNAppearAnima(){
+        return AnimationGenerator.getAppearAnimation(lastNodeText);
+    }
+
+    public Animation getLNDisappearAnima(){
+        return AnimationGenerator.getDisappearAnimation(lastNodeText);
     }
 
 }

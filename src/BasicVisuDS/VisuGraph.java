@@ -126,8 +126,10 @@ public class VisuGraph extends VisuDS{
 
     public void showAllDistAndLastNode(){
         ParallelTransition distAppear=new ParallelTransition();
-        for(GraphNode node:nodes)
+        for(GraphNode node:nodes) {
             distAppear.getChildren().add(node.getVisuNode().getDistAppearAnima());
+            distAppear.getChildren().add(node.getVisuNode().getLNAppearAnima());
+        }
         addNewAnimation(distAppear);
     }
 
@@ -135,15 +137,17 @@ public class VisuGraph extends VisuDS{
         ParallelTransition distDisappear=new ParallelTransition();
         for(GraphNode node:nodes) {
             distDisappear.getChildren().add(node.getVisuNode().getDistDisappearAnima());
+            distDisappear.getChildren().add(node.getVisuNode().getLNDisappearAnima());
         }
         addNewAnimation(distDisappear);
     }
 
-    public void resetDistAndGetAnima(){
+    public void resetAndGetAnima(){
         ParallelTransition distChangeAnima=new ParallelTransition();
         for(GraphNode node:nodes){
             node.setDistance(GraphNode.inf);
             distChangeAnima.getChildren().add(node.getDistChangeAnimation(GraphNode.inf));
+            distChangeAnima.getChildren().add(node.getLastNodeChangeAnimation(-1));
         }
         animationManager.addNewAnimation(distChangeAnima);
     }

@@ -4,7 +4,6 @@ import Algorithm.Dijkstra;
 import Algorithm.VisuBFS;
 import Algorithm.VisuDFS;
 import BasicAnimation.AnimationGenerator;
-import BasicAnimation.AnimationManager;
 import BasicVisuDS.VisuGraph;
 import BasicVisuDS.VisuGraphException;
 import VisualElements.Edge.Edge;
@@ -22,7 +21,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 import java.net.URL;
-import java.nio.file.FileAlreadyExistsException;
 import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -174,7 +172,7 @@ public class GraphController implements Initializable {
     public void onDijkstraClick(ActionEvent actionEvent) {
         Dijkstra dijkstra=new Dijkstra(visuGraph,instructionText);
         visuGraph.clearAllAnimation();
-        visuGraph.resetDistAndGetAnima();
+        visuGraph.resetAndGetAnima();
         visuGraph.showAllDistAndLastNode();
         visuGraph.resetSelectState();
         visuGraph.getAllAnimation().play();
@@ -187,7 +185,7 @@ public class GraphController implements Initializable {
                 AnimationGenerator.setRate(1.0);
                 visuGraph.clearAllAnimation();
                 visuGraph.resetSelectState();
-                visuGraph.resetDistAndGetAnima();
+                visuGraph.resetAndGetAnima();
                 int selectedNodeIdx = visuGraph.getSelectedNodeIdx(e.getX(), e.getY());
                 if (selectedNodeIdx >= 0)
                     dijkstra.setStartNodeIdx(selectedNodeIdx);
