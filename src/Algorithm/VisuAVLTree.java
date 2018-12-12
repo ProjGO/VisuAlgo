@@ -28,11 +28,11 @@ public class VisuAVLTree extends VisuBSTree {
             TreeNode parent = root.parent, leftChild = root.leftChild;
             BasicVisuNode parentVisuNode = parent.visuNode, leftChildVisuNode = leftChild.visuNode;
 
-            Animation leftChildEdgeMove = AnimationGenerator.changeEdgeToNode(TreeNode.getAnchorPane(), leftChild.edge, parentVisuNode.getLayoutX(), parentVisuNode.getLayoutY(), parentVisuNode);
-            Animation rootEdgeMove = AnimationGenerator.changeEdgeToNode(TreeNode.getAnchorPane(), root.edge, leftChildVisuNode.getLayoutX(), leftChildVisuNode.getLayoutY(), leftChildVisuNode);
+            Animation leftChildEdgeMove = AnimationGenerator.changeEdgeToNode(anchorPane, leftChild.edge, parentVisuNode.getLayoutX(), parentVisuNode.getLayoutY(), parentVisuNode);
+            Animation rootEdgeMove = AnimationGenerator.changeEdgeToNode(anchorPane, root.edge, leftChildVisuNode.getLayoutX(), leftChildVisuNode.getLayoutY(), leftChildVisuNode);
             ParallelTransition edgeMove = new ParallelTransition(leftChildEdgeMove, rootEdgeMove);
             if (leftChild.haveRightChild())
-                edgeMove.getChildren().add(AnimationGenerator.changeEdgeToNode(TreeNode.getAnchorPane(), root.leftChild.rightChild.edge, root.visuNode.getLayoutX(), root.visuNode.getLayoutY(), root.visuNode));
+                edgeMove.getChildren().add(AnimationGenerator.changeEdgeToNode(anchorPane, root.leftChild.rightChild.edge, root.visuNode.getLayoutX(), root.visuNode.getLayoutY(), root.visuNode));
 
             TreeNode tmp = root.leftChild.rightChild;
             root.leftChild.parent = parent;
@@ -58,7 +58,7 @@ public class VisuAVLTree extends VisuBSTree {
         }else{
             TreeNode leftChild=root.leftChild;
             if (leftChild.haveRightChild()) {
-                animationManager.addNewAnimation(AnimationGenerator.changeEdgeToNode(TreeNode.getAnchorPane(), leftChild.rightChild.edge, root.visuNode.getLayoutX(), root.visuNode.getLayoutY(), root.visuNode));
+                animationManager.addNewAnimation(AnimationGenerator.changeEdgeToNode(anchorPane, leftChild.rightChild.edge, root.visuNode.getLayoutX(), root.visuNode.getLayoutY(), root.visuNode));
                 leftChild.rightChild.parent = root;
             }
             root.leftChild = leftChild.rightChild;
@@ -69,8 +69,8 @@ public class VisuAVLTree extends VisuBSTree {
             Animation animation=reCalcNodeLayoutAndGetAnima(leftChild);
             animation.setOnFinished(e->{
                 root.edge=new UnwUndirEdge(root.visuNode,leftChild.visuNode);
-                TreeNode.getAnchorPane().getChildren().add(root.edge);
-                TreeNode.getAnchorPane().getChildren().remove(leftChild.edge);
+                anchorPane.getChildren().add(root.edge);
+                anchorPane.getChildren().remove(leftChild.edge);
                 leftChild.edge=null;
             });
             animationManager.addNewAnimation(animation);
@@ -85,11 +85,11 @@ public class VisuAVLTree extends VisuBSTree {
             TreeNode parent = root.parent, rightChild = root.rightChild;
             BasicVisuNode parentVisuNode = parent.visuNode, rightChildVisuNode = rightChild.visuNode;
 
-            Animation rightChildEdgeMove = AnimationGenerator.changeEdgeToNode(TreeNode.getAnchorPane(), rightChild.edge, parentVisuNode.getLayoutX(), parentVisuNode.getLayoutY(), parentVisuNode);
-            Animation rootEdgeMove = AnimationGenerator.changeEdgeToNode(TreeNode.getAnchorPane(), root.edge, rightChildVisuNode.getLayoutX(), rightChildVisuNode.getLayoutY(), rightChildVisuNode);
+            Animation rightChildEdgeMove = AnimationGenerator.changeEdgeToNode(anchorPane, rightChild.edge, parentVisuNode.getLayoutX(), parentVisuNode.getLayoutY(), parentVisuNode);
+            Animation rootEdgeMove = AnimationGenerator.changeEdgeToNode(anchorPane, root.edge, rightChildVisuNode.getLayoutX(), rightChildVisuNode.getLayoutY(), rightChildVisuNode);
             ParallelTransition edgeMove = new ParallelTransition(rightChildEdgeMove, rootEdgeMove);
             if (rightChild.haveLeftChild())
-                edgeMove.getChildren().add(AnimationGenerator.changeEdgeToNode(TreeNode.getAnchorPane(), rightChild.leftChild.edge, root.visuNode.getLayoutX(), root.visuNode.getLayoutY(), root.visuNode));
+                edgeMove.getChildren().add(AnimationGenerator.changeEdgeToNode(anchorPane, rightChild.leftChild.edge, root.visuNode.getLayoutX(), root.visuNode.getLayoutY(), root.visuNode));
 
             TreeNode tmp = root.rightChild.leftChild;
             root.rightChild.parent = parent;
@@ -116,7 +116,7 @@ public class VisuAVLTree extends VisuBSTree {
         }else{
             TreeNode rightChild=root.rightChild;
             if (rightChild.haveLeftChild()) {
-                animationManager.addNewAnimation(AnimationGenerator.changeEdgeToNode(TreeNode.getAnchorPane(), rightChild.leftChild.edge, root.visuNode.getLayoutX(), root.visuNode.getLayoutY(), root.visuNode));
+                animationManager.addNewAnimation(AnimationGenerator.changeEdgeToNode(anchorPane, rightChild.leftChild.edge, root.visuNode.getLayoutX(), root.visuNode.getLayoutY(), root.visuNode));
                 rightChild.leftChild.parent = root;
             }
             root.rightChild = rightChild.leftChild;
@@ -127,8 +127,8 @@ public class VisuAVLTree extends VisuBSTree {
             Animation animation=reCalcNodeLayoutAndGetAnima(rightChild);
             animation.setOnFinished(e->{
                 root.edge=new UnwUndirEdge(root.visuNode,rightChild.visuNode);
-                TreeNode.getAnchorPane().getChildren().add(root.edge);
-                TreeNode.getAnchorPane().getChildren().remove(rightChild.edge);
+                anchorPane.getChildren().add(root.edge);
+                anchorPane.getChildren().remove(rightChild.edge);
                 rightChild.edge=null;
             });
             animationManager.addNewAnimation(animation);
@@ -238,21 +238,21 @@ public class VisuAVLTree extends VisuBSTree {
                         animationManager.addNewAnimation(AnimationGenerator.getDisappearAnimation(curTreeNode.visuNode));
                         FadeTransition edgeDisappearAnima = AnimationGenerator.getDisappearAnimation(curTreeNode.edge);
                         TreeNode finalCurTreeNode = curTreeNode;
-                        edgeDisappearAnima.setOnFinished(e -> TreeNode.getAnchorPane().getChildren().removeAll(finalCurTreeNode.visuNode, finalCurTreeNode.edge));
+                        edgeDisappearAnima.setOnFinished(e -> anchorPane.getChildren().removeAll(finalCurTreeNode.visuNode, finalCurTreeNode.edge));
                         animationManager.addNewAnimation(edgeDisappearAnima);
                         if (curTreeNode.haveLeftChild()) {
                             if (isLeftChild)
                                 curTreeNode.parent.leftChild = curTreeNode.leftChild;
                             else
                                 curTreeNode.parent.rightChild = curTreeNode.leftChild;
-                            animationManager.addNewAnimation(AnimationGenerator.changeEdgeToNode(TreeNode.getAnchorPane(), curTreeNode.leftChild.edge, curTreeNode.parent.visuNode.getLayoutX(), curTreeNode.parent.visuNode.getLayoutY(), curTreeNode.parent.visuNode));
+                            animationManager.addNewAnimation(AnimationGenerator.changeEdgeToNode(anchorPane, curTreeNode.leftChild.edge, curTreeNode.parent.visuNode.getLayoutX(), curTreeNode.parent.visuNode.getLayoutY(), curTreeNode.parent.visuNode));
                             animationManager.addNewAnimation(reCalcNodeLayoutAndGetAnima(curTreeNode.leftChild, curTreeNode.parent, isLeftChild));
                         } else if (curTreeNode.haveRightChild()) {
                             if (isLeftChild)
                                 curTreeNode.parent.leftChild = curTreeNode.rightChild;
                             else
                                 curTreeNode.parent.rightChild = curTreeNode.rightChild;
-                            animationManager.addNewAnimation(AnimationGenerator.changeEdgeToNode(TreeNode.getAnchorPane(), curTreeNode.rightChild.edge, curTreeNode.parent.visuNode.getLayoutX(), curTreeNode.parent.visuNode.getLayoutY(), curTreeNode.parent.visuNode));
+                            animationManager.addNewAnimation(AnimationGenerator.changeEdgeToNode(anchorPane, curTreeNode.rightChild.edge, curTreeNode.parent.visuNode.getLayoutX(), curTreeNode.parent.visuNode.getLayoutY(), curTreeNode.parent.visuNode));
                             animationManager.addNewAnimation(reCalcNodeLayoutAndGetAnima(curTreeNode.rightChild, curTreeNode.parent, isLeftChild));
                         }else{
                             if(isLeftChild)
@@ -271,7 +271,7 @@ public class VisuAVLTree extends VisuBSTree {
                             removeRootAnima = new ParallelTransition();
                             removeRootAnima.getChildren().add(AnimationGenerator.getDisappearAnimation(root.visuNode));
                             removeRootAnima.getChildren().add(AnimationGenerator.getDisappearAnimation(root.leftChild.edge));
-                            removeRootAnima.setOnFinished(e -> TreeNode.getAnchorPane().getChildren().removeAll(oldRoot.visuNode, edge));
+                            removeRootAnima.setOnFinished(e -> anchorPane.getChildren().removeAll(oldRoot.visuNode, edge));
                             animationManager.addNewAnimation(removeRootAnima);
                             child.parent = null;
                             root = child;
@@ -283,7 +283,7 @@ public class VisuAVLTree extends VisuBSTree {
                             removeRootAnima = new ParallelTransition();
                             removeRootAnima.getChildren().add(AnimationGenerator.getDisappearAnimation(root.visuNode));
                             removeRootAnima.getChildren().add(AnimationGenerator.getDisappearAnimation(root.rightChild.edge));
-                            removeRootAnima.setOnFinished(e -> TreeNode.getAnchorPane().getChildren().removeAll(oldRoot.visuNode, edge));
+                            removeRootAnima.setOnFinished(e -> anchorPane.getChildren().removeAll(oldRoot.visuNode, edge));
                             animationManager.addNewAnimation(removeRootAnima);
                             child.parent = null;
                             root = child;
@@ -291,7 +291,7 @@ public class VisuAVLTree extends VisuBSTree {
                         }else{
                             oldRoot=root;
                             Animation removeRoot=AnimationGenerator.getDisappearAnimation(root.visuNode);
-                            removeRoot.setOnFinished(e-> TreeNode.getAnchorPane().getChildren().removeAll(oldRoot.visuNode));
+                            removeRoot.setOnFinished(e-> anchorPane.getChildren().removeAll(oldRoot.visuNode));
                             animationManager.addNewAnimation(removeRoot);
                             root=null;
                         }

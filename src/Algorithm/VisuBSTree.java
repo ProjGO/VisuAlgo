@@ -127,21 +127,21 @@ public class VisuBSTree extends VisuBinaryTree {
                         animationManager.addNewAnimation(AnimationGenerator.getDisappearAnimation(curTreeNode.visuNode));
                         FadeTransition edgeDisappearAnima = AnimationGenerator.getDisappearAnimation(curTreeNode.edge);
                         TreeNode finalCurTreeNode = curTreeNode;
-                        edgeDisappearAnima.setOnFinished(e -> TreeNode.getAnchorPane().getChildren().removeAll(finalCurTreeNode.visuNode, finalCurTreeNode.edge));
+                        edgeDisappearAnima.setOnFinished(e -> anchorPane.getChildren().removeAll(finalCurTreeNode.visuNode, finalCurTreeNode.edge));
                         animationManager.addNewAnimation(edgeDisappearAnima);
                         if (curTreeNode.haveLeftChild()) {
                             if (isLeftChild)
                                 curTreeNode.parent.leftChild = curTreeNode.leftChild;
                             else
                                 curTreeNode.parent.rightChild = curTreeNode.leftChild;
-                            animationManager.addNewAnimation(AnimationGenerator.changeEdgeToNode(TreeNode.getAnchorPane(), curTreeNode.leftChild.edge, curTreeNode.parent.visuNode.getLayoutX(), curTreeNode.parent.visuNode.getLayoutY(), curTreeNode.parent.visuNode));
+                            animationManager.addNewAnimation(AnimationGenerator.changeEdgeToNode(anchorPane, curTreeNode.leftChild.edge, curTreeNode.parent.visuNode.getLayoutX(), curTreeNode.parent.visuNode.getLayoutY(), curTreeNode.parent.visuNode));
                             animationManager.addNewAnimation(reCalcNodeLayoutAndGetAnima(curTreeNode.leftChild, curTreeNode.parent, isLeftChild));
                         } else if (curTreeNode.haveRightChild()) {
                             if (isLeftChild)
                                 curTreeNode.parent.leftChild = curTreeNode.rightChild;
                             else
                                 curTreeNode.parent.rightChild = curTreeNode.rightChild;
-                            animationManager.addNewAnimation(AnimationGenerator.changeEdgeToNode(TreeNode.getAnchorPane(), curTreeNode.rightChild.edge, curTreeNode.parent.visuNode.getLayoutX(), curTreeNode.parent.visuNode.getLayoutY(), curTreeNode.parent.visuNode));
+                            animationManager.addNewAnimation(AnimationGenerator.changeEdgeToNode(anchorPane, curTreeNode.rightChild.edge, curTreeNode.parent.visuNode.getLayoutX(), curTreeNode.parent.visuNode.getLayoutY(), curTreeNode.parent.visuNode));
                             animationManager.addNewAnimation(reCalcNodeLayoutAndGetAnima(curTreeNode.rightChild, curTreeNode.parent, isLeftChild));
                         }else{
                             if(isLeftChild)
@@ -159,7 +159,7 @@ public class VisuBSTree extends VisuBinaryTree {
                             removeRootAnima = new ParallelTransition();
                             removeRootAnima.getChildren().add(AnimationGenerator.getDisappearAnimation(root.visuNode));
                             removeRootAnima.getChildren().add(AnimationGenerator.getDisappearAnimation(root.leftChild.edge));
-                            removeRootAnima.setOnFinished(e -> TreeNode.getAnchorPane().getChildren().removeAll(oldRoot.visuNode, edge));
+                            removeRootAnima.setOnFinished(e -> anchorPane.getChildren().removeAll(oldRoot.visuNode, edge));
                             animationManager.addNewAnimation(removeRootAnima);
                             child.parent = null;
                             root = child;
@@ -171,7 +171,7 @@ public class VisuBSTree extends VisuBinaryTree {
                             removeRootAnima = new ParallelTransition();
                             removeRootAnima.getChildren().add(AnimationGenerator.getDisappearAnimation(root.visuNode));
                             removeRootAnima.getChildren().add(AnimationGenerator.getDisappearAnimation(root.rightChild.edge));
-                            removeRootAnima.setOnFinished(e -> TreeNode.getAnchorPane().getChildren().removeAll(oldRoot.visuNode, edge));
+                            removeRootAnima.setOnFinished(e -> anchorPane.getChildren().removeAll(oldRoot.visuNode, edge));
                             animationManager.addNewAnimation(removeRootAnima);
                             child.parent = null;
                             root = child;
@@ -180,7 +180,7 @@ public class VisuBSTree extends VisuBinaryTree {
                             oldRoot=root;
                             Animation removeRoot=AnimationGenerator.getDisappearAnimation(root.visuNode);
                             removeRoot.setOnFinished(e->{
-                                TreeNode.getAnchorPane().getChildren().removeAll(oldRoot.visuNode);});
+                                anchorPane.getChildren().removeAll(oldRoot.visuNode);});
                             animationManager.addNewAnimation(removeRoot);
                             root=null;
                         }

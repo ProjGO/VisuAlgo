@@ -167,6 +167,10 @@ public class Edge extends Group {
         return appearAnimation;
     }
 
+    public Animation getDisappearAnimation(){
+        return AnimationGenerator.getDisappearAnimation(this);
+    }
+
     public BasicVisuNode getFromVisuNode(){
         return fromVisuNode;
     }

@@ -116,6 +116,10 @@ public class BasicVisuNode extends Group {
         fillTransition.setToValue(Color.GREENYELLOW);
         return fillTransition;
     }
+
+    public FadeTransition getDisappearAnimation(){
+        return AnimationGenerator.getDisappearAnimation(this);
+    }
 }
 
 class MouseEventHandler implements  EventHandler<MouseEvent>{

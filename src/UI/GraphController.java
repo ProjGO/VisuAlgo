@@ -97,9 +97,9 @@ public class GraphController implements Initializable {
                     if (_toIdx >= 0 && _toIdx != fromNodeIdx.get()) {
                         toNodeIdx.set(_toIdx);
                         String weightStr=weightField.getText();
-                        int state=weightInputJudge(weightStr);
+                        int state=Utilities.judgeInput(weightStr);
                         Edge newEdge=null;
-                        if(state==0||state==-1) {//输入合法
+                        if(state==0||state==-1) {//输入合法或没有输入
                             visuGraph.clearAllAnimation();
                             if(state==-1)
                                 weightField.setText(Integer.toString(new Random().nextInt()%20+20));
@@ -222,19 +222,6 @@ public class GraphController implements Initializable {
         visuGraph.clearAllAnimation();
         visuGraph.clearAll();
         visuGraph.getAllAnimation().play();
-    }
-
-    private int weightInputJudge(String input){//0 合法 1 不是数字 2 超过范围
-        if(input.isEmpty())
-            return -1;
-        for(int i=0;i<input.length();i++){
-            if(!Character.isDigit(input.charAt(i)))
-                return 1;
-        }
-        int weight=Integer.parseInt(input);
-        if(weight<0||weight>100)
-            return 2;
-        return 0;
     }
 
     private void reset(){

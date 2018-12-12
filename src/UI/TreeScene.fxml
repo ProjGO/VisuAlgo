@@ -3,12 +3,42 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.TreeController">
    <children>
-      <TextField fx:id="textField" layoutX="1054.0" layoutY="67.0" />
-      <Button fx:id="insertButton" layoutX="1150.0" layoutY="132.0" mnemonicParsing="false" onAction="#onInsertClick" text="Insert" />
-      <Button fx:id="findButton" layoutX="1155.0" layoutY="188.0" mnemonicParsing="false" onAction="#onFindClick" text="Find" />
-      <Button fx:id="deleteButton" layoutX="1146.0" layoutY="247.0" mnemonicParsing="false" onAction="#onDeleteClick" text="Delete" />
+      <AnchorPane fx:id="treePane" prefHeight="720.0" prefWidth="1280.0">
+         <children>
+            <VBox layoutX="1091.0" layoutY="14.0" prefHeight="129.0" prefWidth="180.0" spacing="20.0">
+               <children>
+                  <VBox prefHeight="68.0" prefWidth="150.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Data:" />
+                        <TextField fx:id="dataInputField" />
+                     </children>
+                  </VBox>
+                  <Button fx:id="insertButton" mnemonicParsing="false" onAction="#onInsertClick" prefWidth="180.0" text="Insert" />
+                  <Button fx:id="findButton" mnemonicParsing="false" onAction="#onFindClick" prefWidth="180.0" text="Find" />
+                  <HBox prefHeight="30.0" prefWidth="180.0">
+                     <children>
+                        <Button fx:id="findMinButton" mnemonicParsing="false" onAction="#onFindMinClick" prefHeight="30.0" prefWidth="90.0" text="Find Min" />
+                        <Button fx:id="findMaxButton" mnemonicParsing="false" onAction="#onFindMaxClick" prefHeight="30.0" prefWidth="90.0" text="Find Max" />
+                     </children>
+                  </HBox>
+                  <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#onDeleteClick" prefWidth="180.0" text="Delete" />
+                  <Button fx:id="deleteAllButton" mnemonicParsing="false" onAction="#onDeleteAllClick" prefHeight="30.0" prefWidth="180.0" text="Delete All" />
+               </children>
+            </VBox>
+            <Text fx:id="hintInfo" layoutX="14.0" layoutY="678.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="297.30029296875" />
+            <HBox layoutX="46.0" layoutY="25.0" prefHeight="30.0" prefWidth="234.0" spacing="30.0">
+               <children>
+                  <Button fx:id="BSTButton" mnemonicParsing="false" onAction="#onBSTButtonClick" prefWidth="100.0" text="BST" />
+                  <Button fx:id="AVLButton" mnemonicParsing="false" onAction="#onAVLButtonClick" prefWidth="100.0" text="AVL" />
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

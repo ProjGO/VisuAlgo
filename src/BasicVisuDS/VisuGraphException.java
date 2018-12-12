@@ -1,7 +1,7 @@
 package BasicVisuDS;
 
 public class VisuGraphException extends Exception {
-    String info;
+    private String info;
     VisuGraphException(String info){
         this.info=info;
     }
