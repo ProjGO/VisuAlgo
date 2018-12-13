@@ -1,4 +1,4 @@
-package Algorithm;
+package Algorithm.BinaryTree;
 
 import BasicAnimation.AnimationGenerator;
 import BasicVisuDS.TreeNode;

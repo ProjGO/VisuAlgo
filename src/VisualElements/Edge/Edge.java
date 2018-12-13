@@ -4,6 +4,7 @@ import BasicAnimation.AnimationGenerator;
 import Parameters.Parameters;
 import VisualElements.Node.BasicVisuNode;
 import javafx.animation.Animation;
+import javafx.animation.FadeTransition;
 import javafx.animation.FillTransition;
 import javafx.animation.SequentialTransition;
 import javafx.beans.property.DoubleProperty;
@@ -169,6 +170,18 @@ public class Edge extends Group {
 
     public Animation getDisappearAnimation(){
         return AnimationGenerator.getDisappearAnimation(this);
+    }
+
+    public Animation getSelelctedAnimation(){
+        FillTransition selectedAanima=new FillTransition(Duration.millis(Parameters.appearAnimaDuration),this.basicEdge );
+        selectedAanima.setToValue(Parameters.edgeSelectedColor);
+        return selectedAanima;
+    }
+
+    public Animation getUnselectedAnimation(){
+        FillTransition unselectedAanima=new FillTransition(Duration.millis(Parameters.appearAnimaDuration),this.basicEdge );
+        unselectedAanima.setToValue(Parameters.edgeColor);
+        return unselectedAanima;
     }
 
     public BasicVisuNode getFromVisuNode(){

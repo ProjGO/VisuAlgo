@@ -42,6 +42,7 @@ public class BasicVisuNode extends Group {
         outline.setOpacity(0.0f);
 
         dataText =new Text(data.toString());
+        //dataText=new Text(String.valueOf('A'+data-1));
         dataText.setFont(new Font(20));
         dataText.setFill(Parameters.nodeTextColor);
         dataText.setLayoutX(-0.5* dataText.getBoundsInLocal().getWidth());

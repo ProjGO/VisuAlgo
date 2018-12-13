@@ -1,4 +1,4 @@
-package Algorithm;
+package Algorithm.Graph;
 
 import BasicVisuDS.GraphNode;
 import BasicVisuDS.VisuGraph;
@@ -18,7 +18,6 @@ public class Dijkstra {
     public Dijkstra(VisuGraph visuGraph, Text instructionText){
         this.visuGraph=visuGraph;
         this.instructionText=instructionText;
-        //this.instructionText.setText("cyka");
     }
 
     public void setStartNodeIdx(int idx){
@@ -27,12 +26,11 @@ public class Dijkstra {
     }
 
     private void dijkstra(){
-        //Queue<GraphNode> pq=new PriorityQueue<>((o1,o2)->{ return o1.getDistance()-o2.getDistance(); });
         visuGraph.getNode(startNodeIdx).setDistance(0);
 
         while(true){
             GraphNode curNode=null;
-            int minDis=9999;
+            int minDis=GraphNode.inf;
             for(GraphNode node:visuGraph.getNodes()){
                 if(node.getDistance()<minDis&&!node.isVisited()) {
                     minDis=node.getDistance();
@@ -74,15 +72,12 @@ public class Dijkstra {
 
     private void getPathTrackAnimation(GraphNode curNode){
         ArrayList<Animation> pathAnimation=new ArrayList<>();
-        SequentialTransition pathTrackAnimation=new SequentialTransition();
         while(curNode!=visuGraph.getNode(startNodeIdx)){
             pathAnimation.add(curNode.getEdgeToNodeAnimation(visuGraph.getEdge(curNode.getLast(),curNode)));
             curNode=curNode.getLast();
         }
         for(int i=pathAnimation.size()-1;i>=0;i--)
             visuGraph.addNewAnimation(pathAnimation.get(i));
-            //pathTrackAnimation.getChildren().add(pathAnimation.get(i));
-        //return pathTrackAnimation;
     }
 
     private Animation gettPathTrackAnimation(GraphNode curNode){

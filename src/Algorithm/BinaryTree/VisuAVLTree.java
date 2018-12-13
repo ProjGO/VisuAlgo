@@ -1,4 +1,4 @@
-package Algorithm;
+package Algorithm.BinaryTree;
 
 import BasicAnimation.AnimationGenerator;
 import BasicVisuDS.TreeNode;
@@ -11,7 +11,12 @@ import javafx.animation.ParallelTransition;
 import javafx.animation.SequentialTransition;
 import javafx.scene.layout.AnchorPane;
 
+import java.awt.*;
+
 public class VisuAVLTree extends VisuBSTree {
+
+    private boolean inserted=false;
+
     public VisuAVLTree(AnchorPane anchorPane){
         super(anchorPane);
     }
@@ -164,6 +169,7 @@ public class VisuAVLTree extends VisuBSTree {
                 }
             }else{
                 addNode(value, curTreeNode,true);
+                inserted=true;
             }
         }else if(value> curTreeNode.value.get()){
             if(curTreeNode.haveRightChild()){
@@ -178,6 +184,7 @@ public class VisuAVLTree extends VisuBSTree {
                 }
             }else{
                 addNode(value, curTreeNode,false);
+                inserted=true;
             }
         }
         curTreeNode.height=Math.max(getHeight(curTreeNode.leftChild),getHeight(curTreeNode.rightChild))+1;
@@ -202,11 +209,14 @@ public class VisuAVLTree extends VisuBSTree {
 
     @Override
     public boolean insert(int value){
-        if(root==null)
+        inserted=false;
+        if(root==null) {
             addFirstNode(value);
+            inserted=true;
+        }
         else
             innerInsert(root,value,false);
-        return true;
+        return inserted;
     }
 
     @Override

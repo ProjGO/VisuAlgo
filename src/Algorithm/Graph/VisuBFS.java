@@ -1,4 +1,4 @@
-package Algorithm;
+package Algorithm.Graph;
 
 import BasicVisuDS.GraphNode;
 import BasicVisuDS.VisuGraph;

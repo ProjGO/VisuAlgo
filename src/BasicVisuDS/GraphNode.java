@@ -3,7 +3,6 @@ package BasicVisuDS;
 import BasicAnimation.AnimationGenerator;
 import BasicAnimation.AnimationManager;
 import VisualElements.Edge.Edge;
-import VisualElements.Edge.WeightedEdge;
 import VisualElements.Node.GraphVisuNode;
 import javafx.animation.Animation;
 import javafx.animation.ParallelTransition;
@@ -76,10 +75,12 @@ public class GraphNode {
         }
         for(int i=0;i<in.size();i++) {
             in.get(i).node.removeOutEdgeAndNode(this);
-            Animation edgeDisappear= AnimationGenerator.getDisappearAnimation(in.get(i).edge);
-            final int fi=i;
-            edgeDisappear.setOnFinished(e->scene.getChildren().remove(in.get(fi).edge));
-            deleteAnima.getChildren().add(edgeDisappear);
+            if(!out.contains(in.get(i))) {
+                Animation edgeDisappear = AnimationGenerator.getDisappearAnimation(in.get(i).edge);
+                final int fi = i;
+                edgeDisappear.setOnFinished(e -> scene.getChildren().remove(in.get(fi).edge));
+                deleteAnima.getChildren().add(edgeDisappear);
+            }
         }
         Animation nodeDisappear=AnimationGenerator.getDisappearAnimation(visuNode);
         nodeDisappear.setOnFinished(e->scene.getChildren().removeAll(visuNode));

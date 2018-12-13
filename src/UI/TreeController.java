@@ -1,10 +1,9 @@
 package UI;
 
-import Algorithm.VisuAVLTree;
-import Algorithm.VisuBSTree;
+import Algorithm.BinaryTree.VisuAVLTree;
+import Algorithm.BinaryTree.VisuBSTree;
 import BasicVisuDS.VisuBinaryTree;
 import javafx.animation.Animation;
-import javafx.animation.SequentialTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

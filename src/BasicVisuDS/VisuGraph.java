@@ -32,6 +32,12 @@ public class VisuGraph extends VisuDS{
         animationManager.addNewAnimation(nodes.get(nodes.size()-1).visuNode.getEmphasizeAnimation());
     }
 
+    public void deleteNode(int nodeIdx){
+        nodes.get(nodeIdx).delete();
+        nodes.remove(nodeIdx);
+        //nodeCnt--;
+    }
+
     private boolean haveEdge(int fromNodeIdx,int toNodeIdx){
         return getEdge(fromNodeIdx,toNodeIdx)!=null;
     }
@@ -116,12 +122,15 @@ public class VisuGraph extends VisuDS{
     }
 
     public void resetSelectState(){//将所有节点的visited设为false,并生成取消所有节点的选中的动画加入到animationManager中
-        ParallelTransition unselAllNodes=new ParallelTransition();
-        for(int i=0;i<nodes.size();i++) {
-            nodes.get(i).setVisited(false);
-            unselAllNodes.getChildren().add(nodes.get(i).getUnselectedAnimation());
+        ParallelTransition unselectAnima=new ParallelTransition();
+        for(GraphNode node:nodes) {
+            node.setLast(null);
+            node.setVisited(false);
+            unselectAnima.getChildren().add(node.getUnselectedAnimation());
         }
-        animationManager.addNewAnimation(unselAllNodes);
+        for(Edge edge:edges)
+            unselectAnima.getChildren().add(edge.getUnselectedAnimation());
+        animationManager.addNewAnimation(unselectAnima);
     }
 
     public void showAllDistAndLastNode(){

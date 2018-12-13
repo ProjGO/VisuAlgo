@@ -11,9 +11,9 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        FXMLLoader loader=new FXMLLoader(Main.class.getResource("TreeScene.fxml"));
+        FXMLLoader loader=new FXMLLoader(Main.class.getResource("GraphScene.fxml"));
         AnchorPane root = loader.load();
-        TreeController controller=loader.getController();
+        GraphController controller=loader.getController();
         primaryStage.setTitle("VisuAlgo");
         primaryStage.setScene(new Scene(root, 1280, 720));
 
