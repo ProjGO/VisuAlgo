@@ -77,7 +77,7 @@ public abstract class VisuBinaryTree extends VisuDS{
     protected ParallelTransition reCalcNodeLayoutAndGetAnima(TreeNode root, TreeNode newParent, boolean isLeftChild){
         ParallelTransition nodeMoveAnima=new ParallelTransition();
         innerReCalcNodeLayoutsAndGetAnima(root,newParent,newParent.visuNode.getLayoutX(),newParent.visuNode.getLayoutY(),isLeftChild,nodeMoveAnima);
-        //nodeMoveAnima.getChildren().add(AnimationGenerator.changeEdgeToNode(TreeNode.anchorPane,root.edge,newParent.visuNode.getLayoutX(),newParent.visuNode.getLayoutY(),newParent.visuNode));
+        //nodeMoveAnima.getChildren().add(AnimationGenerator.changeEdgeToNode(TreeNode.anchorPane,root.visuEdge,newParent.visuNode.getLayoutX(),newParent.visuNode.getLayoutY(),newParent.visuNode));
         return nodeMoveAnima;
     }
 

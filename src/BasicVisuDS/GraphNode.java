@@ -6,6 +6,7 @@ import VisualElements.Edge.Edge;
 import VisualElements.Node.GraphVisuNode;
 import javafx.animation.Animation;
 import javafx.animation.ParallelTransition;
+import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.layout.AnchorPane;
 
@@ -18,6 +19,7 @@ public class GraphNode {
     GraphVisuNode visuNode;
     public ArrayList<EdgeAndNode> out=new ArrayList<>(),in=new ArrayList<>();//出/入边及这条边另一端的节点
     private boolean visited=false;
+    private boolean selected=false;
     private int id;
 
     public static final int inf=9999;
@@ -126,11 +128,17 @@ public class GraphNode {
     }
 
     public Animation getSelectedAnimation(){
+        selected=true;
         return visuNode.getSelectedAnimation();
     }
 
     public Animation getUnselectedAnimation(){
+        selected=false;
         return visuNode.getUnselectedAnimation();
+    }
+
+    public Boolean isSelected(){
+        return selected;
     }
 
     public Animation getEdgeToNodeAnimation(Edge edge){

@@ -10,9 +10,9 @@ import java.util.ArrayList;
 
 public class VisuGraph extends VisuDS{
     private ArrayList<GraphNode> nodes=new ArrayList<>();
-    private ArrayList<Edge> edges=new ArrayList<>();
+    //private ArrayList<Edge> edges=new ArrayList<>();
+    private ArrayList<GraphEdge> edges =new ArrayList<>();
 
-    //private AnchorPane anchorPane;
     private int nodeCnt=1;
 
     public VisuGraph(AnchorPane anchorPane){
@@ -65,7 +65,8 @@ public class VisuGraph extends VisuDS{
             throw(new VisuGraphException("这两点之间已存在反向边，请添加无向边"));
         nodes.get(fromNodeIdx).addAdjacentNode(nodes.get(toNodeIdx),edge,true);
         nodes.get(toNodeIdx).addAdjacentNode(nodes.get(fromNodeIdx),edge,false);
-        edges.add(edge);
+        //edges.add(visuEdge);
+        edges.add(new GraphEdge(nodes.get(fromNodeIdx),nodes.get(toNodeIdx),edge));
     }
 
     public void addUDirEdge(int fromNodeIdx,int toNodeIdx,Edge edge) throws VisuGraphException{
@@ -84,22 +85,26 @@ public class VisuGraph extends VisuDS{
         }
         nodes.get(fromNodeIdx).addAdjacentNode(nodes.get(toNodeIdx),edge);
         nodes.get(toNodeIdx).addAdjacentNode(nodes.get(fromNodeIdx),edge);
-        edges.add(edge);
+        //edges.add(visuEdge);
+        edges.add(new GraphEdge(nodes.get(fromNodeIdx),nodes.get(toNodeIdx),edge));
     }
 
     public void clearAll(){
         ParallelTransition clearAllAnima=new ParallelTransition();
         for(GraphNode node:nodes)
             clearAllAnima.getChildren().add(AnimationGenerator.getDisappearAnimation(node.getVisuNode()));
-        for(Edge edge:edges)
-            clearAllAnima.getChildren().add(AnimationGenerator.getDisappearAnimation(edge));
+        //for(Edge visuEdge:edges)
+            //clearAllAnima.getChildren().add(AnimationGenerator.getDisappearAnimation(visuEdge));
+        for(GraphEdge edge: edges)
+            clearAllAnima.getChildren().add(AnimationGenerator.getDisappearAnimation(edge.visuEdge));
         nodeCnt=1;
         clearAllAnima.setOnFinished(e->{
             for(GraphNode node:nodes)
                 anchorPane.getChildren().remove(node);
-            for(Edge edge:edges)
-                anchorPane.getChildren().remove(edge);
+            for(GraphEdge edge: edges)
+                anchorPane.getChildren().remove(edge.visuEdge);
             nodes.clear();
+            //edges.clear();
             edges.clear();
         });
         addNewAnimation(clearAllAnima);
@@ -121,18 +126,6 @@ public class VisuGraph extends VisuDS{
         animationManager.addNewAnimation(nodes.get(idx).visuNode.getUnselectedAnimation());
     }
 
-    public void resetSelectState(){//将所有节点的visited设为false,并生成取消所有节点的选中的动画加入到animationManager中
-        ParallelTransition unselectAnima=new ParallelTransition();
-        for(GraphNode node:nodes) {
-            node.setLast(null);
-            node.setVisited(false);
-            unselectAnima.getChildren().add(node.getUnselectedAnimation());
-        }
-        for(Edge edge:edges)
-            unselectAnima.getChildren().add(edge.getUnselectedAnimation());
-        animationManager.addNewAnimation(unselectAnima);
-    }
-
     public void showAllDistAndLastNode(){
         ParallelTransition distAppear=new ParallelTransition();
         for(GraphNode node:nodes) {
@@ -151,7 +144,7 @@ public class VisuGraph extends VisuDS{
         addNewAnimation(distDisappear);
     }
 
-    public void resetAndGetAnima(){
+    public void resetDistLastAndGetAnima(){
         ParallelTransition distChangeAnima=new ParallelTransition();
         for(GraphNode node:nodes){
             node.setDistance(GraphNode.inf);
@@ -161,11 +154,31 @@ public class VisuGraph extends VisuDS{
         animationManager.addNewAnimation(distChangeAnima);
     }
 
+    public void resetSelectState(){//将所有节点的visited设为false,并生成取消所有节点的选中的动画加入到animationManager中
+        ParallelTransition unselectAnima=new ParallelTransition();
+        for(GraphNode node:nodes)
+            unselectAnima.getChildren().add(node.getUnselectedAnimation());
+        for(GraphEdge edge: edges)
+            unselectAnima.getChildren().add(edge.visuEdge.getUnselectedAnimation());
+        animationManager.addNewAnimation(unselectAnima);
+    }
+
+    public void resetLastVis(){
+        for(GraphNode node:nodes) {
+            node.setLast(null);
+            node.setVisited(false);
+        }
+    }
+
     public GraphNode getNode(int idx){
         return nodes.get(idx);
     }
 
     public ArrayList<GraphNode> getNodes(){
         return nodes;
+    }
+
+    public ArrayList<GraphEdge> getEdges(){
+        return edges;
     }
 }

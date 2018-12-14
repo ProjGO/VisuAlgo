@@ -13,9 +13,9 @@
       <AnchorPane fx:id="graphPane" layoutY="8.0" prefHeight="720.0" prefWidth="1121.0">
          <children>
             <Text fx:id="hintInfo" layoutY="701.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="632.30029296875" />
-            <Text fx:id="instructionText" layoutX="704.0" layoutY="632.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="402.30029296875" />
+            <Text fx:id="instructionText" layoutX="704.0" layoutY="681.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="402.30029296875" />
          </children></AnchorPane>
-      <VBox layoutX="1121.0" layoutY="79.0" prefHeight="410.0" prefWidth="150.0" spacing="40.0">
+      <VBox layoutX="1121.0" layoutY="37.0" prefHeight="410.0" prefWidth="150.0" spacing="40.0">
          <children>
             <VBox prefHeight="111.0" prefWidth="150.0" spacing="20.0">
                <children>
@@ -42,9 +42,14 @@
                   <Button fx:id="BFSButton" mnemonicParsing="false" onAction="#onBFSButtonClick" prefHeight="23.0" prefWidth="75.0" text="BFS" />
                </children>
             </HBox>
-            <Button fx:id="dijkstraButton" mnemonicParsing="false" onAction="#onDijkstraClick" prefWidth="150.0" text="Dijkstra" />
+            <Button fx:id="dijkstraButton" mnemonicParsing="false" onAction="#onDijkstraClick" prefHeight="50.0" prefWidth="150.0" text="Shortet Path(Dijkstra)" />
+            <VBox prefHeight="94.0" prefWidth="150.0" spacing="20.0">
+               <children>
+                  <Button fx:id="primButton" mnemonicParsing="false" onAction="#onPrimClicked" prefHeight="23.0" prefWidth="156.0" text="MST(Prim)" />
+                  <Button fx:id="kruskalButton" mnemonicParsing="false" onAction="#onKruskalClick" prefHeight="30.0" prefWidth="172.0" text="MST(Kruskal)" />
+               </children>
+            </VBox>
             <Button fx:id="clearAllButton" mnemonicParsing="false" onAction="#onClearAllClick" prefHeight="30.0" prefWidth="200.0" text="Clear All" />
-            <Button fx:id="primButton" mnemonicParsing="false" onAction="#onPrimClicked" prefHeight="23.0" prefWidth="156.0" text="MST(Prim)" />
             <VBox prefHeight="50.0" prefWidth="128.0" spacing="5.0" />
          </children>
       </VBox>

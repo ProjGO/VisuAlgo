@@ -1,9 +1,6 @@
 package UI;
 
-import Algorithm.Graph.Dijkstra;
-import Algorithm.Graph.Prim;
-import Algorithm.Graph.VisuBFS;
-import Algorithm.Graph.VisuDFS;
+import Algorithm.Graph.*;
 import BasicAnimation.AnimationGenerator;
 import BasicVisuDS.VisuGraph;
 import BasicVisuDS.VisuGraphException;
@@ -58,7 +55,9 @@ public class GraphController implements Initializable {
     }
 
     public void onAddNodeClick(ActionEvent actionEvent){
+        AnimationGenerator.setRate(3.0);
         reset();
+        visuGraph.getAllAnimation().play();
         hintInfo.setText("在屏幕上点击以添加节点");
         AtomicBoolean pressed=new AtomicBoolean(false);
         graphPane.setOnMousePressed(e->pressed.set(true));
@@ -74,7 +73,9 @@ public class GraphController implements Initializable {
     }
 
     public void onAddEdgeClick(ActionEvent actionEvent) {
+        AnimationGenerator.setRate(3.0);
         reset();
+        visuGraph.getAllAnimation().play();
         hintInfo.setText("请输入权值(0~100)并依次点击起始、终止节点添加有向边(若不输入则将随机赋值)");
         AtomicBoolean pressed=new AtomicBoolean(false),fromNodeSelected= new AtomicBoolean(false);
         AtomicInteger fromNodeIdx = new AtomicInteger(),toNodeIdx=new AtomicInteger();
@@ -143,9 +144,31 @@ public class GraphController implements Initializable {
 
     }
 
+    public void onDeleteClick(ActionEvent actionEvent) {
+        reset();
+        visuGraph.getAllAnimation().play();
+        hintInfo.setText("请选择要删除的节点");
+        AtomicBoolean pressed=new AtomicBoolean(false);
+        graphPane.setOnMousePressed(e->pressed.set(true));
+        graphPane.setOnMouseDragged(e-> pressed.set(false));
+        graphPane.setOnMouseReleased(e->{
+            if(pressed.get()) {
+                visuGraph.clearAllAnimation();
+                visuGraph.resetSelectState();
+                int selectedNodeIdx = visuGraph.getSelectedNodeIdx(e.getX(), e.getY());
+                if (selectedNodeIdx >= 0)
+                    visuGraph.deleteNode(selectedNodeIdx);
+                Animation animation = visuGraph.getAllAnimation();
+                animation.setOnFinished(event -> hintInfo.setText("完毕"));
+                animation.play();
+            }
+        });
+    }
+
     public void onDFSButtonClick(ActionEvent actionEvent){
         VisuDFS visuDFS=new VisuDFS(visuGraph);
         reset();
+        visuGraph.getAllAnimation().play();
         hintInfo.setText("请选择起始节点");
         AtomicBoolean pressed=new AtomicBoolean(false);
         graphPane.setOnMousePressed(e->pressed.set(true));
@@ -168,6 +191,7 @@ public class GraphController implements Initializable {
     public void onBFSButtonClick(ActionEvent actionEvent) {
         VisuBFS visuBFS=new VisuBFS(visuGraph);
         reset();
+        visuGraph.getAllAnimation().play();
         hintInfo.setText("请选择起始节点");
         AtomicBoolean pressed=new AtomicBoolean(false);
         graphPane.setOnMousePressed(e->pressed.set(true));
@@ -189,8 +213,9 @@ public class GraphController implements Initializable {
 
     public void onDijkstraClick(ActionEvent actionEvent) {
         Dijkstra dijkstra=new Dijkstra(visuGraph,instructionText);
+        AnimationGenerator.setRate(1.0);
         visuGraph.clearAllAnimation();
-        visuGraph.resetAndGetAnima();
+        visuGraph.resetDistLastAndGetAnima();
         visuGraph.showAllDistAndLastNode();
         visuGraph.resetSelectState();
         visuGraph.getAllAnimation().play();
@@ -200,10 +225,10 @@ public class GraphController implements Initializable {
         graphPane.setOnMouseDragged(e-> pressed.set(false));
         graphPane.setOnMouseReleased(e-> {
             if(pressed.get()) {
-                AnimationGenerator.setRate(1.0);
+                //AnimationGenerator.setRate(1.0);
                 visuGraph.clearAllAnimation();
                 visuGraph.resetSelectState();
-                visuGraph.resetAndGetAnima();
+                visuGraph.resetDistLastAndGetAnima();
                 int selectedNodeIdx = visuGraph.getSelectedNodeIdx(e.getX(), e.getY());
                 if (selectedNodeIdx >= 0)
                     dijkstra.setStartNodeIdx(selectedNodeIdx);
@@ -218,24 +243,11 @@ public class GraphController implements Initializable {
         });
     }
 
-    public void onClearAllClick(ActionEvent actionEvent) {
-        visuGraph.clearAllAnimation();
-        visuGraph.clearAll();
-        visuGraph.getAllAnimation().play();
-    }
-
-    private void reset(){
-        visuGraph.clearAllAnimation();
-        visuGraph.resetSelectState();
-        visuGraph.hideAllDistAndLastNode();
-        visuGraph.getAllAnimation().play();
-        instructionText.setText("");
-    }
-
     public void onPrimClicked(ActionEvent actionEvent) {
         Prim prim=new Prim(visuGraph,instructionText);
+        AnimationGenerator.setRate(1.0);
         visuGraph.clearAllAnimation();
-        visuGraph.resetAndGetAnima();
+        visuGraph.resetDistLastAndGetAnima();
         visuGraph.showAllDistAndLastNode();
         visuGraph.resetSelectState();
         visuGraph.getAllAnimation().play();
@@ -248,7 +260,7 @@ public class GraphController implements Initializable {
                 //AnimationGenerator.setRate(1.0);
                 visuGraph.clearAllAnimation();
                 visuGraph.resetSelectState();
-                visuGraph.resetAndGetAnima();
+                visuGraph.resetDistLastAndGetAnima();
                 int selectedNodeIdx = visuGraph.getSelectedNodeIdx(e.getX(), e.getY());
                 if (selectedNodeIdx >= 0)
                     prim.setRootNodeIdx(selectedNodeIdx);
@@ -263,23 +275,32 @@ public class GraphController implements Initializable {
         });
     }
 
-    public void onDeleteClick(ActionEvent actionEvent) {
+    public void onKruskalClick(ActionEvent actionEvent) {
         reset();
-        hintInfo.setText("请选择要删除的节点");
-        AtomicBoolean pressed=new AtomicBoolean(false);
-        graphPane.setOnMousePressed(e->pressed.set(true));
-        graphPane.setOnMouseDragged(e-> pressed.set(false));
-        graphPane.setOnMouseReleased(e->{
-            if(pressed.get()) {
-                visuGraph.clearAllAnimation();
-                visuGraph.resetSelectState();
-                int selectedNodeIdx = visuGraph.getSelectedNodeIdx(e.getX(), e.getY());
-                if (selectedNodeIdx >= 0)
-                    visuGraph.deleteNode(selectedNodeIdx);
-                Animation animation = visuGraph.getAllAnimation();
-                animation.setOnFinished(event -> hintInfo.setText("完毕"));
-                animation.play();
-            }
+        AnimationGenerator.setRate(0.5);
+        hintInfo.setText("...");
+        visuGraph.getAllAnimation().play();
+        Kruskal kruskal=new Kruskal(visuGraph,instructionText);
+        int weight=kruskal.start();
+        Animation kruskalAnimation=visuGraph.getAllAnimation();
+        kruskalAnimation.setOnFinished(e-> {
+            instructionText.setText("最小生成树已找到,权值为" + weight);
+            hintInfo.setText("完毕");
         });
+        kruskalAnimation.play();
+    }
+
+    public void onClearAllClick(ActionEvent actionEvent) {
+        visuGraph.clearAllAnimation();
+        visuGraph.clearAll();
+        visuGraph.getAllAnimation().play();
+    }
+
+    private void reset(){
+        visuGraph.clearAllAnimation();
+        visuGraph.resetSelectState();
+        visuGraph.resetLastVis();
+        visuGraph.hideAllDistAndLastNode();
+        instructionText.setText("");
     }
 }

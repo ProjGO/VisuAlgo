@@ -8,23 +8,23 @@ import javafx.beans.binding.DoubleBinding;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Path;
 
-public abstract class BasicEdge extends Path {
-    protected static double width= Parameters.edgeWidth,arrowWidth= Parameters.arrowWidth,arrowLength= Parameters.arrowLength,nodeRadius= Parameters.nodeRadius+ Parameters.nodeStrokeWidth*0.5;
-    protected static Color fillColor= Parameters.edgeColor;//默认值
+abstract class BasicEdge extends Path {
+    static double width= Parameters.edgeWidth,arrowWidth= Parameters.arrowWidth,arrowLength= Parameters.arrowLength,nodeRadius= Parameters.nodeRadius+ Parameters.nodeStrokeWidth*0.5;
+    static Color fillColor= Parameters.edgeColor;//默认值
 
     SimpleDoubleProperty fromNodeXProperty =new SimpleDoubleProperty(), fromNodeYProperty =new SimpleDoubleProperty(),
             toNodeXProperty =new SimpleDoubleProperty(), toNodeYProperty =new SimpleDoubleProperty();
     DoubleBinding angle,sinAngle,cosAngle,fromX,fromY,toX,toY;
     BooleanBinding distGreaterThanRadius;
 
-    protected void setFromNodeXProperty(DoubleProperty _fromXProperty){ fromNodeXProperty.bind(_fromXProperty); }
-    protected void setFromNodeYProperty(DoubleProperty _fromYProperty){
+    void setFromNodeXProperty(DoubleProperty _fromXProperty){ fromNodeXProperty.bind(_fromXProperty); }
+    void setFromNodeYProperty(DoubleProperty _fromYProperty){
         fromNodeYProperty.bind(_fromYProperty);
     }
-    protected void setToNodeXProperty(DoubleProperty _toXProperty) {
+    void setToNodeXProperty(DoubleProperty _toXProperty) {
         toNodeXProperty.bind(_toXProperty);
     }
-    protected void setToNodeYProperty(DoubleProperty _toYProperty) {
+    void setToNodeYProperty(DoubleProperty _toYProperty) {
         toNodeYProperty.bind(_toYProperty);
     }
 
@@ -116,5 +116,9 @@ public abstract class BasicEdge extends Path {
                     return toNodeYProperty.get();
             }
         };
+    }
+
+    public Color getColor(){
+        return fillColor;
     }
 }

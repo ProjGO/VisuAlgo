@@ -3,10 +3,7 @@ package VisualElements.Edge;
 import BasicAnimation.AnimationGenerator;
 import Parameters.Parameters;
 import VisualElements.Node.BasicVisuNode;
-import javafx.animation.Animation;
-import javafx.animation.FadeTransition;
-import javafx.animation.FillTransition;
-import javafx.animation.SequentialTransition;
+import javafx.animation.*;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -16,11 +13,12 @@ import javafx.util.Duration;
 
 public class Edge extends Group {
 
-    protected SimpleDoubleProperty toXProperty = new SimpleDoubleProperty(), toYProperty = new SimpleDoubleProperty();//这里的是这个Group内部的坐标值
+    SimpleDoubleProperty toXProperty = new SimpleDoubleProperty(), toYProperty = new SimpleDoubleProperty();//这里的是这个Group内部的坐标值
     private DoubleProperty fromX,fromY,toX,toY;//这里的值是外部AnchorPane中的坐标值
-    protected BasicEdge basicEdge;
+    BasicEdge basicEdge;
     private BasicVisuNode fromVisuNode,toVisuNode;
-    protected SimpleIntegerProperty weight=new SimpleIntegerProperty(1);
+    private boolean selected=false;
+    SimpleIntegerProperty weight=new SimpleIntegerProperty(1);
 
     private SimpleDoubleProperty zero = new SimpleDoubleProperty(0);
 
@@ -35,13 +33,14 @@ public class Edge extends Group {
         basicEdge.setToNodeYProperty(toYProperty);
         basicEdge.initialize();
         this.getChildren().add(basicEdge);
+        basicEdge.setOpacity(0.6);
 
         /*Line lineX=new Line(0,0,50,0);
         Line lineY=new Line(0,0,0,50);
         getChildren().addAll(lineX,lineY);*/
     }
 
-    public void bindLayoutProperty(DoubleProperty _fromX,DoubleProperty _fromY,DoubleProperty _toX,DoubleProperty _toY){
+    private void bindLayoutProperty(DoubleProperty _fromX,DoubleProperty _fromY,DoubleProperty _toX,DoubleProperty _toY){
         bindFromLayoutProperty(_fromX,_fromY);
         bindToLayoutProperty(_toX,_toY);
     }
@@ -175,13 +174,23 @@ public class Edge extends Group {
     public Animation getSelelctedAnimation(){
         FillTransition selectedAanima=new FillTransition(Duration.millis(Parameters.appearAnimaDuration),this.basicEdge );
         selectedAanima.setToValue(Parameters.edgeSelectedColor);
+        selected=true;
         return selectedAanima;
     }
 
     public Animation getUnselectedAnimation(){
         FillTransition unselectedAanima=new FillTransition(Duration.millis(Parameters.appearAnimaDuration),this.basicEdge );
         unselectedAanima.setToValue(Parameters.edgeColor);
+        selected=false;
         return unselectedAanima;
+    }
+
+    public Animation getRejectedAnimation(){
+        Color lastColor=selected?Parameters.edgeSelectedColor: Parameters.edgeColor;
+        SequentialTransition rejectedAnimation=new SequentialTransition();
+        rejectedAnimation.getChildren().add(AnimationGenerator.getFillTransition(basicEdge,lastColor,Color.RED));
+        rejectedAnimation.getChildren().add(AnimationGenerator.getFillTransition(basicEdge,Color.RED,lastColor));
+        return rejectedAnimation;
     }
 
     public BasicVisuNode getFromVisuNode(){
@@ -190,6 +199,10 @@ public class Edge extends Group {
 
     public BasicVisuNode getToVisuNode(){
         return toVisuNode;
+    }
+
+    public boolean isSelected(){
+        return selected;
     }
 
     public SimpleIntegerProperty getWeightProperty(){

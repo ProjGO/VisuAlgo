@@ -25,6 +25,12 @@ public class AnimationManager {
         return sequentialTransition;
     }
 
+    public Animation getLastAnimation(){
+        if(!animations.isEmpty())
+            return animations.get(animations.size()-1);
+        return null;
+    }
+
     public void clear(){
         animations.clear();
     }

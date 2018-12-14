@@ -17,6 +17,10 @@ abstract public class VisuDS {
         return animationManager.getAll();
     }
 
+    public Animation getLastAnimation(){
+        return animationManager.getLastAnimation();
+    }
+
     abstract public void setAnchorPane(AnchorPane anchorPane);
 
     public void addNewAnimation(Animation animation){
