@@ -233,6 +233,7 @@ public class GraphController  extends BasicController implements Initializable {
                 visuGraph.clearAllAnimation();
                 visuGraph.resetSelectState();
                 visuGraph.resetDistLastAndGetAnima();
+                visuGraph.resetVisState();
                 int selectedNodeIdx = visuGraph.getSelectedNodeIdx(e.getX(), e.getY());
                 if (selectedNodeIdx >= 0)
                     dijkstra.setStartNodeIdx(selectedNodeIdx);
@@ -265,6 +266,7 @@ public class GraphController  extends BasicController implements Initializable {
                 visuGraph.clearAllAnimation();
                 visuGraph.resetSelectState();
                 visuGraph.resetDistLastAndGetAnima();
+                visuGraph.resetVisState();
                 int selectedNodeIdx = visuGraph.getSelectedNodeIdx(e.getX(), e.getY());
                 if (selectedNodeIdx >= 0)
                     prim.setRootNodeIdx(selectedNodeIdx);
@@ -281,7 +283,7 @@ public class GraphController  extends BasicController implements Initializable {
 
     public void onKruskalClick(ActionEvent actionEvent) {
         reset();
-        AnimationGenerator.setRate(0.5);
+        AnimationGenerator.setRate(1.0);
         hintInfo.setText("...");
         visuGraph.getAllAnimation().play();
         Kruskal kruskal=new Kruskal(visuGraph,instructionText);
@@ -303,6 +305,8 @@ public class GraphController  extends BasicController implements Initializable {
     private void reset(){
         visuGraph.clearAllAnimation();
         visuGraph.resetSelectState();
+        visuGraph.resetVisState();
+        visuGraph.resetDistLastAndGetAnima();
         visuGraph.resetLastVis();
         visuGraph.hideAllDistAndLastNode();
         instructionText.setText("");

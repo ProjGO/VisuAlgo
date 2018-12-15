@@ -163,6 +163,11 @@ public class VisuGraph extends VisuDS{
         animationManager.addNewAnimation(unselectAnima);
     }
 
+    public void resetVisState(){
+        for(GraphNode node:nodes)
+            node.setVisited(false);
+    }
+
     public void resetLastVis(){
         for(GraphNode node:nodes) {
             node.setLast(null);

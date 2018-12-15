@@ -97,6 +97,8 @@ public abstract class VisuBinaryTree extends VisuDS{
         ArrayList<TreeNode> nodes=new ArrayList<>();
         Queue<TreeNode> q=new LinkedList<>();
         q.offer(root);
+        if(q.peek()==null)
+            return null;
         while(!q.isEmpty()){
             TreeNode curNode=q.poll();
             nodes.add(curNode);
@@ -110,6 +112,8 @@ public abstract class VisuBinaryTree extends VisuDS{
 
     public void deleteAllNodesAndGetAnima(){
         ArrayList<TreeNode> nodes=getAllTreeNode();
+        if(nodes==null)
+            return;
         ParallelTransition disappearAnimation=new ParallelTransition();
         for(TreeNode node:nodes){
             disappearAnimation.getChildren().add(node.visuNode.getDisappearAnimation());

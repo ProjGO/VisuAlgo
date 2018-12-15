@@ -157,6 +157,7 @@ public class TreeController extends BasicController implements Initializable {
         int minValue=visuBinaryTree.findMin();
         Animation findMinAnima=visuBinaryTree.getAllAnimation();
         findMinAnima.setOnFinished(e->hintInfo.setText("最小值:"+minValue));
+        findMinAnima.play();
     }
 
     public void onFindMaxClick(ActionEvent actionEvent) {
@@ -165,6 +166,7 @@ public class TreeController extends BasicController implements Initializable {
         int maxValue=visuBinaryTree.findMax();
         Animation findMinAnima=visuBinaryTree.getAllAnimation();
         findMinAnima.setOnFinished(e->hintInfo.setText("最大值:"+maxValue));
+        findMinAnima.play();
     }
 
     public void onBackEntered(MouseEvent mouseEvent) {
