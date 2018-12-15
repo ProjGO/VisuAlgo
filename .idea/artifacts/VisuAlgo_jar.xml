@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="VisuAlgo:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/VisuAlgo_jar</output-path>
+    <root id="archive" name="VisuAlgo.jar">
+      <element id="module-output" name="VisuAlgo" />
+    </root>
+  </artifact>
+</component>
