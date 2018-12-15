@@ -5,6 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.TreeController">
@@ -32,12 +33,18 @@
                </children>
             </VBox>
             <Text fx:id="hintInfo" layoutX="14.0" layoutY="678.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="297.30029296875" />
-            <HBox layoutX="46.0" layoutY="25.0" prefHeight="30.0" prefWidth="234.0" spacing="30.0">
+            <HBox layoutX="14.0" layoutY="102.0" prefHeight="23.0" prefWidth="161.0" spacing="30.0">
                <children>
-                  <Button fx:id="BSTButton" mnemonicParsing="false" onAction="#onBSTButtonClick" prefWidth="100.0" text="BST" />
-                  <Button fx:id="AVLButton" mnemonicParsing="false" onAction="#onAVLButtonClick" prefWidth="100.0" text="AVL" />
+                  <Button fx:id="BSTButton" mnemonicParsing="false" onAction="#onBSTButtonClick" onMouseEntered="#onBSTEntered" onMouseExited="#onBSTExited" prefWidth="100.0" text="BST" />
+                  <Button fx:id="AVLButton" mnemonicParsing="false" onAction="#onAVLButtonClick" onMouseEntered="#onAVLEntered" onMouseExited="#onAVLExited" prefWidth="100.0" text="AVL" />
                </children>
             </HBox>
+            <Button fx:id="backButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onBackClick" onMouseEntered="#onBackEntered" onMouseExited="#onBackExited" text="Back" />
+            <Text fx:id="treeTypeText" layoutX="891.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Text>
          </children>
       </AnchorPane>
    </children>

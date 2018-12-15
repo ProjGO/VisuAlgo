@@ -7,14 +7,18 @@ import BasicVisuDS.VisuGraphException;
 import VisualElements.Edge.*;
 import javafx.animation.Animation;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.Random;
@@ -22,7 +26,7 @@ import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class GraphController implements Initializable {
+public class GraphController  extends BasicController implements Initializable {
     private VisuGraph visuGraph;
 
     @FXML
@@ -302,5 +306,41 @@ public class GraphController implements Initializable {
         visuGraph.resetLastVis();
         visuGraph.hideAllDistAndLastNode();
         instructionText.setText("");
+    }
+
+    public void onPrimEntered(MouseEvent mouseEvent) {
+        lastHint=hintInfo.getText();
+        hintInfo.setText("使用Prim算法求最小生成树(最好对无向连通图使用:))");
+    }
+
+    public void onKruskalEntered(MouseEvent mouseEvent) {
+        lastHint=hintInfo.getText();
+        hintInfo.setText("使用Kruskal算法求最小生成树(最好对无向连通图使用:))");
+    }
+
+    public void onPrimExited(MouseEvent mouseEvent) {
+        hintInfo.setText(lastHint);
+    }
+
+    public void onKruskalExited(MouseEvent mouseEvent) {
+        hintInfo.setText(lastHint);
+    }
+
+    public void onBackEntered(MouseEvent mouseEvent) {
+        lastHint=hintInfo.getText();
+        hintInfo.setText("返回主页面");
+    }
+
+    public void onBackClick(ActionEvent actionEvent) {
+        main.getCurStage().close();
+        try {
+            main.showStage(new Stage(),"VisuAlgo","Welcome");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void onBackExited(MouseEvent mouseEvent) {
+        hintInfo.setText(lastHint);
     }
 }

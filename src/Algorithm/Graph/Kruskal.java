@@ -40,7 +40,10 @@ public class Kruskal {
                 if(!curEdge.getToNode().isSelected())
                     addEdgeAnima.getChildren().add(curEdge.getToNode().getSelectedAnimation());
                 visuGraph.addNewAnimation(addEdgeAnima);
-                getFather(curEdge.getFromNode()).setLast(getFather(curEdge.getToNode()));
+                if(getFather(curEdge.getFromNode()).out.size()==1)
+                    getFather(curEdge.getFromNode()).setLast(getFather(curEdge.getToNode()));
+                else
+                    getFather(curEdge.getToNode()).setLast(getFather(curEdge.getFromNode()));
             }else{
                 ArrayList<Edge> loopEdges=new ArrayList<>();
                 loopEdges.addAll(getToFatherPath(curEdge.getFromNode()));

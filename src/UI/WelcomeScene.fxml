@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="360.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.WelcomeController">
+   <children>
+      <Text layoutX="14.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome ">
+         <font>
+            <Font size="41.0" />
+         </font>
+      </Text>
+      <Text layoutX="94.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="to VisuAlgo" wrappingWidth="275.240234375">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Text>
+      <Button fx:id="binaryTreeButton" layoutX="35.0" layoutY="105.0" mnemonicParsing="false" onAction="#onBinaryTreeClicked" onMouseEntered="#onBinTreeEntered" onMouseExited="#onBinTreeExited" prefHeight="100.0" prefWidth="140.0" style="-fx-background-image:url('/resources/BT.PNG'); -fx-background-size: 170px;" />
+      <Button fx:id="graphButton" layoutX="210.0" layoutY="105.0" mnemonicParsing="false" onAction="#onGraphClicked" onMouseEntered="#onGraphEntered" onMouseExited="#onGraphExited" prefHeight="100.0" prefWidth="140.0" style="-fx-background-image:url('/resources/Graph.PNG'); -fx-background-size: 130px;" />
+      <Text layoutX="391.0" layoutY="200.0" strokeType="OUTSIDE" strokeWidth="0.0" text="更多内容敬请期待..." wrappingWidth="140.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <Text layoutX="244.0" layoutY="333.0" strokeType="OUTSIDE" strokeWidth="0.0" text="这是一个实现简单算法可视化的程序,让看起来枯燥的算法生动起来..." wrappingWidth="381.3315486907959" />
+      <Text layoutX="93.0" layoutY="226.0" strokeType="OUTSIDE" strokeWidth="0.0" text="二叉树" />
+      <Text layoutX="274.0" layoutY="226.0" strokeType="OUTSIDE" strokeWidth="0.0" text="图" />
+      <Text fx:id="intructionText" layoutX="23.0" layoutY="281.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+   </children>
+</AnchorPane>
